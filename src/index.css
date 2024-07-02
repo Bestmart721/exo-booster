@@ -164,3 +164,10 @@
 .text-webkit-center {
   text-align: -webkit-center;
 }
+
+.error-message {
+  color: red;
+  position: absolute;
+  top: 60px;
+  left: 24px;
+}
