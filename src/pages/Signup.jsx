@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { Link, useLoaderData } from "react-router-dom";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
+import { useTranslation } from "react-i18next";
 
 export async function loadSignupData() {
 	let response = await axios.get(
@@ -16,33 +17,10 @@ export async function loadSignupData() {
 	return { countries };
 }
 
-const validationSchema = Yup.object().shape({
-	username: Yup.string()
-		.required("Username is required")
-		.min(3, "Your username should be a minimum of 3 characters")
-		.max(20, "Your username should be a maximum of 20 characters")
-		.matches(/^[a-zA-Z0-9]+$/, "Only alphanumeric characters are allowed"),
-
-	whatsapp_number: Yup.string()
-		.required("Your Whatsapp number is required")
-		.matches(/^[0-9()+]+$/, "Only numbers, +, (, and ) are allowed"),
-
-	country: Yup.string().required("Country cannot be empty"),
-
-	password: Yup.string()
-		.required("Password cannot be empty")
-		.min(6, "Password must be at least 6 characters"),
-
-	confirm: Yup.string().oneOf(
-		[Yup.ref("password"), null],
-		"Passwords must match"
-	),
-
-	referralCode: Yup.string(), // Optional field, no validation required
-});
-
 export default function Signup() {
 	const { countries } = useLoaderData();
+	const { t, i18n } = useTranslation();
+	const [curCountry, setCurCountry] = useState("");
 	const initialValues = {
 		country: "",
 		currency: "",
@@ -51,16 +29,40 @@ export default function Signup() {
 		confirm: "",
 		whatsapp_number: "",
 		device: { os: "web", userAgent: navigator.userAgent },
-		language: (navigator.language || navigator.userLanguage).slice(0, 2),
+		language: (navigator.language || navigator.userLanguage).slice(0, 2) == 'fr' ? 'fr' : 'en',
 		referralCode: "",
 	};
 
-	const [curCountry, setCurCountry] = useState("");
+	const validationSchema = Yup.object().shape({
+		username: Yup.string()
+			.required(t("Username is required."))
+			.min(3, t("Your username should be a minimum of 3 characters."))
+			.max(20, t("Your username should be a maximum of 20 characters."))
+			.matches(/^[a-zA-Z0-9]+$/, t("Only alphanumeric characters are allowed.")),
+
+		whatsapp_number: Yup.string()
+			.required(t("Your Whatsapp number is required."))
+			.matches(/^[0-9()+]+$/, t("Only numbers, +, (, and ) are allowed.")),
+
+		country: Yup.string().required(t("Country cannot be empty.")),
+
+		password: Yup.string()
+			.required(t("Password cannot be empty."))
+			.min(6, t("Password must be at least 6 characters.")),
+
+		confirm: Yup.string().oneOf(
+			[Yup.ref("password"), null],
+			t("Passwords must match.")
+		),
+
+		referralCode: Yup.string(), // Optional field, no validation required
+	});
 
 	const onSubmit = async (values, { setSubmitting }) => {
 		console.log("-----", values);
 		let response = await axios.post(
-			`https://cors-anywhere.herokuapp.com/https://createuser-l2ugzeb65a-uc.a.run.app/`, values
+			`https://cors-anywhere.herokuapp.com/https://createuser-l2ugzeb65a-uc.a.run.app/`,
+			values
 		);
 	};
 
@@ -233,7 +235,7 @@ export default function Signup() {
 				<hr className="flex-grow-1 opacity-100" />
 			</div>
 			<div className="d-flex justify-content-center mt-4 Nunito-Black lead">
-				Already have an account?{" "}
+				Already have an account?
 				<Link to="/auth/signin" className="ms-3 Nunito-Black color-purple">
 					LOGIN
 				</Link>
