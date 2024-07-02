@@ -25,16 +25,23 @@ export default function Signin() {
 						className="form-control full-radius"
 						placeholder="Password"
 					/>
+					<span className="input-group-text full-radius">
+						<img src="/icons/eye.svg" alt="user" />
+					</span>
 				</div>
-				<button className="btn btn-primary w-100 full-radius">LOGIN</button>
+				<div className="text-center mt-5">
+					<button className="btn btn-primary full-radius btn-purple w-250">
+						LOGIN
+					</button>
+				</div>
 			</form>
-			<div className="d-flex align-items-center mt-4">
-				<hr className="flex-grow-1" />
+			<div className="d-flex align-items-center mt-4 w-250 mx-auto">
+				<hr className="flex-grow-1 opacity-100" />
 				<span className="px-3">OR</span>
-				<hr className="flex-grow-1" />
+				<hr className="flex-grow-1 opacity-100" />
 			</div>
-			<div className="d-flex justify-content-center mt-4">
-				Don't have an account ? <Link to="/auth/login">CREATE</Link>
+			<div className="d-flex justify-content-center mt-4 Nunito-Black lead">
+				Don't have an account ? <Link to="/auth/signup" className="ms-3 Nunito-Black color-purple">CREATE</Link>
 			</div>
 		</>
 	);

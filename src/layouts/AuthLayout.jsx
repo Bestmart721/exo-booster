@@ -5,14 +5,22 @@ import { Link, Outlet } from "react-router-dom";
 export default function AuthLayout() {
 	return (
 		<>
-			<div className="container d-flex mt-80">
+			<div className="container d-lg-flex mt-80">
 				<img src="/logopng 1.png" alt="logo" />
-				<Link to="/auth/signup" className="btn btn-secondary ms-auto my-auto auth-btn full-radius">
-					SIGN UP
-				</Link>
-				<Link to="/auth/signin" className="btn btn-secondary ms-4 my-auto auth-btn full-radius">
-					SIGN IN
-				</Link>
+				<div className="d-flex ms-auto">
+					<Link
+						to="/auth/signup"
+						className="btn btn-secondary my-auto auth-btn full-radius"
+					>
+						SIGN UP
+					</Link>
+					<Link
+						to="/auth/signin"
+						className="btn btn-secondary ms-4 my-auto auth-btn full-radius"
+					>
+						SIGN IN
+					</Link>
+				</div>
 			</div>
 			<div className="container mt-100">
 				<div className="row">
@@ -32,57 +40,91 @@ export default function AuthLayout() {
 						<img src="/image 1.png" alt="phone" className="img-fluid" />
 					</div>
 				</div>
-				<div className="auth-main mt-80">
-					<Outlet/>
+				<div className="auth-main mt-80 mb-200 position-relative">
+					<img
+						src="/imageedit_4_7994726930 1.png"
+						className="cloud"
+						id="cloud-3"
+					/>
+					<Outlet />
 				</div>
-				<div className="auth-footer">
-					<div className="card bg-pink">
-						<div className="card-body p-2 d-flex">
-							<div className="flex-grow-1 p-2 border-end border-black border-1 text-center">
-								<div>5,000,000+</div>
-								<div>Orders</div>
-							</div>
-							<div className="flex-grow-1 p-2 text-center">
-								<div>5,000,000+</div>
-								<div>Orders</div>
-							</div>
-						</div>
-					</div>
-					<img src="/imageedit_4_7994726930 1.png" />
-					<img src="/imageedit_4_7994726930 1.png" />
-					<div className="text-center">Why Exo Booster?</div>
-					<div className="d-flex justify-content-center gap-5 mb-5">
-						<div className="card bg-pink text-center">
-							<div className="card-body">
-								<img src="/icons/image 2.png" alt="easyToUseInterface" />
-								<h3 className="Nunito-Black">Easy-to-use interface</h3>
-								<hr />
-								<p>
-									Exo boosters interface is as easy as ABC, from account
-									creation to making your first order
-								</p>
+				<div className="auth-footer position-relative">
+					<img
+						src="/imageedit_4_7994726930 1.png"
+						className="cloud"
+						id="cloud-2"
+					/>
+					<img
+						src="/imageedit_4_7994726930 1.png"
+						className="cloud"
+						id="cloud-1"
+					/>
+					<div className="position-relative">
+						<div className="card bg-pink radius-20 mb-200">
+							<div className="card-body p-2 d-flex font-40">
+								<div className="flex-grow-1 border-end border-black border-1 text-center">
+									<div>5,000,000+</div>
+									<div>Orders</div>
+								</div>
+								<div className="flex-grow-1 text-center">
+									<div>50,000+</div>
+									<div>Users</div>
+								</div>
 							</div>
 						</div>
-						<div className="card bg-pink text-center">
-							<div className="card-body">
-								<img src="/icons/image 3.png" alt="easyToUseInterface" />
-								<h3 className="Nunito-Black">Live chat support</h3>
-								<hr />
-								<p>
-									Exo boosters interface is as easy as ABC, from account
-									creation to making your first order
-								</p>
+						<div className="text-center font-50 mb-5 z-1">Why Exo Booster?</div>
+						<div className="d-md-block d-lg-flex justify-content-center gap-5 mb-100 text-webkit-center">
+							<div className="card bg-pink text-center radius-20 w-300 mb-4">
+								<div className="card-body p-4">
+									<img
+										src="/icons/thumb-up-svgrepo-com.svg"
+										alt="easyToUseInterface"
+										height={50}
+										className="mb-2"
+									/>
+									<h3 className="Nunito-Black">Easy-to-use interface</h3>
+									<hr />
+									<p className="lead">
+										Exo boosters interface is as easy as ABC, from account
+										creation to making your first order
+									</p>
+								</div>
 							</div>
-						</div>
-						<div className="card bg-pink text-center">
-							<div className="card-body">
-								<img src="/icons/image 4.png" alt="easyToUseInterface" />
-								<h3 className="Nunito-Black">Super instant results</h3>
-								<hr />
-								<p>
-									Exo boosters interface is as easy as ABC, from account
-									creation to making your first order
-								</p>
+							<div className="card bg-pink text-center radius-20 w-300 mb-4">
+								<div className="card-body p-4">
+									<img
+										src="/icons/life-ring-svgrepo-com.svg"
+										alt="easyToUseInterface"
+										height={50}
+										className="mb-2"
+									/>
+									<h3 className="Nunito-Black">
+										Live chat
+										<br />
+										support
+									</h3>
+									<hr />
+									<p className="lead">
+										Exo boosters interface is as easy as ABC, from account
+										creation to making your first order
+									</p>
+								</div>
+							</div>
+							<div className="card bg-pink text-center radius-20 w-300 mb-4">
+								<div className="card-body p-4">
+									<img
+										src="/icons/launch-svgrepo-com.svg"
+										alt="easyToUseInterface"
+										height={50}
+										className="mb-2"
+									/>
+									<h3 className="Nunito-Black">Super instant results</h3>
+									<hr />
+									<p className="lead">
+										Exo boosters interface is as easy as ABC, from account
+										creation to making your first order
+									</p>
+								</div>
 							</div>
 						</div>
 					</div>
