@@ -13,7 +13,15 @@ const resources = {
       "Country cannot be empty.": "Country cannot be empty.",
       "Password cannot be empty.": "Password cannot be empty.",
       "Password must be at least 6 characters.": "Password must be at least 6 characters.",
-      "Passwords must match.": "Passwords must match."
+      "Passwords must match.": "Passwords must match.",
+
+      "Invalid username, should not contain any spaces , or special characters (eg: $ é # â .....)": "Invalid username, should not contain any spaces or special characters (e.g., $ é # â ...)",
+      "Username must be at least 3 characters long.": "Username must be at least 3 characters long.",
+      "Username must be at most 20 characters long.": "Username must be at most 20 characters long.",
+      "Password must be at least 6 characters long.": "Password must be at least 6 characters long.",
+      "Password is required.": "Password is required.",
+      "Credentials entered are incorrect": "Credentials entered are incorrect.",
+      "Too many attempts, try again later": "Too many attempts, try again later."
     }
   },
   fr: {
@@ -27,7 +35,15 @@ const resources = {
       "Country cannot be empty.": "Le pays ne peut pas être vide.",
       "Password cannot be empty.": "Le mot de passe ne peut pas être vide.",
       "Password must be at least 6 characters.": "Le mot de passe doit comporter au moins 6 caractères.",
-      "Passwords must match.": "Les mots de passe doivent correspondre."
+      "Passwords must match.": "Les mots de passe doivent correspondre.",
+
+      "Invalid username, should not contain any spaces , or special characters (eg: $ é # â .....)": "Nom d'utilisateur non valide, ne doit pas contenir d'espaces ni de caractères spéciaux (ex. : $ é # â ...)",
+      "Username must be at least 3 characters long.": "Le nom d'utilisateur doit comporter au moins 3 caractères.",
+      "Username must be at most 20 characters long.": "Le nom d'utilisateur doit comporter au maximum 20 caractères.",
+      "Password must be at least 6 characters long.": "Le mot de passe doit comporter au moins 6 caractères.",
+      "Password is required.": "Le mot de passe est requis.",
+      "Credentials entered are incorrect": "Les données d'identification saisies sont incorrectes.",
+      "Too many attempts, try again later": "Trop de tentatives, réessayer plus tard."
     }
   }
 };
