@@ -1,10 +1,11 @@
 import axios from "axios";
 import React, { useState } from "react";
-import { Link, useLoaderData } from "react-router-dom";
+import { Link, useLoaderData, useNavigate } from "react-router-dom";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { useTranslation } from "react-i18next";
 import Select, { components } from "react-select";
+import { firbaseSignUp, firebaseSignIn1 } from "../firebaseAuth";
 
 const capitalize = (str) => (str ? str[0].toUpperCase() + str.slice(1) : "");
 
@@ -12,14 +13,17 @@ export async function loadSignupData() {
 	// let response = await axios.get(
 	// 	`https://getsupportedcountries-l2ugzeb65a-uc.a.run.app/`
 	// );
-	let response = {data:{
-    "cameroon": {
-        "name": "cameroon",
-        "currency": "xaf",
-        "flag_img_link": "https://firebasestorage.googleapis.com/v0/b/exobooster-59de3.appspot.com/o/flag_thumbnails%2FFlag-Cameroon.webp?alt=media&token=2d2a1fa2-946f-4d54-a56d-15385eb9fb8e",
-        "enabled": true
-    }
-}}
+	let response = {
+		data: {
+			cameroon: {
+				name: "cameroon",
+				currency: "xaf",
+				flag_img_link:
+					"https://firebasestorage.googleapis.com/v0/b/exobooster-59de3.appspot.com/o/flag_thumbnails%2FFlag-Cameroon.webp?alt=media&token=2d2a1fa2-946f-4d54-a56d-15385eb9fb8e",
+				enabled: true,
+			},
+		},
+	};
 	let countries = Object.keys(response.data).map((key) => response.data[key]);
 	countries = countries.map((country) => ({
 		...country,
@@ -35,7 +39,7 @@ const customStyles = {
 		borderRadius: "50px", // Full radius
 		padding: "8px 12px", // Custom padding
 		fontSize: "23px",
-		color: "#555"
+		color: "#555",
 	}),
 	singleValue: (provided) => ({
 		...provided,
@@ -67,6 +71,7 @@ const Option = (props) => (
 );
 
 export default function Signup() {
+const navigate = useNavigate();
 	const { countries } = useLoaderData();
 	const { t, i18n } = useTranslation();
 	const [curCountry, setCurCountry] = useState("");
@@ -122,24 +127,32 @@ export default function Signup() {
 			`https://createuser-l2ugzeb65a-uc.a.run.app/`,
 			values
 		);
+		firebaseSignIn1(response.data.data.auth_token)
+		.then(() => {
+			navigate("/home");
+		})
 	};
 
 	const SingleValue = ({ children, ...props }) => (
 		<components.SingleValue {...props}>
 			<img
-      src="/icons/globe-web-svgrepo-com.svg"
-      width="24"
-      className="me-5"
-      alt="fonticon"
-    />
-			<img src={curCountry.flag_img_link} alt="s-logo" className="selected-logo" />
+				src="/icons/globe-web-svgrepo-com.svg"
+				width="24"
+				className="me-5"
+				alt="fonticon"
+			/>
+			<img
+				src={curCountry.flag_img_link}
+				alt="s-logo"
+				className="selected-logo"
+			/>
 			{children}
 		</components.SingleValue>
 	);
 
-	const togglePasswordVisible = () => {	
+	const togglePasswordVisible = () => {
 		setVisiblePassword(!visiblePassword);
-	}
+	};
 
 	return (
 		<>
@@ -199,11 +212,7 @@ export default function Signup() {
 							onChange={(value) => {
 								setCurCountry(value);
 								setFieldValue("country", value.name);
-								setFieldValue(
-									"currency",
-									countries.find((c) => c.name == value) &&
-										countries.find((c) => c.name == value).currency
-								);
+								setFieldValue("currency", value.currency);
 							}}
 							styles={customStyles}
 							components={{
@@ -213,7 +222,8 @@ export default function Signup() {
 									<div style={{ display: "flex", alignItems: "center" }}>
 										<img
 											src="/icons/globe-web-svgrepo-com.svg"
-											width="24" className="me-5"
+											width="24"
+											className="me-5"
 											alt="fonticon"
 										/>
 										<span>Select a country...</span>
@@ -233,13 +243,20 @@ export default function Signup() {
 								<img src="/icons/lock1.svg" alt="fonticon" width={24} />
 							</span>
 							<Field
-								type={visiblePassword?"text":"password"}
+								type={visiblePassword ? "text" : "password"}
 								className="form-control full-radius"
 								placeholder="Password"
 								name="password"
 							/>
 							<span className="input-group-text full-radius">
-								<img src={`/icons/eye${visiblePassword?"":"-slash"}-svgrepo-com.svg`} onClick={togglePasswordVisible} alt="fonticon" width={24} />
+								<img
+									src={`/icons/eye${
+										visiblePassword ? "" : "-slash"
+									}-svgrepo-com.svg`}
+									onClick={togglePasswordVisible}
+									alt="fonticon"
+									width={24}
+								/>
 							</span>
 						</div>
 						<div className="error-message-wrapper text-danger px-4 py-1">
@@ -254,13 +271,20 @@ export default function Signup() {
 								<img src="/icons/lock1.svg" alt="fonticon" width={24} />
 							</span>
 							<Field
-								type={visiblePassword?"text":"password"}
+								type={visiblePassword ? "text" : "password"}
 								className="form-control full-radius"
 								placeholder="Confirm your password"
 								name="confirm"
 							/>
 							<span className="input-group-text full-radius">
-								<img src={`/icons/eye${visiblePassword?"":"-slash"}-svgrepo-com.svg`} onClick={togglePasswordVisible} alt="fonticon" width={24} />
+								<img
+									src={`/icons/eye${
+										visiblePassword ? "" : "-slash"
+									}-svgrepo-com.svg`}
+									onClick={togglePasswordVisible}
+									alt="fonticon"
+									width={24}
+								/>
 							</span>
 						</div>
 						<div className="error-message-wrapper text-danger px-4 py-1">

@@ -1,0 +1,74 @@
+import { initializeApp } from "firebase/app";
+import { getAuth, createUserWithEmailAndPassword, signInWithCustomToken, signInWithEmailAndPassword } from "firebase/auth";
+
+// TODO: Replace the following with your app's Firebase project configuration
+// See: https://firebase.google.com/docs/web/learn-more#config-object
+const firebaseConfig = {
+	apiKey: "AIzaSyDVqxoMQw4DnkCXwtIesSQR4-qoSFVYYww",
+	authDomain: "exobooster-59de3.firebaseapp.com",
+	databaseURL: "https://exobooster-59de3-default-rtdb.asia-southeast1.firebasedatabase.app",
+	projectId: "exobooster-59de3",
+	messagingSenderId: "311433638015",
+	appId: "1:311433638015:web:93a48c36290dd2bc7b4f4a",
+	measurementId: "G-WPYN5P7DNN"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+
+
+// Initialize Firebase Authentication and get a reference to the service
+const auth = getAuth(app);
+
+export function firbaseSignUp(username, password) {
+	const email = username + "@exobooster.com";
+	createUserWithEmailAndPassword(auth, email, password)
+		.then((userCredential) => {
+			console.log(userCredential)
+			// Signed up 
+			const user = userCredential.user;
+			firebaseSignInWithToken(user.accessToken)
+			// ...
+		})
+		.catch((error) => {
+			console.log(error)
+			const errorCode = error.code;
+			const errorMessage = error.message;
+			// ..
+		});
+}
+
+export function firebaseSignIn1(token) {
+	return new Promise((resolve, reject) => {
+		signInWithCustomToken(auth, token)
+			.then((userCredential) => {
+				console.log(userCredential)
+				// Signed in
+				const user = userCredential.user;
+				resolve(user)
+			})
+			.catch((error) => {
+				console.log(error)
+				const errorCode = error.code;
+				const errorMessage = error.message;
+				reject(errorMessage)
+			})
+	})
+}
+
+export function firebaseSignIn2(username, password) {
+	return new Promise((resolve, reject) => {
+		const email = username.includes('@') ? username : username + "@exobooster.com";
+		signInWithEmailAndPassword(auth, email, password)
+			.then((userCredential) => {
+				// Signed in 
+				const user = userCredential.user;
+				resolve(user)
+			})
+			.catch((error) => {
+				const errorCode = error.code;
+				const errorMessage = error.message;
+				reject(errorMessage)
+			});
+	})
+}

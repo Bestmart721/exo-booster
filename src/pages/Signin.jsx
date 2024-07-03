@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { useTranslation } from "react-i18next";
+import { firebaseSignIn2 } from "../firebaseAuth";
 
 export default function Signin() {
 	const { t, i18n } = useTranslation();
@@ -28,6 +29,13 @@ export default function Signin() {
 			.required(t("Password is required.")),
 	});
 
+	const handleSubmit = (values) => {
+		firebaseSignIn2(values.username, values.password)
+		.then(() => {
+			navigate("/home");
+		})
+	}
+
 	return (
 		<>
 			<h1 className="display-4 text-center Nunito-Black mb-5">Log in</h1>
@@ -37,10 +45,7 @@ export default function Signin() {
 					password: "",
 				}}
 				validationSchema={SignInSchema}
-				onSubmit={(values) => {
-					// submit form values to your server
-					console.log(values);
-				}}
+				onSubmit={handleSubmit}
 			>
 				{({ errors, touched }) => (
 					<Form className="w-465 mx-auto">
