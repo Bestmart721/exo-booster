@@ -4,23 +4,73 @@ import { Link, useLoaderData } from "react-router-dom";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { useTranslation } from "react-i18next";
+import Select, { components } from "react-select";
+
+const capitalize = (str) => (str ? str[0].toUpperCase() + str.slice(1) : "");
 
 export async function loadSignupData() {
-	let response = await axios.get(
-		`https://cors-anywhere.herokuapp.com/https://getsupportedcountries-l2ugzeb65a-uc.a.run.app/`
-	);
+	// let response = await axios.get(
+	// 	`https://getsupportedcountries-l2ugzeb65a-uc.a.run.app/`
+	// );
+	let response = {data:{
+    "cameroon": {
+        "name": "cameroon",
+        "currency": "xaf",
+        "flag_img_link": "https://firebasestorage.googleapis.com/v0/b/exobooster-59de3.appspot.com/o/flag_thumbnails%2FFlag-Cameroon.webp?alt=media&token=2d2a1fa2-946f-4d54-a56d-15385eb9fb8e",
+        "enabled": true
+    }
+}}
 	let countries = Object.keys(response.data).map((key) => response.data[key]);
-	countries = [
-		{ enabled: false, name: "", label: "Choose your country" },
-		...countries,
-	];
+	countries = countries.map((country) => ({
+		...country,
+		value: country.name,
+		label: capitalize(country.name),
+	}));
 	return { countries };
 }
+
+const customStyles = {
+	control: (provided, state) => ({
+		...provided,
+		borderRadius: "50px", // Full radius
+		padding: "8px 12px", // Custom padding
+		fontSize: "23px",
+		color: "#555"
+	}),
+	singleValue: (provided) => ({
+		...provided,
+		fontSize: "23px",
+	}),
+	valueContainer: (provided) => ({
+		...provided,
+		fontSize: "23px",
+		display: "flex",
+		alignItems: "center",
+	}),
+	menu: (provided) => ({
+		...provided,
+		marginTop: "2px",
+		fontSize: "23px",
+	}),
+};
+
+const Option = (props) => (
+	<components.Option {...props} className="country-option">
+		<img
+			src={props.data.flag_img_link}
+			width={24}
+			alt="logo"
+			className="country-logo"
+		/>
+		{props.data.label}
+	</components.Option>
+);
 
 export default function Signup() {
 	const { countries } = useLoaderData();
 	const { t, i18n } = useTranslation();
 	const [curCountry, setCurCountry] = useState("");
+	const [visiblePassword, setVisiblePassword] = useState(false);
 	const initialValues = {
 		country: "",
 		currency: "",
@@ -29,7 +79,10 @@ export default function Signup() {
 		confirm: "",
 		whatsapp_number: "",
 		device: { os: "web", userAgent: navigator.userAgent },
-		language: (navigator.language || navigator.userLanguage).slice(0, 2) == 'fr' ? 'fr' : 'en',
+		language:
+			(navigator.language || navigator.userLanguage).slice(0, 2) == "fr"
+				? "fr"
+				: "en",
 		referralCode: "",
 	};
 
@@ -38,11 +91,17 @@ export default function Signup() {
 			.required(t("Username is required."))
 			.min(3, t("Your username should be a minimum of 3 characters."))
 			.max(20, t("Your username should be a maximum of 20 characters."))
-			.matches(/^[a-zA-Z0-9]+$/, t("Only alphanumeric characters are allowed.")),
+			.matches(
+				/^[a-zA-Z0-9]+$/,
+				t("Only alphanumeric characters are allowed.")
+			),
 
 		whatsapp_number: Yup.string()
 			.required(t("Your Whatsapp number is required."))
-			.matches(/^[0-9()+]+$/, t("Only numbers, +, (, and ) are allowed.")),
+			.matches(
+				/^[0-9]+$/,
+				t("Only numbers are allowed, no spaces or letters.")
+			),
 
 		country: Yup.string().required(t("Country cannot be empty.")),
 
@@ -59,12 +118,28 @@ export default function Signup() {
 	});
 
 	const onSubmit = async (values, { setSubmitting }) => {
-		console.log("-----", values);
 		let response = await axios.post(
-			`https://cors-anywhere.herokuapp.com/https://createuser-l2ugzeb65a-uc.a.run.app/`,
+			`https://createuser-l2ugzeb65a-uc.a.run.app/`,
 			values
 		);
 	};
+
+	const SingleValue = ({ children, ...props }) => (
+		<components.SingleValue {...props}>
+			<img
+      src="/icons/globe-web-svgrepo-com.svg"
+      width="24"
+      className="me-5"
+      alt="fonticon"
+    />
+			<img src={curCountry.flag_img_link} alt="s-logo" className="selected-logo" />
+			{children}
+		</components.SingleValue>
+	);
+
+	const togglePasswordVisible = () => {	
+		setVisiblePassword(!visiblePassword);
+	}
 
 	return (
 		<>
@@ -78,142 +153,142 @@ export default function Signup() {
 			>
 				{({ isSubmitting, handleChange, setFieldValue }) => (
 					<Form className="w-465 mx-auto">
-						<div className="position-relative">
-							<div className="input-group mb-4 m-input-group">
-								<span className="input-group-text full-radius">
-									<img src="/icons/user.svg" alt="user" />
-								</span>
-								<Field
-									type="text"
-									className="form-control full-radius"
-									placeholder="Username"
-									name="username"
-								/>
-							</div>
+						<div className="input-group m-input-group">
+							<span className="input-group-text full-radius">
+								<img src="/icons/user.svg" alt="fonticon" width={24} />
+							</span>
+							<Field
+								type="text"
+								className="form-control full-radius"
+								placeholder="Username"
+								name="username"
+							/>
+						</div>
+						<div className="error-message-wrapper text-danger px-4 py-1">
 							<ErrorMessage
 								name="username"
-								component="span"
+								component="div"
 								className="error-message"
 							/>
 						</div>
-						<div className="position-relative">
-							<div className="input-group mb-4 m-input-group">
-								<span className="input-group-text full-radius">
-									<img src="/icons/user.svg" alt="user" />
-								</span>
-								<Field
-									type="text"
-									className="form-control full-radius"
-									placeholder="Whatsapp number"
-									name="whatsapp_number"
-								/>
-							</div>
+						<div className="input-group m-input-group">
+							<span className="input-group-text full-radius">
+								<img src="/icons/user.svg" alt="fonticon" width={24} />
+							</span>
+							<Field
+								type="text"
+								className="form-control full-radius"
+								placeholder="Whatsapp number"
+								name="whatsapp_number"
+							/>
+						</div>
+						<div className="error-message-wrapper text-danger px-4 py-1">
 							<ErrorMessage
 								name="whatsapp_number"
-								component="span"
+								component="div"
 								className="error-message"
 							/>
 						</div>
-						<div className="position-relative">
-							<div className="input-group mb-4 m-input-group">
-								<span className="input-group-text full-radius">
-									<img
-										src={
-											(countries.find((c) => c.name == curCountry) &&
-												countries.find((c) => c.name == curCountry)
-													.flag_img_link) ||
-											"/icons/user.svg"
-										}
-										width="24"
-										alt="user"
-									/>
-								</span>
-								<Field
-									as="select"
-									className="form-control full-radius"
-									placeholder="Choose your country"
-									name="country"
-									value={curCountry}
-									onChange={(e) => {
-										setCurCountry(e.target.value);
-										handleChange(e);
-										setFieldValue(
-											"currency",
-											countries.find((c) => c.name == e.target.value) &&
-												countries.find((c) => c.name == e.target.value).currency
-										);
-									}}
-								>
-									{countries.map((c) => (
-										<option value={c.name} key={c.name} disabled={!c.enabled}>
-											{c.name || c.label}
-										</option>
-									))}
-								</Field>
-							</div>
+
+						<Select
+							className="m-input-group"
+							placeholder="Choose your country"
+							name="country"
+							value={curCountry}
+							options={countries}
+							onChange={(value) => {
+								setCurCountry(value);
+								setFieldValue("country", value.name);
+								setFieldValue(
+									"currency",
+									countries.find((c) => c.name == value) &&
+										countries.find((c) => c.name == value).currency
+								);
+							}}
+							styles={customStyles}
+							components={{
+								Option,
+								SingleValue,
+								Placeholder: () => (
+									<div style={{ display: "flex", alignItems: "center" }}>
+										<img
+											src="/icons/globe-web-svgrepo-com.svg"
+											width="24" className="me-5"
+											alt="fonticon"
+										/>
+										<span>Select a country...</span>
+									</div>
+								),
+							}}
+						/>
+						<div className="error-message-wrapper text-danger px-4 py-1">
 							<ErrorMessage
 								name="country"
-								component="span"
+								component="div"
 								className="error-message"
 							/>
 						</div>
-						<div className="position-relative">
-							<div className="input-group mb-4 m-input-group">
-								<span className="input-group-text full-radius">
-									<img src="/icons/lock1.svg" alt="user" />
-								</span>
-								<Field
-									type="password"
-									className="form-control full-radius"
-									placeholder="Password"
-									name="password"
-								/>
-								<span className="input-group-text full-radius">
-									<img src="/icons/eye.svg" alt="user" />
-								</span>
-							</div>
+						<div className="input-group m-input-group">
+							<span className="input-group-text full-radius">
+								<img src="/icons/lock1.svg" alt="fonticon" width={24} />
+							</span>
+							<Field
+								type={visiblePassword?"text":"password"}
+								className="form-control full-radius"
+								placeholder="Password"
+								name="password"
+							/>
+							<span className="input-group-text full-radius">
+								<img src={`/icons/eye${visiblePassword?"":"-slash"}-svgrepo-com.svg`} onClick={togglePasswordVisible} alt="fonticon" width={24} />
+							</span>
+						</div>
+						<div className="error-message-wrapper text-danger px-4 py-1">
 							<ErrorMessage
 								name="password"
-								component="span"
+								component="div"
 								className="error-message"
 							/>
 						</div>
-						<div className="position-relative">
-							<div className="input-group mb-4 m-input-group">
-								<span className="input-group-text full-radius">
-									<img src="/icons/lock1.svg" alt="user" />
-								</span>
-								<Field
-									type="text"
-									className="form-control full-radius"
-									placeholder="Confirm your password"
-									name="confirm"
-								/>
-								<span className="input-group-text full-radius">
-									<img src="/icons/eye.svg" alt="user" />
-								</span>
-							</div>
+						<div className="input-group m-input-group">
+							<span className="input-group-text full-radius">
+								<img src="/icons/lock1.svg" alt="fonticon" width={24} />
+							</span>
+							<Field
+								type={visiblePassword?"text":"password"}
+								className="form-control full-radius"
+								placeholder="Confirm your password"
+								name="confirm"
+							/>
+							<span className="input-group-text full-radius">
+								<img src={`/icons/eye${visiblePassword?"":"-slash"}-svgrepo-com.svg`} onClick={togglePasswordVisible} alt="fonticon" width={24} />
+							</span>
+						</div>
+						<div className="error-message-wrapper text-danger px-4 py-1">
 							<ErrorMessage
 								name="confirm"
-								component="span"
+								component="div"
 								className="error-message"
 							/>
 						</div>
-						<div className="position-relative">
-							<div className="input-group mb-4 m-input-group">
-								<span className="input-group-text full-radius">
-									<img src="/icons/user.svg" alt="user" />
-								</span>
-								<Field
-									type="text"
-									className="form-control full-radius"
-									placeholder="Referral code (Optional)"
-									name="referralCode"
+						<div className="input-group m-input-group">
+							<span className="input-group-text full-radius">
+								<img
+									src="/icons/giftbox-gift-svgrepo-com.svg"
+									alt="fonticon"
+									width={24}
 								/>
-							</div>
+							</span>
+							<Field
+								type="text"
+								className="form-control full-radius"
+								placeholder="Referral code (Optional)"
+								name="referralCode"
+							/>
+						</div>
+						<div className="error-message-wrapper text-danger px-4 py-1">
 							<ErrorMessage
 								name="referralCode"
-								component="span"
+								component="div"
 								className="error-message"
 							/>
 						</div>
