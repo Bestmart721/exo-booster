@@ -8,7 +8,9 @@ import {
 } from "react-router-dom";
 import { I18nextProvider } from "react-i18next";
 import i18n from "./i18n";
-import "bootstrap/dist/css/bootstrap.min.css";
+import 'mdb-react-ui-kit/dist/css/mdb.min.css';
+import "@fortawesome/fontawesome-free/css/all.min.css";
+// import "bootstrap/scss/bootstrap.scss";
 import "./index.css";
 
 import Root from "./routes/root";
@@ -24,7 +26,7 @@ const router = createBrowserRouter([
 		children: [
 			{
 				index: true,
-				element: <Navigate to="/auth/signin" replace />, // Redirect from root to /auth/signin
+				element: <AuthLayout />, // Redirect from root to /auth/signin
 			},
 			{
 				path: "/auth",
@@ -50,7 +52,7 @@ const router = createBrowserRouter([
 				element: <div>Home</div>,
 			}
 		],
-		errorElement: <ErrorPage />,
+		// errorElement: <ErrorPage />,
 	},
 ]);
 

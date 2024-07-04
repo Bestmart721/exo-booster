@@ -4,6 +4,7 @@ import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { useTranslation } from "react-i18next";
 import { firebaseSignIn2 } from "../firebaseAuth";
+import { MDBBtn, MDBIcon } from "mdb-react-ui-kit";
 
 export default function Signin() {
 	const { t, i18n } = useTranslation();
@@ -37,8 +38,8 @@ export default function Signin() {
 	}
 
 	return (
-		<>
-			<h1 className="display-4 text-center Nunito-Black mb-5">Log in</h1>
+		<div className="pt-100 position-relative">
+			<h1 className="text-center font-black mb-4">Log in</h1>
 			<Formik
 				initialValues={{
 					username: "",
@@ -47,29 +48,29 @@ export default function Signin() {
 				validationSchema={SignInSchema}
 				onSubmit={handleSubmit}
 			>
-				{({ errors, touched }) => (
+				{({ isSubmitting, errors, touched }) => (
 					<Form className="w-465 mx-auto">
-						<div className="input-group m-input-group">
-							<span className="input-group-text full-radius">
-								<img src="/icons/user.svg" alt="user" />
+						<div className="input-group input-group-lg rounded-pill shadow">
+							<span className="input-group-text rounded-start-pill bg-white">
+							<MDBIcon far icon="user" size="lg" />
 							</span>
 							<Field
 								name="username"
 								type="text"
-								className="form-control full-radius"
+								className="form-control full-radius rounded-end-pill"
 								placeholder="Username"
 							/>
 						</div>
-						<div className="error-message-wrapper text-danger px-4 py-1">
+						<div className="error-message-wrapper text-danger px-4">
 							<ErrorMessage
 								name="username"
-								component="div"
+								component="small"
 								className="error-message"
 							/>
 						</div>
-						<div className="input-group m-input-group">
-							<span className="input-group-text full-radius">
-								<img src="/icons/lock1.svg" alt="user" />
+						<div className="input-group input-group-lg rounded-pill shadow">
+							<span className="input-group-text rounded-start-pill bg-white">
+							<MDBIcon fab icon="whatsapp" size="lg" />
 							</span>
 							<Field
 								name="password"
@@ -77,39 +78,39 @@ export default function Signin() {
 								className="form-control full-radius"
 								placeholder="Password"
 							/>
-							<span className="input-group-text full-radius">
-							<img src={`/icons/eye${visiblePassword?"":"-slash"}-svgrepo-com.svg`} onClick={togglePasswordVisible} alt="fonticon" width={24} />
+							<span className="input-group-text rounded-end-pill bg-white">
+							<MDBIcon
+									far
+									icon={visiblePassword ? "eye" : "eye-slash"}
+									onClick={togglePasswordVisible}
+									size="lg"
+								/>
 							</span>
 						</div>
-						<div className="error-message-wrapper text-danger px-4 py-1">
+						<div className="error-message-wrapper text-danger px-4">
 							<ErrorMessage
 								name="password"
-								component="div"
+								component="small"
 								className="error-message"
 							/>
 						</div>
-						<div className="text-center mt-5">
-							<button
-								type="submit"
-								className="btn btn-primary full-radius btn-purple w-250"
-							>
-								LOGIN
-							</button>
+						<div className="text-center mt-4 w-250 mx-auto">
+						<MDBBtn type="submit" size="lg" block rounded disabled={isSubmitting}>LOGIN</MDBBtn>
 						</div>
 					</Form>
 				)}
 			</Formik>
-			<div className="d-flex align-items-center mt-4 w-250 mx-auto">
+			<div className="d-flex align-items-center mt-2 w-250 mx-auto">
 				<hr className="flex-grow-1 opacity-100" />
 				<span className="px-3">OR</span>
 				<hr className="flex-grow-1 opacity-100" />
 			</div>
-			<div className="d-flex justify-content-center mt-4 Nunito-Black lead">
+			<div className="d-flex justify-content-center mt-4 font-black lead">
 				Don't have an account ?{" "}
-				<Link to="/auth/signup" className="ms-3 Nunito-Black color-purple">
+				<Link to="/auth/signup" className="ms-3 font-black text-primary">
 					CREATE
 				</Link>
 			</div>
-		</>
+		</div>
 	);
 }

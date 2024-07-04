@@ -6,6 +6,13 @@ import * as Yup from "yup";
 import { useTranslation } from "react-i18next";
 import Select, { components } from "react-select";
 import { firbaseSignUp, firebaseSignIn1 } from "../firebaseAuth";
+import {
+	MDBBtn,
+	MDBIcon,
+	MDBInput,
+	MDBInputGroup,
+	MDBTypography,
+} from "mdb-react-ui-kit";
 
 const capitalize = (str) => (str ? str[0].toUpperCase() + str.slice(1) : "");
 
@@ -18,6 +25,24 @@ export async function loadSignupData() {
 			cameroon: {
 				name: "cameroon",
 				currency: "xaf",
+				flag_img_link:
+					"https://firebasestorage.googleapis.com/v0/b/exobooster-59de3.appspot.com/o/flag_thumbnails%2FFlag-Cameroon.webp?alt=media&token=2d2a1fa2-946f-4d54-a56d-15385eb9fb8e",
+				enabled: true,
+			},
+		},
+	};
+	response = {
+		data: {
+			cameroon: {
+				name: "cameroon",
+				currency: "xaf",
+				flag_img_link:
+					"https://firebasestorage.googleapis.com/v0/b/exobooster-59de3.appspot.com/o/flag_thumbnails%2FFlag-Cameroon.webp?alt=media&token=2d2a1fa2-946f-4d54-a56d-15385eb9fb8e",
+				enabled: true,
+			},
+			nigeria: {
+				name: "nigeria",
+				currency: "ngn",
 				flag_img_link:
 					"https://firebasestorage.googleapis.com/v0/b/exobooster-59de3.appspot.com/o/flag_thumbnails%2FFlag-Cameroon.webp?alt=media&token=2d2a1fa2-946f-4d54-a56d-15385eb9fb8e",
 				enabled: true,
@@ -37,24 +62,20 @@ const customStyles = {
 	control: (provided, state) => ({
 		...provided,
 		borderRadius: "50px", // Full radius
-		padding: "8px 12px", // Custom padding
-		fontSize: "23px",
+		padding: "4px 8px", // Custom padding
 		color: "#555",
 	}),
 	singleValue: (provided) => ({
 		...provided,
-		fontSize: "23px",
 	}),
 	valueContainer: (provided) => ({
 		...provided,
-		fontSize: "23px",
 		display: "flex",
 		alignItems: "center",
 	}),
 	menu: (provided) => ({
 		...provided,
 		marginTop: "2px",
-		fontSize: "23px",
 	}),
 };
 
@@ -71,7 +92,7 @@ const Option = (props) => (
 );
 
 export default function Signup() {
-const navigate = useNavigate();
+	const navigate = useNavigate();
 	const { countries } = useLoaderData();
 	const { t, i18n } = useTranslation();
 	const [curCountry, setCurCountry] = useState("");
@@ -127,20 +148,14 @@ const navigate = useNavigate();
 			`https://createuser-l2ugzeb65a-uc.a.run.app/`,
 			values
 		);
-		firebaseSignIn1(response.data.data.auth_token)
-		.then(() => {
+		firebaseSignIn1(response.data.data.auth_token).then(() => {
 			navigate("/home");
-		})
+		});
 	};
 
 	const SingleValue = ({ children, ...props }) => (
 		<components.SingleValue {...props}>
-			<img
-				src="/icons/globe-web-svgrepo-com.svg"
-				width="24"
-				className="me-5"
-				alt="fonticon"
-			/>
+			<MDBIcon fas icon="globe" size="lg" className="me-4" />
 			<img
 				src={curCountry.flag_img_link}
 				alt="s-logo"
@@ -155,10 +170,11 @@ const navigate = useNavigate();
 	};
 
 	return (
-		<>
-			<h1 className="display-4 text-center Nunito-Black mb-5">
-				Create your account
-			</h1>
+		<div className="pt-100 position-relative">
+			<MDBTypography tag="h1" className="text-center font-black mb-4">
+				{t("Create your account")}
+			</MDBTypography>
+
 			<Formik
 				initialValues={initialValues}
 				validationSchema={validationSchema}
@@ -166,45 +182,46 @@ const navigate = useNavigate();
 			>
 				{({ isSubmitting, handleChange, setFieldValue }) => (
 					<Form className="w-465 mx-auto">
-						<div className="input-group m-input-group">
-							<span className="input-group-text full-radius">
-								<img src="/icons/user.svg" alt="fonticon" width={24} />
-							</span>
+						<div className="input-group input-group-lg rounded-pill shadow">
+							<div className="input-group-text rounded-start-pill bg-white">
+								<MDBIcon far icon="user" size="lg" />
+							</div>
 							<Field
 								type="text"
-								className="form-control full-radius"
+								className="form-control rounded-end-pill"
 								placeholder="Username"
 								name="username"
 							/>
 						</div>
-						<div className="error-message-wrapper text-danger px-4 py-1">
+						<div className="error-message-wrapper text-danger px-4">
 							<ErrorMessage
 								name="username"
-								component="div"
+								component="small"
 								className="error-message"
 							/>
 						</div>
-						<div className="input-group m-input-group">
-							<span className="input-group-text full-radius">
-								<img src="/icons/user.svg" alt="fonticon" width={24} />
+
+						<div className="input-group input-group-lg rounded-pill shadow">
+							<span className="input-group-text rounded-start-pill bg-white">
+								<MDBIcon fab icon="whatsapp" size="lg" />
 							</span>
 							<Field
 								type="text"
-								className="form-control full-radius"
+								className="form-control rounded-end-pill"
 								placeholder="Whatsapp number"
 								name="whatsapp_number"
 							/>
 						</div>
-						<div className="error-message-wrapper text-danger px-4 py-1">
+						<div className="error-message-wrapper text-danger px-4">
 							<ErrorMessage
 								name="whatsapp_number"
-								component="div"
+								component="small"
 								className="error-message"
 							/>
 						</div>
 
 						<Select
-							className="m-input-group"
+							className="input-group-lg rounded-pill shadow"
 							placeholder="Choose your country"
 							name="country"
 							value={curCountry}
@@ -220,110 +237,95 @@ const navigate = useNavigate();
 								SingleValue,
 								Placeholder: () => (
 									<div style={{ display: "flex", alignItems: "center" }}>
-										<img
-											src="/icons/globe-web-svgrepo-com.svg"
-											width="24"
-											className="me-5"
-											alt="fonticon"
-										/>
+										<MDBIcon fas icon="globe" size="lg" className="me-4" />
 										<span>Select a country...</span>
 									</div>
 								),
 							}}
 						/>
-						<div className="error-message-wrapper text-danger px-4 py-1">
+						<div className="error-message-wrapper text-danger px-4">
 							<ErrorMessage
 								name="country"
-								component="div"
+								component="small"
 								className="error-message"
 							/>
 						</div>
-						<div className="input-group m-input-group">
-							<span className="input-group-text full-radius">
-								<img src="/icons/lock1.svg" alt="fonticon" width={24} />
+
+						<div className="input-group input-group-lg rounded-pill shadow">
+							<span className="input-group-text rounded-start-pill bg-white">
+								<MDBIcon fas icon="unlock" size="lg" />
 							</span>
 							<Field
 								type={visiblePassword ? "text" : "password"}
-								className="form-control full-radius"
+								className="form-control"
 								placeholder="Password"
 								name="password"
 							/>
-							<span className="input-group-text full-radius">
-								<img
-									src={`/icons/eye${
-										visiblePassword ? "" : "-slash"
-									}-svgrepo-com.svg`}
+							<span className="input-group-text rounded-end-pill bg-white">
+								<MDBIcon
+									far
+									icon={visiblePassword ? "eye" : "eye-slash"}
 									onClick={togglePasswordVisible}
-									alt="fonticon"
-									width={24}
+									size="lg"
 								/>
 							</span>
 						</div>
-						<div className="error-message-wrapper text-danger px-4 py-1">
+						<div className="error-message-wrapper text-danger px-4">
 							<ErrorMessage
 								name="password"
-								component="div"
+								component="small"
 								className="error-message"
 							/>
 						</div>
-						<div className="input-group m-input-group">
-							<span className="input-group-text full-radius">
-								<img src="/icons/lock1.svg" alt="fonticon" width={24} />
+
+						<div className="input-group input-group-lg rounded-pill shadow">
+							<span className="input-group-text rounded-start-pill bg-white">
+								<MDBIcon fas icon="lock" size="lg" />
 							</span>
 							<Field
 								type={visiblePassword ? "text" : "password"}
-								className="form-control full-radius"
+								className="form-control"
 								placeholder="Confirm your password"
 								name="confirm"
 							/>
-							<span className="input-group-text full-radius">
-								<img
-									src={`/icons/eye${
-										visiblePassword ? "" : "-slash"
-									}-svgrepo-com.svg`}
+							<span className="input-group-text rounded-end-pill bg-white">
+								<MDBIcon
+									far
+									icon={visiblePassword ? "eye" : "eye-slash"}
 									onClick={togglePasswordVisible}
-									alt="fonticon"
-									width={24}
+									size="lg"
 								/>
 							</span>
 						</div>
-						<div className="error-message-wrapper text-danger px-4 py-1">
+						<div className="error-message-wrapper text-danger px-4">
 							<ErrorMessage
 								name="confirm"
-								component="div"
+								component="small"
 								className="error-message"
 							/>
 						</div>
-						<div className="input-group m-input-group">
-							<span className="input-group-text full-radius">
-								<img
-									src="/icons/giftbox-gift-svgrepo-com.svg"
-									alt="fonticon"
-									width={24}
-								/>
+
+						<div className="input-group input-group-lg rounded-pill shadow">
+							<span className="input-group-text rounded-start-pill bg-white">
+								<MDBIcon fas icon="gift" size="lg" />
 							</span>
 							<Field
 								type="text"
-								className="form-control full-radius"
+								className="form-control rounded-end-pill"
 								placeholder="Referral code (Optional)"
 								name="referralCode"
 							/>
 						</div>
-						<div className="error-message-wrapper text-danger px-4 py-1">
+						<div className="error-message-wrapper text-danger px-4">
 							<ErrorMessage
 								name="referralCode"
-								component="div"
+								component="small"
 								className="error-message"
 							/>
 						</div>
-						<div className="text-center mt-5">
-							<button
-								type="submit"
-								disabled={isSubmitting}
-								className="btn btn-primary full-radius btn-purple w-250"
-							>
-								CREATE
-							</button>
+
+						<div className="text-center mt-2 w-250 mx-auto">
+							<MDBBtn type="submit" size="lg" block rounded disabled={isSubmitting}>CREATE</MDBBtn>	
 						</div>
 					</Form>
 				)}
@@ -333,12 +335,12 @@ const navigate = useNavigate();
 				<span className="px-3">OR</span>
 				<hr className="flex-grow-1 opacity-100" />
 			</div>
-			<div className="d-flex justify-content-center mt-4 Nunito-Black lead">
+			<div className="d-flex justify-content-center mt-4 font-black lead">
 				Already have an account?
-				<Link to="/auth/signin" className="ms-3 Nunito-Black color-purple">
+				<Link to="/auth/signin" className="ms-3 font-black text-primary">
 					LOGIN
 				</Link>
 			</div>
-		</>
+		</div>
 	);
 }

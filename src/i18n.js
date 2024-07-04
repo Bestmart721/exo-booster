@@ -21,7 +21,9 @@ const resources = {
       "Password must be at least 6 characters long.": "Password must be at least 6 characters long.",
       "Password is required.": "Password is required.",
       "Credentials entered are incorrect": "Credentials entered are incorrect.",
-      "Too many attempts, try again later": "Too many attempts, try again later."
+      "Too many attempts, try again later": "Too many attempts, try again later.",
+      "cover-letter":"Join thousands of Brands and Influencers who elevated their social media growth with Exo Booster, the most trusted social media boosting service with over 50,000 users.",
+      "Create your account": "Create your account",
     }
   },
   fr: {
@@ -43,7 +45,9 @@ const resources = {
       "Password must be at least 6 characters long.": "Le mot de passe doit comporter au moins 6 caractères.",
       "Password is required.": "Le mot de passe est requis.",
       "Credentials entered are incorrect": "Les données d'identification saisies sont incorrectes.",
-      "Too many attempts, try again later": "Trop de tentatives, réessayer plus tard."
+      "Too many attempts, try again later": "Trop de tentatives, réessayer plus tard.",
+      "cover-letter":"Rejoignez des milliers de marques et d'influenceurs qui ont accéléré leur croissance sur les réseaux sociaux avec Exo Booster, le service de boost de réseaux sociaux le plus fiable avec plus de 50 000 utilisateurs.",
+      "Create your account": "Créez votre compte",
     }
   }
 };
