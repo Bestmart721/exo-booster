@@ -5,7 +5,7 @@ const LanguageContext = createContext();
 
 // Create a provider component
 export const LanguageProvider = ({ children }) => {
-  const [language, setLanguage] = useState('en');
+  const [language, setLanguage] = useState((navigator.language || navigator.userLanguage).slice(0, 2));
 
   const switchLanguage = (lang) => {
     setLanguage(lang);

@@ -91,10 +91,6 @@ export default function Signup() {
 	const [centredModal, setCentredModal] = useState(false);
 	const [modalText, setModalText] = useState("");
 
-	useEffect(() => {
-		window.scrollTo(0, 0);
-	});
-
 	const initialValues = {
 		country: "",
 		currency: "",

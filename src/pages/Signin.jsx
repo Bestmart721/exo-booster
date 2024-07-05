@@ -31,7 +31,6 @@ export default function Signin() {
 	const [visible, setVisible] = useState(true);
 
 	useEffect(() => {
-		window.scrollTo(0, 0);
 		setVisible(true);
 		fetchSupportContacts().then((data) => {
 			setSupportContacts(data);

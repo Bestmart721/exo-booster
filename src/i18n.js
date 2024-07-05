@@ -48,7 +48,7 @@ const resources = {
       "Password is required.": "Le mot de passe est requis.",
       "Credentials entered are incorrect": "Les données d'identification saisies sont incorrectes.",
       "Too many attempts, try again later": "Trop de tentatives, réessayer plus tard.",
-      "cover-letter":"Rejoignez des milliers de marques et d'influenceurs qui ont accéléré leur croissance sur les réseaux sociaux avec Exo Booster, le service de boost de réseaux sociaux le plus fiable avec plus de 50 000 utilisateurs.",
+      "cover-letter":"Rejoignez des milliers de marques et d'influenceurs qui ont boosté leur croissance sur les réseaux sociaux avec Exo Booster, le service de boosting fiable avec plus de 50 000 utilisateurs.",
       "Create your account": "Créez votre compte",
       "Firebase: Error (auth/invalid-credential).": "Les données d'identification saisies sont incorrectes.",
       "Firebase: Access to this account has been temporarily disabled due to many failed login attempts. You can immediately restore it by resetting your password or you can try again later. (auth/too-many-requests)." : "Trop de tentatives, réessayer plus tard."

@@ -90,7 +90,7 @@ export default function AuthLayout() {
 									src={getFlagUrl(languages[language].flag)}
 									alt={languages[language].name}
 									width={28}
-									className="mb-1"
+									className="mb-1 me-2"
 								/>
 							</MDBDropdownToggle>
 							<MDBDropdownMenu responsive="end">
@@ -98,8 +98,8 @@ export default function AuthLayout() {
 									<MDBDropdownItem
 										key={code}
 										link
+										href={`#${code}`}
 										onClick={(e) => {
-											e.preventDefault();
 											switchLanguage(code);
 											i18n.changeLanguage(code);
 										}}
@@ -132,105 +132,75 @@ export default function AuthLayout() {
 							</MDBDropdown>
 						)}
 					</div>
-					{/* <MDBNavbarToggler
-						aria-controls="navbarExample01"
-						aria-expanded="false"
-						aria-label="Toggle navigation"
-						onClick={() => setShowBasic(!showBasic)}
-					>
-						<MDBIcon fas icon="bars" />
-					</MDBNavbarToggler>
-					<MDBCollapse navbar open={showBasic} className="flex-grow-0">
-						<MDBNavbarNav right className="mb-2 mb-lg-0">
-							<MDBNavbarItem active>
-								<MDBNavbarLink aria-current="page" href="#">
-									Home
-								</MDBNavbarLink>
-							</MDBNavbarItem>
-							<MDBNavbarItem>
-								<MDBNavbarLink href="#">Features</MDBNavbarLink>
-							</MDBNavbarItem>
-							<MDBNavbarItem>
-								<MDBNavbarLink href="#">Pricing</MDBNavbarLink>
-							</MDBNavbarItem>
-							<MDBNavbarItem>
-								<MDBNavbarLink href="#">About</MDBNavbarLink>
-							</MDBNavbarItem>
-						</MDBNavbarNav>
-					</MDBCollapse> */}
 				</MDBContainer>
 			</MDBNavbar>
 
 			<MDBContainer>
-				{location.pathname === "/" && (
-					<MDBRow className="mt-4 mt-lg-5 pt-0 pt-md-5">
-						<MDBCol md="12" lg="7" xxl={8} className="align-self-center">
-							<motion.div
-								initial={{ opacity: 0, translateY: +100 }}
-								animate={{ opacity: 1, translateY: 0 }}
-								transition={{ ease: "easeInOut" }}
-							>
-								<MDBTypography
-									tag="h1"
-									className="display-1 font-black text-center text-lg-start"
+				{location.pathname === "/" ? (
+					<>
+						<MDBRow className="mt-4 mt-lg-5 pt-0 pt-md-5">
+							<MDBCol md="12" lg="7" xxl={8} className="align-self-center">
+								<motion.div
+									initial={{ opacity: 0, translateY: +100 }}
+									animate={{ opacity: 1, translateY: 0 }}
+									transition={{ ease: "easeInOut" }}
 								>
-									{i18n.language == "fr" ? (
-										<>
-											<span className="text-primary">BOOSTEZ</span>{" "}
-											<small>VOS</small>
-											<br /> <span>RÉSEAUX SOCIAUX</span>
-										</>
-									) : (
-										<>
-											<span className="text-primary">BOOST</span>{" "}
-											<small>YOUR</small>
-											<br /> <span>SOCIAL MEDIA</span>
-										</>
-									)}
-								</MDBTypography>
-							</motion.div>
-							<motion.div
-								initial={{ opacity: 0, translateX: -100 }}
-								animate={{ opacity: 1, translateX: 0 }}
-								transition={{ ease: "easeInOut", delay: 0.5 }}
+									<MDBTypography
+										tag="h1"
+										className={`${
+											isMobile ? "display-4" : "display-1"
+										} font-black text-center text-lg-start`}
+									>
+										{i18n.language == "fr" ? (
+											<>
+												<span className="text-primary">BOOSTEZ</span>{" "}
+												<small>VOS</small>
+												<br /> <span>RÉSEAUX SOCIAUX</span>
+											</>
+										) : (
+											<>
+												<span className="text-primary">BOOST</span>{" "}
+												<small>YOUR</small>
+												<br /> <span>SOCIAL MEDIA</span>
+											</>
+										)}
+									</MDBTypography>
+								</motion.div>
+								<motion.div
+									initial={{ opacity: 0, translateX: -100 }}
+									animate={{ opacity: 1, translateX: 0 }}
+									transition={{ ease: "easeInOut", delay: 0.5 }}
+								>
+									<p
+										className={`${
+											!isMobile && "lead"
+										} text-center text-lg-start`}
+									>
+										{t("cover-letter")}
+									</p>
+								</motion.div>
+							</MDBCol>
+							<MDBCol
+								md="12"
+								lg="5"
+								xxl={4}
+								className={isMonileOrTablet ? "text-center" : "text-end"}
 							>
-								<p className="lead text-center text-lg-start">
-									{t("cover-letter")}
-								</p>
-							</motion.div>
-						</MDBCol>
-						<MDBCol
-							md="12"
-							lg="5"
-							xxl={4}
-							className={isMonileOrTablet ? "text-center" : "text-end"}
-						>
-							<motion.div
-								initial={{ opacity: 0, scale: 2 }}
-								animate={{ opacity: 1, scale: 1 }}
-								transition={{ ease: "easeInOut", delay: 1 }}
-							>
-								<img
-									src="/Img.png"
-									width={500}
-									alt="phone"
-									className="img-fluid img-fluid-80"
-								/>
-							</motion.div>
-						</MDBCol>
-					</MDBRow>
-				)}
-
-				<div className="auth-main mt-80 mb-200 position-relative pt-100">
-					<img
-						src="/cloud-svgrepo-com.svg"
-						width={isMobile ? 100 : isMonileOrTablet ? 120 : 150}
-						className="cloud"
-						id="cloud-3"
-					/>
-
-					{location.pathname === "/" && (
-						<div className="w-400 mx-auto px-5">
+								<motion.div
+									initial={{ opacity: 0, scale: 2 }}
+									animate={{ opacity: 1, scale: 1 }}
+									transition={{ ease: "easeInOut", delay: 1 }}
+								>
+									<img
+										src="/Img.png"
+										width={isMobile ? 300 : 500}
+										alt="phone"
+										className="img-fluid img-fluid-80"
+									/>
+								</motion.div>
+							</MDBCol>
+						</MDBRow>
+						<div className="w-400 mx-auto px-5 mt-5">
 							<MDBBtn
 								size="lg"
 								block
@@ -241,7 +211,7 @@ export default function AuthLayout() {
 							>
 								Create your account
 							</MDBBtn>
-							<div className="d-flex align-items-center mx-auto w-25-0 my-4 px-5">
+							<div className="d-flex align-items-center mx-auto my-2 w-25-0 m px-5">
 								<hr className="flex-grow-1 opacity-100" />
 								<span className="px-3">OR</span>
 								<hr className="flex-grow-1 opacity-100" />
@@ -258,11 +228,20 @@ export default function AuthLayout() {
 								Log in
 							</MDBBtn>
 						</div>
-					)}
-					<Outlet />
-				</div>
+					</>
+				) : (
+					<div className="auth-main mt-80 mb-200 position-relative pt-100">
+						<img
+							src="/cloud-svgrepo-com.svg"
+							width={isMobile ? 100 : isMonileOrTablet ? 120 : 150}
+							className="cloud"
+							id="cloud-3"
+						/>
+						<Outlet />
+					</div>
+				)}
 
-				<div className="auth-footer position-relative pt-100 pb-5 text-webkit-center">
+				<div className="auth-footer position-relative pt-80 pb-5 text-webkit-center">
 					<div className="position-relative w-1000">
 						<img
 							src="/cloud-svgrepo-com.svg"
