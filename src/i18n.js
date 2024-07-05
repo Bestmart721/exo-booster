@@ -27,6 +27,7 @@ const resources = {
       "Firebase: Error (auth/invalid-credential).": "Credentials entered are incorrect.",
       "Firebase: Access to this account has been temporarily disabled due to many failed login attempts. You can immediately restore it by resetting your password or you can try again later. (auth/too-many-requests).": "Too many attempts, try again later.",
       "Could not get available countries.": "Could not get available countries.",
+      "Log in": "Log in",
     }
   },
   fr: {
@@ -53,7 +54,8 @@ const resources = {
       "Create your account": "Créez votre compte",
       "Firebase: Error (auth/invalid-credential).": "Les données d'identification saisies sont incorrectes.",
       "Firebase: Access to this account has been temporarily disabled due to many failed login attempts. You can immediately restore it by resetting your password or you can try again later. (auth/too-many-requests)." : "Trop de tentatives, réessayer plus tard.",
-      "Could not get available countries." : "Impossible d'obtenir les pays disponibles."
+      "Could not get available countries." : "Impossible d'obtenir les pays disponibles.",
+      "Log in": "Se connecter",
     }
   }
 };

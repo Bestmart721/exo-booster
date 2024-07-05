@@ -140,11 +140,30 @@ export default function AuthLayout() {
 				{location.pathname === "/" ? (
 					<>
 						<MDBRow className="mt-4 mt-lg-5 pt-0 pt-md-5">
+							<MDBCol
+								md="12"
+								lg="5"
+								xxl={4}
+								className={isMonileOrTablet ? "text-center" : "text-end"}
+							>
+								<motion.div
+									initial={{ opacity: 0, scale: 2 }}
+									animate={{ opacity: 1, scale: 1 }}
+									transition={{ ease: "easeInOut", delay: 0 }}
+								>
+									<img
+										src="/Img.png"
+										width={isMobile ? 300 : 500}
+										alt="phone"
+										className="img-fluid img-fluid-80 mb-2"
+									/>
+								</motion.div>
+							</MDBCol>
 							<MDBCol md="12" lg="7" xxl={8} className="align-self-center">
 								<motion.div
 									initial={{ opacity: 0, translateY: +100 }}
 									animate={{ opacity: 1, translateY: 0 }}
-									transition={{ ease: "easeInOut" }}
+									transition={{ ease: "easeInOut", delay: 0.5}}
 								>
 									<MDBTypography
 										tag="h1"
@@ -170,7 +189,7 @@ export default function AuthLayout() {
 								<motion.div
 									initial={{ opacity: 0, translateX: -100 }}
 									animate={{ opacity: 1, translateX: 0 }}
-									transition={{ ease: "easeInOut", delay: 0.5 }}
+									transition={{ ease: "easeInOut", delay: 1 }}
 								>
 									<p
 										className={`${
@@ -179,25 +198,6 @@ export default function AuthLayout() {
 									>
 										{t("cover-letter")}
 									</p>
-								</motion.div>
-							</MDBCol>
-							<MDBCol
-								md="12"
-								lg="5"
-								xxl={4}
-								className={isMonileOrTablet ? "text-center" : "text-end"}
-							>
-								<motion.div
-									initial={{ opacity: 0, scale: 2 }}
-									animate={{ opacity: 1, scale: 1 }}
-									transition={{ ease: "easeInOut", delay: 1 }}
-								>
-									<img
-										src="/Img.png"
-										width={isMobile ? 300 : 500}
-										alt="phone"
-										className="img-fluid img-fluid-80"
-									/>
 								</motion.div>
 							</MDBCol>
 						</MDBRow>

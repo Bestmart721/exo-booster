@@ -118,7 +118,7 @@ export default function Signin() {
 			// whileHover={{ scale: 1.1 }}
 		>
 			<div className="position-relative">
-				<h1 className="text-center font-black mb-4 hover-animate">Log in</h1>
+				<h1 className="text-center font-black mb-4 hover-animate">{t("Log in")}</h1>
 				<Formik
 					initialValues={{
 						username: "",
