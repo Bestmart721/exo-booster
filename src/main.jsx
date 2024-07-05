@@ -26,7 +26,7 @@ const router = createBrowserRouter([
 		children: [
 			{
 				index: true,
-				element: <AuthLayout />, // Redirect from root to /auth/signin
+				element: <AuthLayout/>, // Redirect from root to /auth/signin
 			},
 			{
 				path: "/auth",

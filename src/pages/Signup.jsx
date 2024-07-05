@@ -185,7 +185,7 @@ export default function Signup() {
 			animate={{ opacity: 1, translateY: 0 }}
 			transition={{ duration: 0.3, ease: "easeInOut" }}
 		>
-			<div className="pt-100 position-relative">
+			<div className="position-relative">
 				<MDBTypography tag="h1" className="text-center font-black mb-4">
 					{t("Create your account")}
 				</MDBTypography>

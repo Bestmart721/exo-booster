@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { useTranslation } from "react-i18next";
-import { db, firebaseConfig, firebaseSignIn2 } from "../firebaseAuth";
+import { db, fetchSupportContacts, firebaseConfig, firebaseSignIn2 } from "../firebaseAuth";
 import {
 	MDBBtn,
 	MDBIcon,
@@ -15,11 +15,8 @@ import {
 	MDBModalHeader,
 	MDBModalTitle,
 } from "mdb-react-ui-kit";
-import { set } from "firebase/database";
 import { motion, AnimatePresence } from "framer-motion";
 // import "./styles.css";
-import { getFirestore, collection, doc, getDoc } from "firebase/firestore";
-import { initializeApp } from "firebase/app";
 
 export default function Signin() {
 	const { t, i18n } = useTranslation();
@@ -36,7 +33,15 @@ export default function Signin() {
 	useEffect(() => {
 		window.scrollTo(0, 0);
 		setVisible(true);
-		fetchSupportContacts();
+		fetchSupportContacts().then((data) => {
+			setSupportContacts(data);
+		}
+		).catch((error) => {
+			setModalText(error);
+			setCentredModal(true);
+			setLoading(false);
+		});
+
 		// setSupportContacts({
 		// 	email: "supportemail@exobooster.com",
 		// 	telegram: "@exobooster",
@@ -44,24 +49,6 @@ export default function Signin() {
 		// });
 		setLoading(false);
 	}, []);
-
-	const fetchSupportContacts = async () => {
-		initializeApp(firebaseConfig);
-		const docRef = doc(collection(db, "Admin"), "SupportContacts");
-		getDoc(docRef)
-			.then((doc) => {
-				console.log(doc.data());
-				if (doc.exists) {
-					console.log(doc.data());
-					setSupportContacts(doc.data());
-				}
-				setLoading(false);
-			})
-			.catch((error) => {
-				console.log("Error getting document:", error);
-				setLoading(false);
-			});
-	};
 
 	const togglePasswordVisible = () => {
 		setVisiblePassword(!visiblePassword);
@@ -131,7 +118,7 @@ export default function Signin() {
 			// whileInView={{ scale: 1 }}
 			// whileHover={{ scale: 1.1 }}
 		>
-			<div className="pt-100 position-relative">
+			<div className="position-relative">
 				<h1 className="text-center font-black mb-4 hover-animate">Log in</h1>
 				<Formik
 					initialValues={{

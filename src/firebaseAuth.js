@@ -1,6 +1,6 @@
 import { initializeApp } from "firebase/app";
 import { getAuth, createUserWithEmailAndPassword, signInWithCustomToken, signInWithEmailAndPassword, signOut } from "firebase/auth";
-import { getFirestore } from "firebase/firestore";
+import { getFirestore, collection, doc, getDoc } from "firebase/firestore";
 
 // TODO: Replace the following with your app's Firebase project configuration
 // See: https://firebase.google.com/docs/web/learn-more#config-object
@@ -82,5 +82,22 @@ export function firebaseSignOut() {
 		}).catch((error) => {
 			reject(error)
 		});
+	})
+}
+
+export const fetchSupportContacts = () => {
+	return new Promise((resolve, reject) => {
+		const docRef = doc(collection(db, "Admin"), "SupportContacts");
+		getDoc(docRef)
+			.then((doc) => {
+				if (doc.exists) {
+					resolve(doc.data())
+				}
+				reject("Error getting document")
+			})
+			.catch((error) => {
+				console.log("Error getting document:", error);
+				reject(error)
+			});
 	})
 }
