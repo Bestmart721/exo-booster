@@ -29,6 +29,14 @@ import { useTranslation } from "react-i18next";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth, firebaseSignOut } from "../firebaseAuth";
 import { motion, AnimatePresence } from "framer-motion";
+import { useLanguage } from "./LanguageContext";
+
+const languages = {
+	en: { name: "English", flag: "gb.svg" },
+	fr: { name: "Français", flag: "fr.svg" },
+};
+
+const getFlagUrl = (flagCode) => `https://flagcdn.com/${flagCode}`;
 
 export default function AuthLayout() {
 	const location = useLocation();
@@ -38,6 +46,7 @@ export default function AuthLayout() {
 	const [showBasic, setShowBasic] = useState(false);
 	const [user, setUser] = useState(null);
 	const [loading, setLoading] = useState(true);
+	const { language, switchLanguage } = useLanguage();
 
 	useEffect(() => {
 		const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -74,21 +83,38 @@ export default function AuthLayout() {
 					<MDBNavbarBrand tag={Link} to="/">
 						<img src="/logopng 1.png" className="logo-img" alt="logo" />
 					</MDBNavbarBrand>
-					<div className="mb-lg-0 flex-grow-0 w-auto">
-						{/* <MDBDropdown>
+					<div className="mb-lg-0 d-flex flex-grow-0 w-auto gap-4 gap-md-5">
+						<MDBDropdown>
 							<MDBDropdownToggle tag="a" className="nav-link" role="button">
-								flag
+								<img
+									src={getFlagUrl(languages[language].flag)}
+									alt={languages[language].name}
+									width={28}
+									className="mb-1"
+								/>
 							</MDBDropdownToggle>
 							<MDBDropdownMenu responsive="end">
-								<MDBDropdownItem link>Action</MDBDropdownItem>
-								<MDBDropdownItem link>Another action</MDBDropdownItem>
-								<MDBDropdownItem divider />
-								<MDBDropdownItem link onClick={signOut}>
-									<MDBIcon fas icon="sign-out-alt" className="me-2" />
-									Sign Out
-								</MDBDropdownItem>
+								{Object.entries(languages).map(([code, { name, flag }]) => (
+									<MDBDropdownItem
+										key={code}
+										link
+										onClick={(e) => {
+											e.preventDefault();
+											switchLanguage(code);
+											i18n.changeLanguage(code);
+										}}
+									>
+										<img
+											src={getFlagUrl(flag)}
+											alt={name}
+											width={28}
+											className="me-4 mb-1"
+										/>
+										{name}
+									</MDBDropdownItem>
+								))}
 							</MDBDropdownMenu>
-						</MDBDropdown> */}
+						</MDBDropdown>
 						{user && (
 							<MDBDropdown>
 								<MDBDropdownToggle tag="a" className="nav-link" role="button">
@@ -137,7 +163,7 @@ export default function AuthLayout() {
 
 			<MDBContainer>
 				{location.pathname === "/" && (
-					<MDBRow className="mt-5 pt-sm-4 pt-md-5">
+					<MDBRow className="mt-4 mt-lg-5 pt-0 pt-md-5">
 						<MDBCol md="12" lg="7" xxl={8} className="align-self-center">
 							<motion.div
 								initial={{ opacity: 0, translateY: +100 }}
@@ -148,8 +174,7 @@ export default function AuthLayout() {
 									tag="h1"
 									className="display-1 font-black text-center text-lg-start"
 								>
-									{(navigator.language || navigator.userLanguage).slice(0, 2) ==
-									"fr" ? (
+									{i18n.language == "fr" ? (
 										<>
 											<span className="text-primary">BOOSTEZ</span>{" "}
 											<small>VOS</small>
@@ -206,23 +231,23 @@ export default function AuthLayout() {
 
 					{location.pathname === "/" && (
 						<div className="w-400 mx-auto px-5">
-						<MDBBtn
-						size="lg"
-							block
-							tag={Link}
-							to="/auth/signup"
-							rounded
-							// size={isMonileOrTablet ? "md" : "lg"}
-						>
-							Create your account
-						</MDBBtn>
-							<div className="d-flex align-items-center mx-auto w-25-0 my-2 mx-5- px-5">
+							<MDBBtn
+								size="lg"
+								block
+								tag={Link}
+								to="/auth/signup"
+								rounded
+								// size={isMonileOrTablet ? "md" : "lg"}
+							>
+								Create your account
+							</MDBBtn>
+							<div className="d-flex align-items-center mx-auto w-25-0 my-4 px-5">
 								<hr className="flex-grow-1 opacity-100" />
 								<span className="px-3">OR</span>
 								<hr className="flex-grow-1 opacity-100" />
 							</div>
 							<MDBBtn
-							size="lg"
+								size="lg"
 								block
 								tag={Link}
 								to="/auth/signin"

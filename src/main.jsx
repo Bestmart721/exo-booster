@@ -18,6 +18,7 @@ import AuthLayout from "./layouts/AuthLayout.jsx";
 import ErrorPage from "./pages/error-page";
 import Signup, { loadSignupData } from "./pages/Signup";
 import Signin from "./pages/Signin";
+import { LanguageProvider } from "./layouts/LanguageContext.jsx";
 
 const router = createBrowserRouter([
 	{
@@ -58,8 +59,10 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById("root")).render(
 	<React.StrictMode>
+		<LanguageProvider>
 		<I18nextProvider i18n={i18n}>
 			<RouterProvider router={router} />
 		</I18nextProvider>
+		</LanguageProvider>
 	</React.StrictMode>
 );
