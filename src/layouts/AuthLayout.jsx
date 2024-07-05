@@ -92,6 +92,7 @@ export default function AuthLayout() {
 									width={28}
 									className="mb-1 me-2"
 								/>
+								{i18n.language.slice(0, 2).toUpperCase()}
 							</MDBDropdownToggle>
 							<MDBDropdownMenu responsive="end">
 								{Object.entries(languages).map(([code, { name, flag }]) => (
