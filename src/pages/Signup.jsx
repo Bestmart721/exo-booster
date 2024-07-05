@@ -12,6 +12,13 @@ import {
 	MDBInput,
 	MDBInputGroup,
 	MDBTypography,
+	MDBModal,
+	MDBModalBody,
+	MDBModalContent,
+	MDBModalDialog,
+	MDBModalFooter,
+	MDBModalHeader,
+	MDBModalTitle,
 } from "mdb-react-ui-kit";
 
 const capitalize = (str) => (str ? str[0].toUpperCase() + str.slice(1) : "");
@@ -97,6 +104,9 @@ export default function Signup() {
 	const { t, i18n } = useTranslation();
 	const [curCountry, setCurCountry] = useState("");
 	const [visiblePassword, setVisiblePassword] = useState(false);
+	const [centredModal, setCentredModal] = useState(false);
+	const [modalText, setModalText] = useState("");
+
 	const initialValues = {
 		country: "",
 		currency: "",
@@ -148,7 +158,15 @@ export default function Signup() {
 			`https://createuser-l2ugzeb65a-uc.a.run.app/`,
 			values
 		);
-		firebaseSignIn1(response.data.data.auth_token).then(() => {
+
+		if (response.data.error) {
+			setModalText(response.data.error[values.language]);
+			setCentredModal(true);
+			setSubmitting(false);
+			return
+		}
+
+		firebaseSignIn1(response.data.data.auth_token).then((res) => {
 			navigate("/home");
 		});
 	};
@@ -167,6 +185,10 @@ export default function Signup() {
 
 	const togglePasswordVisible = () => {
 		setVisiblePassword(!visiblePassword);
+	};
+
+	const toggleOpen = () => {
+		setCentredModal(!centredModal);
 	};
 
 	return (
@@ -203,7 +225,7 @@ export default function Signup() {
 
 						<div className="input-group input-group-lg rounded-pill shadow">
 							<span className="input-group-text rounded-start-pill bg-white">
-								<MDBIcon fab icon="whatsapp" size="lg" />
+								<MDBIcon fab icon="whatsapp" size="xl" />
 							</span>
 							<Field
 								type="text"
@@ -341,6 +363,22 @@ export default function Signup() {
 					LOGIN
 				</Link>
 			</div>
+
+			<MDBModal tabIndex='-1' open={centredModal} onClose={() => setCentredModal(false)}>
+        <MDBModalDialog centered style={{maxWidth:300}}>
+          <MDBModalContent>
+            <MDBModalBody className="text-center py-5">
+              <img src='/favcon 2.png' className='img-fluid mb-5' alt='logo' />
+							<h3 className='mb-0'>{modalText}</h3>
+            </MDBModalBody>
+            <MDBModalFooter>
+              <MDBBtn color='primary' onClick={toggleOpen}>
+                OK
+              </MDBBtn>
+            </MDBModalFooter>
+          </MDBModalContent>
+        </MDBModalDialog>
+      </MDBModal>
 		</div>
 	);
 }

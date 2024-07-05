@@ -24,6 +24,8 @@ const resources = {
       "Too many attempts, try again later": "Too many attempts, try again later.",
       "cover-letter":"Join thousands of Brands and Influencers who elevated their social media growth with Exo Booster, the most trusted social media boosting service with over 50,000 users.",
       "Create your account": "Create your account",
+      "Firebase: Error (auth/invalid-credential).": "Credentials entered are incorrect.",
+      "Firebase: Access to this account has been temporarily disabled due to many failed login attempts. You can immediately restore it by resetting your password or you can try again later. (auth/too-many-requests).": "Too many attempts, try again later.",
     }
   },
   fr: {
@@ -48,6 +50,8 @@ const resources = {
       "Too many attempts, try again later": "Trop de tentatives, réessayer plus tard.",
       "cover-letter":"Rejoignez des milliers de marques et d'influenceurs qui ont accéléré leur croissance sur les réseaux sociaux avec Exo Booster, le service de boost de réseaux sociaux le plus fiable avec plus de 50 000 utilisateurs.",
       "Create your account": "Créez votre compte",
+      "Firebase: Error (auth/invalid-credential).": "Les données d'identification saisies sont incorrectes.",
+      "Firebase: Access to this account has been temporarily disabled due to many failed login attempts. You can immediately restore it by resetting your password or you can try again later. (auth/too-many-requests)." : "Trop de tentatives, réessayer plus tard."
     }
   }
 };

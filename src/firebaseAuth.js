@@ -1,5 +1,6 @@
 import { initializeApp } from "firebase/app";
-import { getAuth, createUserWithEmailAndPassword, signInWithCustomToken, signInWithEmailAndPassword } from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword, signInWithCustomToken, signInWithEmailAndPassword, signOut } from "firebase/auth";
+import { getFirestore } from "firebase/firestore";
 
 // TODO: Replace the following with your app's Firebase project configuration
 // See: https://firebase.google.com/docs/web/learn-more#config-object
@@ -15,10 +16,11 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
+export const db = getFirestore(app);
 
 
 // Initialize Firebase Authentication and get a reference to the service
-const auth = getAuth(app);
+export const auth = getAuth(app);
 
 export function firbaseSignUp(username, password) {
 	const email = username + "@exobooster.com";
@@ -70,5 +72,15 @@ export function firebaseSignIn2(username, password) {
 				const errorMessage = error.message;
 				reject(errorMessage)
 			});
+	})
+}
+
+export function firebaseSignOut() {
+	return new Promise((resolve, reject) => {
+		signOut(auth).then(() => {
+			resolve()
+		}).catch((error) => {
+			reject(error)
+		});
 	})
 }

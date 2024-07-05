@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Link, Outlet, useLocation } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, Navigate, Outlet, useLocation } from "react-router-dom";
 import {
 	MDBBtn,
 	MDBCard,
@@ -7,6 +7,10 @@ import {
 	MDBCol,
 	MDBCollapse,
 	MDBContainer,
+	MDBDropdown,
+	MDBDropdownItem,
+	MDBDropdownMenu,
+	MDBDropdownToggle,
 	MDBIcon,
 	MDBNavbar,
 	MDBNavbarBrand,
@@ -22,6 +26,8 @@ import {
 	useMobileOrTabletMediaQuery,
 } from "../responsiveHook";
 import { useTranslation } from "react-i18next";
+import { onAuthStateChanged } from "firebase/auth";
+import { auth, firebaseSignOut } from "../firebaseAuth";
 
 export default function AuthLayout() {
 	const location = useLocation();
@@ -29,6 +35,31 @@ export default function AuthLayout() {
 	const isMobile = useMobileMediaQuery();
 	const isMonileOrTablet = useMobileOrTabletMediaQuery();
 	const [showBasic, setShowBasic] = useState(false);
+	const [user, setUser] = useState(null);
+	const [loading, setLoading] = useState(true);
+
+	useEffect(() => {
+		const unsubscribe = onAuthStateChanged(auth, (user) => {
+			if (user) {
+				user.displayName = user.email.split("@")[0];
+				setUser(user);
+			} else {
+				setUser(null);
+			}
+			setLoading(false);
+		});
+
+		// Cleanup subscription on unmount
+		return () => unsubscribe();
+	}, []);
+
+	const signOut = () => {
+		firebaseSignOut().then(() => {
+			setUser(null);
+			Navigate("/");
+		});
+	};
+
 	return (
 		<>
 			<MDBNavbar
@@ -43,24 +74,44 @@ export default function AuthLayout() {
 						<img src="/logopng.png" className="logo-img" alt="logo" />
 					</MDBNavbarBrand>
 					<div className="mb-lg-0 flex-grow-0 w-auto">
-						<MDBBtn
-							tag={Link}
-							to="/auth/signin"
-							rounded
-							className="me-2"
-							size={isMonileOrTablet ? "md" : "lg"}
-						>
-							Sign In
-						</MDBBtn>
-						<MDBBtn
-							tag={Link}
-							to="/auth/signup"
-							rounded
-							outline
-							size={isMonileOrTablet ? "md" : "lg"}
-						>
-							Sign Up
-						</MDBBtn>
+						{user ? (
+							<MDBDropdown>
+								<MDBDropdownToggle tag="a" className="nav-link" role="button">
+									{user.displayName}
+								</MDBDropdownToggle>
+								<MDBDropdownMenu responsive="end">
+									<MDBDropdownItem link>Action</MDBDropdownItem>
+									<MDBDropdownItem link>Another action</MDBDropdownItem>
+									<MDBDropdownItem divider />
+									<MDBDropdownItem link onClick={signOut}>
+										<MDBIcon fas icon="sign-out-alt" className="me-2" />
+										Sign Out
+									</MDBDropdownItem>
+								</MDBDropdownMenu>
+							</MDBDropdown>
+						) : (
+							<>
+								<MDBBtn
+									tag={Link}
+									to="/auth/signin"
+									rounded
+									className="me-2"
+									size={isMonileOrTablet ? "md" : "lg"}
+								>
+									Sign In
+								</MDBBtn>
+
+								<MDBBtn
+									tag={Link}
+									to="/auth/signup"
+									rounded
+									outline
+									size={isMonileOrTablet ? "md" : "lg"}
+								>
+									Sign Up
+								</MDBBtn>
+							</>
+						)}
 					</div>
 					{/* <MDBNavbarToggler
 						aria-controls="navbarExample01"
