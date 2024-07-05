@@ -1,11 +1,12 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useLoaderData, useNavigate } from "react-router-dom";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { useTranslation } from "react-i18next";
 import Select, { components } from "react-select";
 import { firbaseSignUp, firebaseSignIn1 } from "../firebaseAuth";
+import { motion, AnimatePresence } from "framer-motion";
 import {
 	MDBBtn,
 	MDBIcon,
@@ -20,6 +21,7 @@ import {
 	MDBModalHeader,
 	MDBModalTitle,
 } from "mdb-react-ui-kit";
+import { use } from "i18next";
 
 const capitalize = (str) => (str ? str[0].toUpperCase() + str.slice(1) : "");
 
@@ -107,6 +109,10 @@ export default function Signup() {
 	const [centredModal, setCentredModal] = useState(false);
 	const [modalText, setModalText] = useState("");
 
+	useEffect(() => {
+		window.scrollTo(0, 0);
+	});
+
 	const initialValues = {
 		country: "",
 		currency: "",
@@ -163,7 +169,7 @@ export default function Signup() {
 			setModalText(response.data.error[values.language]);
 			setCentredModal(true);
 			setSubmitting(false);
-			return
+			return;
 		}
 
 		firebaseSignIn1(response.data.data.auth_token).then((res) => {
@@ -192,193 +198,215 @@ export default function Signup() {
 	};
 
 	return (
-		<div className="pt-100 position-relative">
-			<MDBTypography tag="h1" className="text-center font-black mb-4">
-				{t("Create your account")}
-			</MDBTypography>
+		<motion.div
+			initial={{ opacity: 0, translateY: -100 }}
+			animate={{ opacity: 1, translateY: 0 }}
+			transition={{ duration: 0.3, ease: "easeInOut" }}
+		>
+			<div className="pt-100 position-relative">
+				<MDBTypography tag="h1" className="text-center font-black mb-4">
+					{t("Create your account")}
+				</MDBTypography>
 
-			<Formik
-				initialValues={initialValues}
-				validationSchema={validationSchema}
-				onSubmit={onSubmit}
-			>
-				{({ isSubmitting, handleChange, setFieldValue }) => (
-					<Form className="w-465 mx-auto">
-						<div className="input-group input-group-lg rounded-pill shadow">
-							<div className="input-group-text rounded-start-pill bg-white">
-								<MDBIcon far icon="user" size="lg" />
+				<Formik
+					initialValues={initialValues}
+					validationSchema={validationSchema}
+					onSubmit={onSubmit}
+				>
+					{({ isSubmitting, handleChange, setFieldValue }) => (
+						<Form className="w-465 mx-auto">
+							<div className="input-group input-group-lg rounded-pill shadow">
+								<div className="input-group-text rounded-start-pill bg-white">
+									<MDBIcon far icon="user" size="lg" />
+								</div>
+								<Field
+									type="text"
+									className="form-control rounded-end-pill"
+									placeholder="Username"
+									name="username"
+								/>
 							</div>
-							<Field
-								type="text"
-								className="form-control rounded-end-pill"
-								placeholder="Username"
-								name="username"
-							/>
-						</div>
-						<div className="error-message-wrapper text-danger px-4">
-							<ErrorMessage
-								name="username"
-								component="small"
-								className="error-message"
-							/>
-						</div>
+							<div className="error-message-wrapper text-danger px-4">
+								<ErrorMessage
+									name="username"
+									component="small"
+									className="error-message"
+								/>
+							</div>
 
-						<div className="input-group input-group-lg rounded-pill shadow">
-							<span className="input-group-text rounded-start-pill bg-white">
-								<MDBIcon fab icon="whatsapp" size="xl" />
-							</span>
-							<Field
-								type="text"
-								className="form-control rounded-end-pill"
-								placeholder="Whatsapp number"
-								name="whatsapp_number"
-							/>
-						</div>
-						<div className="error-message-wrapper text-danger px-4">
-							<ErrorMessage
-								name="whatsapp_number"
-								component="small"
-								className="error-message"
-							/>
-						</div>
+							<div className="input-group input-group-lg rounded-pill shadow">
+								<span className="input-group-text rounded-start-pill bg-white">
+									<MDBIcon fab icon="whatsapp" size="xl" />
+								</span>
+								<Field
+									type="text"
+									className="form-control rounded-end-pill"
+									placeholder="Whatsapp number"
+									name="whatsapp_number"
+								/>
+							</div>
+							<div className="error-message-wrapper text-danger px-4">
+								<ErrorMessage
+									name="whatsapp_number"
+									component="small"
+									className="error-message"
+								/>
+							</div>
 
-						<Select
-							className="input-group-lg rounded-pill shadow"
-							placeholder="Choose your country"
-							name="country"
-							value={curCountry}
-							options={countries}
-							onChange={(value) => {
-								setCurCountry(value);
-								setFieldValue("country", value.name);
-								setFieldValue("currency", value.currency);
-							}}
-							styles={customStyles}
-							components={{
-								Option,
-								SingleValue,
-								Placeholder: () => (
-									<div style={{ display: "flex", alignItems: "center" }}>
-										<MDBIcon fas icon="globe" size="lg" className="me-4" />
-										<span>Select a country...</span>
-									</div>
-								),
-							}}
-						/>
-						<div className="error-message-wrapper text-danger px-4">
-							<ErrorMessage
+							<Select
+								className="input-group-lg rounded-pill shadow"
+								placeholder="Choose your country"
 								name="country"
-								component="small"
-								className="error-message"
+								value={curCountry}
+								options={countries}
+								onChange={(value) => {
+									setCurCountry(value);
+									setFieldValue("country", value.name);
+									setFieldValue("currency", value.currency);
+								}}
+								styles={customStyles}
+								components={{
+									Option,
+									SingleValue,
+									Placeholder: () => (
+										<div style={{ display: "flex", alignItems: "center" }}>
+											<MDBIcon fas icon="globe" size="lg" className="me-4" />
+											<span>Select a country...</span>
+										</div>
+									),
+								}}
 							/>
-						</div>
-
-						<div className="input-group input-group-lg rounded-pill shadow">
-							<span className="input-group-text rounded-start-pill bg-white">
-								<MDBIcon fas icon="unlock" size="lg" />
-							</span>
-							<Field
-								type={visiblePassword ? "text" : "password"}
-								className="form-control"
-								placeholder="Password"
-								name="password"
-							/>
-							<span className="input-group-text rounded-end-pill bg-white">
-								<MDBIcon
-									far
-									icon={visiblePassword ? "eye" : "eye-slash"}
-									onClick={togglePasswordVisible}
-									size="lg"
+							<div className="error-message-wrapper text-danger px-4">
+								<ErrorMessage
+									name="country"
+									component="small"
+									className="error-message"
 								/>
-							</span>
-						</div>
-						<div className="error-message-wrapper text-danger px-4">
-							<ErrorMessage
-								name="password"
-								component="small"
-								className="error-message"
-							/>
-						</div>
+							</div>
 
-						<div className="input-group input-group-lg rounded-pill shadow">
-							<span className="input-group-text rounded-start-pill bg-white">
-								<MDBIcon fas icon="lock" size="lg" />
-							</span>
-							<Field
-								type={visiblePassword ? "text" : "password"}
-								className="form-control"
-								placeholder="Confirm your password"
-								name="confirm"
-							/>
-							<span className="input-group-text rounded-end-pill bg-white">
-								<MDBIcon
-									far
-									icon={visiblePassword ? "eye" : "eye-slash"}
-									onClick={togglePasswordVisible}
-									size="lg"
+							<div className="input-group input-group-lg rounded-pill shadow">
+								<span className="input-group-text rounded-start-pill bg-white">
+									<MDBIcon fas icon="unlock" size="lg" />
+								</span>
+								<Field
+									type={visiblePassword ? "text" : "password"}
+									className="form-control"
+									placeholder="Password"
+									name="password"
 								/>
-							</span>
-						</div>
-						<div className="error-message-wrapper text-danger px-4">
-							<ErrorMessage
-								name="confirm"
-								component="small"
-								className="error-message"
-							/>
-						</div>
+								<span className="input-group-text rounded-end-pill bg-white">
+									<MDBIcon
+										far
+										icon={visiblePassword ? "eye" : "eye-slash"}
+										onClick={togglePasswordVisible}
+										size="lg"
+									/>
+								</span>
+							</div>
+							<div className="error-message-wrapper text-danger px-4">
+								<ErrorMessage
+									name="password"
+									component="small"
+									className="error-message"
+								/>
+							</div>
 
-						<div className="input-group input-group-lg rounded-pill shadow">
-							<span className="input-group-text rounded-start-pill bg-white">
-								<MDBIcon fas icon="gift" size="lg" />
-							</span>
-							<Field
-								type="text"
-								className="form-control rounded-end-pill"
-								placeholder="Referral code (Optional)"
-								name="referralCode"
-							/>
-						</div>
-						<div className="error-message-wrapper text-danger px-4">
-							<ErrorMessage
-								name="referralCode"
-								component="small"
-								className="error-message"
-							/>
-						</div>
+							<div className="input-group input-group-lg rounded-pill shadow">
+								<span className="input-group-text rounded-start-pill bg-white">
+									<MDBIcon fas icon="lock" size="lg" />
+								</span>
+								<Field
+									type={visiblePassword ? "text" : "password"}
+									className="form-control"
+									placeholder="Confirm your password"
+									name="confirm"
+								/>
+								<span className="input-group-text rounded-end-pill bg-white">
+									<MDBIcon
+										far
+										icon={visiblePassword ? "eye" : "eye-slash"}
+										onClick={togglePasswordVisible}
+										size="lg"
+									/>
+								</span>
+							</div>
+							<div className="error-message-wrapper text-danger px-4">
+								<ErrorMessage
+									name="confirm"
+									component="small"
+									className="error-message"
+								/>
+							</div>
 
-						<div className="text-center mt-2 w-250 mx-auto">
-							<MDBBtn type="submit" size="lg" block rounded disabled={isSubmitting}>CREATE</MDBBtn>	
-						</div>
-					</Form>
-				)}
-			</Formik>
-			<div className="d-flex align-items-center mt-4 w-250 mx-auto">
-				<hr className="flex-grow-1 opacity-100" />
-				<span className="px-3">OR</span>
-				<hr className="flex-grow-1 opacity-100" />
+							<div className="input-group input-group-lg rounded-pill shadow">
+								<span className="input-group-text rounded-start-pill bg-white">
+									<MDBIcon fas icon="gift" size="lg" />
+								</span>
+								<Field
+									type="text"
+									className="form-control rounded-end-pill"
+									placeholder="Referral code (Optional)"
+									name="referralCode"
+								/>
+							</div>
+							<div className="error-message-wrapper text-danger px-4">
+								<ErrorMessage
+									name="referralCode"
+									component="small"
+									className="error-message"
+								/>
+							</div>
+
+							<div className="text-center mt-2 w-250 mx-auto">
+								<MDBBtn
+									type="submit"
+									size="lg"
+									block
+									rounded
+									disabled={isSubmitting}
+								>
+									CREATE
+								</MDBBtn>
+							</div>
+						</Form>
+					)}
+				</Formik>
+				<div className="d-flex align-items-center mt-4 w-250 mx-auto">
+					<hr className="flex-grow-1 opacity-100" />
+					<span className="px-3">OR</span>
+					<hr className="flex-grow-1 opacity-100" />
+				</div>
+				<div className="d-flex justify-content-center mt-4 font-black lead">
+					Already have an account?
+					<Link to="/auth/signin" className="ms-3 font-black text-primary">
+						LOGIN
+					</Link>
+				</div>
+
+				<MDBModal
+					tabIndex="-1"
+					open={centredModal}
+					onClose={() => setCentredModal(false)}
+				>
+					<MDBModalDialog centered style={{ maxWidth: 300 }}>
+						<MDBModalContent>
+							<MDBModalBody className="text-center py-5">
+								<img
+									src="/favcon 2.png"
+									className="img-fluid mb-5"
+									alt="logo"
+								/>
+								<h3 className="mb-0">{modalText}</h3>
+							</MDBModalBody>
+							<MDBModalFooter>
+								<MDBBtn color="primary" onClick={toggleOpen}>
+									OK
+								</MDBBtn>
+							</MDBModalFooter>
+						</MDBModalContent>
+					</MDBModalDialog>
+				</MDBModal>
 			</div>
-			<div className="d-flex justify-content-center mt-4 font-black lead">
-				Already have an account?
-				<Link to="/auth/signin" className="ms-3 font-black text-primary">
-					LOGIN
-				</Link>
-			</div>
-
-			<MDBModal tabIndex='-1' open={centredModal} onClose={() => setCentredModal(false)}>
-        <MDBModalDialog centered style={{maxWidth:300}}>
-          <MDBModalContent>
-            <MDBModalBody className="text-center py-5">
-              <img src='/favcon 2.png' className='img-fluid mb-5' alt='logo' />
-							<h3 className='mb-0'>{modalText}</h3>
-            </MDBModalBody>
-            <MDBModalFooter>
-              <MDBBtn color='primary' onClick={toggleOpen}>
-                OK
-              </MDBBtn>
-            </MDBModalFooter>
-          </MDBModalContent>
-        </MDBModalDialog>
-      </MDBModal>
-		</div>
+		</motion.div>
 	);
 }
