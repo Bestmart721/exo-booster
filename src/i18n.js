@@ -26,6 +26,7 @@ const resources = {
       "Create your account": "Create your account",
       "Firebase: Error (auth/invalid-credential).": "Credentials entered are incorrect.",
       "Firebase: Access to this account has been temporarily disabled due to many failed login attempts. You can immediately restore it by resetting your password or you can try again later. (auth/too-many-requests).": "Too many attempts, try again later.",
+      "Could not get available countries.": "Could not get available countries.",
     }
   },
   fr: {
@@ -51,13 +52,14 @@ const resources = {
       "cover-letter":"Rejoignez des milliers de marques et d'influenceurs qui ont boosté leur croissance sur les réseaux sociaux avec Exo Booster, le service de boosting fiable avec plus de 50 000 utilisateurs.",
       "Create your account": "Créez votre compte",
       "Firebase: Error (auth/invalid-credential).": "Les données d'identification saisies sont incorrectes.",
-      "Firebase: Access to this account has been temporarily disabled due to many failed login attempts. You can immediately restore it by resetting your password or you can try again later. (auth/too-many-requests)." : "Trop de tentatives, réessayer plus tard."
+      "Firebase: Access to this account has been temporarily disabled due to many failed login attempts. You can immediately restore it by resetting your password or you can try again later. (auth/too-many-requests)." : "Trop de tentatives, réessayer plus tard.",
+      "Could not get available countries." : "Impossible d'obtenir les pays disponibles."
     }
   }
 };
 
 const queryParams = new URLSearchParams(window.location.search);
-const lng = navigator.language || navigator.userLanguage || 'en';
+const lng = (window.location.hash.substring(1) || navigator.language || navigator.userLanguage).slice(0, 2) || en;
 
 i18n
   .use(initReactI18next)

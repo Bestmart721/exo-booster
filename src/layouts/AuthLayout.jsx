@@ -151,7 +151,7 @@ export default function AuthLayout() {
 											isMobile ? "display-4" : "display-1"
 										} font-black text-center text-lg-start`}
 									>
-										{i18n.language == "fr" ? (
+										{i18n.language.slice(0, 2) == "fr" ? (
 											<>
 												<span className="text-primary">BOOSTEZ</span>{" "}
 												<small>VOS</small>
@@ -200,40 +200,46 @@ export default function AuthLayout() {
 								</motion.div>
 							</MDBCol>
 						</MDBRow>
-						<div className="w-400 mx-auto px-5 mt-5">
-							<MDBBtn
-								size="lg"
-								block
-								tag={Link}
-								to="/auth/signup"
-								rounded
-								// size={isMonileOrTablet ? "md" : "lg"}
-							>
-								Create your account
-							</MDBBtn>
-							<div className="d-flex align-items-center mx-auto my-2 w-25-0 m px-5">
-								<hr className="flex-grow-1 opacity-100" />
-								<span className="px-3">OR</span>
-								<hr className="flex-grow-1 opacity-100" />
+						<motion.div
+							initial={{ opacity: 0, translateY: -100 }}
+							animate={{ opacity: 1, translateY: 0 }}
+							transition={{ ease: "easeInOut", delay: 1.5 }}
+						>
+							<div className="w-400 mx-auto px-5 mt-5">
+								<MDBBtn
+									size="lg"
+									block
+									tag={Link}
+									to="/auth/signup"
+									rounded
+									// size={isMonileOrTablet ? "md" : "lg"}
+								>
+									Create your account
+								</MDBBtn>
+								<div className="d-flex align-items-center mx-auto my-2 w-25-0 m px-5">
+									<hr className="flex-grow-1 opacity-100" />
+									<span className="px-3">OR</span>
+									<hr className="flex-grow-1 opacity-100" />
+								</div>
+								<MDBBtn
+									size="lg"
+									block
+									tag={Link}
+									to="/auth/signin"
+									rounded
+									outline
+									// size={isMonileOrTablet ? "md" : "lg"}
+								>
+									Log in
+								</MDBBtn>
 							</div>
-							<MDBBtn
-								size="lg"
-								block
-								tag={Link}
-								to="/auth/signin"
-								rounded
-								outline
-								// size={isMonileOrTablet ? "md" : "lg"}
-							>
-								Log in
-							</MDBBtn>
-						</div>
+						</motion.div>
 					</>
 				) : (
-					<div className="auth-main mt-80 mb-200 position-relative pt-100">
+					<div className="auth-main mt-80 mb-200 position-relative pt-80">
 						<img
 							src="/cloud-svgrepo-com.svg"
-							width={isMobile ? 100 : isMonileOrTablet ? 120 : 150}
+							width={isMobile ? 100 : isMonileOrTablet ? 120 : 140}
 							className="cloud"
 							id="cloud-3"
 						/>

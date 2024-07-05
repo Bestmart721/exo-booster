@@ -16,7 +16,7 @@ import "./index.css";
 import Root from "./routes/root";
 import AuthLayout from "./layouts/AuthLayout.jsx";
 import ErrorPage from "./pages/error-page";
-import Signup, { loadSignupData } from "./pages/Signup";
+import Signup from "./pages/Signup";
 import Signin from "./pages/Signin";
 import { LanguageProvider } from "./layouts/LanguageContext.jsx";
 
@@ -40,7 +40,7 @@ const router = createBrowserRouter([
 					{
 						path: "/auth/signup",
 						element: <Signup />,
-						loader: loadSignupData,
+						// loader: loadSignupData,
 					},
 					{
 						path: "/auth/signin",

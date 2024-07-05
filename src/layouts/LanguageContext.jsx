@@ -1,11 +1,11 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useEffect, useState } from 'react';
 
 // Create a context for the language
 const LanguageContext = createContext();
 
 // Create a provider component
 export const LanguageProvider = ({ children }) => {
-  const [language, setLanguage] = useState((navigator.language || navigator.userLanguage).slice(0, 2));
+  const [language, setLanguage] = useState((window.location.hash.substring(1) || navigator.language || navigator.userLanguage).slice(0, 2));
 
   const switchLanguage = (lang) => {
     setLanguage(lang);
