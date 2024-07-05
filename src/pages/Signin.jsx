@@ -255,7 +255,7 @@ export default function Signin() {
 								<div className="lead">Whatsapp:</div>
 								<div className="lead text-primary">
 									<a
-										href={`https://wa.me/${supportContacts.whatsapp.replace(/[^\d]/g, "")}`}
+										href={`https://wa.me/${supportContacts.whatsapp?.replace(/[^\d]/g, "")}`}
 										target="_blank"
 									>
 										{supportContacts.whatsapp}
