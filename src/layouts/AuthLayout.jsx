@@ -72,7 +72,7 @@ export default function AuthLayout() {
 			>
 				<MDBContainer>
 					<MDBNavbarBrand tag={Link} to="/">
-						<img src="/logopng.png" className="logo-img" alt="logo" />
+						<img src="/logopng 1.png" className="logo-img" alt="logo" />
 					</MDBNavbarBrand>
 					<div className="mb-lg-0 flex-grow-0 w-auto">
 						{user ? (
@@ -164,14 +164,12 @@ export default function AuthLayout() {
 									{(navigator.language || navigator.userLanguage).slice(0, 2) ==
 									"fr" ? (
 										<>
-											<span className="text-primary">BOOSTEZ</span>{" "}
-											<small>VOS</small>
+											<span className="text-primary">BOOSTEZ</span> <small>VOS</small>
 											<br /> <span>RÉSEAUX SOCIAUX</span>
 										</>
 									) : (
 										<>
-											<span className="text-primary">BOOST</span>{" "}
-											<small>YOUR</small>
+											<span className="text-primary">BOOST</span> <small>YOUR</small>
 											<br /> <span>SOCIAL MEDIA</span>
 										</>
 									)}
@@ -197,8 +195,8 @@ export default function AuthLayout() {
 								transition={{ ease: "easeInOut", delay: 1 }}
 							>
 								<img
-									src="/image 2.png"
-									width={360}
+									src="/Img.png"
+									width={500}
 									alt="phone"
 									className="img-fluid img-fluid-80"
 								/>
@@ -244,7 +242,7 @@ export default function AuthLayout() {
 					</MDBCard>
 					<MDBTypography
 						tag="h1"
-						className="text-center text-primary pt-5 mt-5 mb-5 font-black"
+						className="text-center text-primary pt-5 mt-5 mb-5 font-black position-relative"
 					>
 						Why Exo Booster?
 					</MDBTypography>

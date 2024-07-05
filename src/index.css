@@ -30,7 +30,7 @@
 	font-family: Nunito-Regular;
 }
 *::selection {
-  background-color: #6625d0;
+  background-color: #ff00f7;
   color: #fff;
 }
 
@@ -62,35 +62,35 @@
 } */
 
 * {
-	--mdb-primary-rgb: 102, 37, 208;
+	--mdb-primary-rgb: 255, 0, 247;
 	--mdb-body-color: #444;
 }
 .btn-primary {
-	--mdb-btn-bg: #6625d0;
+	--mdb-btn-bg: #ff00f7;
 	--mdb-btn-color: #fff;
-	--mdb-btn-box-shadow: 0 4px 9px -4px #6625d0;
-	--mdb-btn-hover-bg: #6027e0;
+	--mdb-btn-box-shadow: 0 4px 9px -4px #ff00f7;
+	--mdb-btn-hover-bg: #cc00ff;
 	--mdb-btn-hover-color: #fff;
-	--mdb-btn-focus-bg: #6027e0;
+	--mdb-btn-focus-bg: #cc00ff;
 	--mdb-btn-focus-color: #fff;
-	--mdb-btn-active-bg: #5525c0;
+	--mdb-btn-active-bg: #bb00cc;
 	--mdb-btn-active-color: #fff;
-	--mdb-btn-box-shadow-state: 0 8px 9px -4px rgba(59, 113, 202, 0.3),
-		0 4px 18px 0 rgba(59, 113, 202, 0.2);
+	--mdb-btn-box-shadow-state: 0 8px 9px -4px rgba(255, 0, 247, 0.3),
+		0 4px 18px 0 rgba(255, 0, 247, 0.2);
 }
 
 .btn-outline-primary {
 	--mdb-btn-bg: transparent;
-	--mdb-btn-color: #6625d0;
+	--mdb-btn-color: #ff00f7;
 	--mdb-btn-hover-bg: transparent;
-	--mdb-btn-hover-color: #6027e0;
+	--mdb-btn-hover-color: #cc00ff;
 	--mdb-btn-focus-bg: transparent;
-	--mdb-btn-focus-color: #6027e0;
+	--mdb-btn-focus-color: #cc00ff;
 	--mdb-btn-active-bg: transparent;
-	--mdb-btn-active-color: #5525c0;
-	--mdb-btn-border-color: #6625d0;
-	--mdb-btn-focus-border-color: #6027e0;
-	--mdb-btn-hover-border-color: #6027e0;
+	--mdb-btn-active-color: #bb00cc;
+	--mdb-btn-border-color: #ff00f7;
+	--mdb-btn-focus-border-color: #cc00ff;
+	--mdb-btn-hover-border-color: #cc00ff;
 	border-color: var(--mdb-btn-border-color);
 }
 
@@ -132,10 +132,10 @@
   border-left: transparent;
 }
 .input-group .form-control:focus {
-  border-color: #6625d0 !important;
-  border-left: solid 1px #6625d0 !important;
-  border-right: solid 1px #6625d0 !important;
-  box-shadow: 0 0 0 0.2rem rgba(102, 37, 208, 0.25);
+  border-color: #ff00f7 !important;
+  border-left: solid 1px #ff00f7 !important;
+  border-right: solid 1px #ff00f7 !important;
+  box-shadow: 0 0 0 0.2rem rgba(255, 0, 247, 0.25);
 }
 
 .text-webkit-center {
@@ -302,4 +302,10 @@
   left: 35%;
   transform: translateX(-50%);
   width: 160px;
+}
+
+@media (max-width: 576px) {
+  .modal-dialog {
+      max-width: 100% !important;
+  }
 }

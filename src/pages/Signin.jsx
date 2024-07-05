@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { useTranslation } from "react-i18next";
-import { firebaseSignIn2 } from "../firebaseAuth";
+import { db, firebaseConfig, firebaseSignIn2 } from "../firebaseAuth";
 import {
 	MDBBtn,
 	MDBIcon,
@@ -18,11 +18,12 @@ import {
 import { set } from "firebase/database";
 import { motion, AnimatePresence } from "framer-motion";
 // import "./styles.css";
-// import { getFirestore } from "firebase-admin/firestore";
-// import { initializeApp } from "firebase-admin/app";
+import { getFirestore, collection, doc, getDoc } from "firebase/firestore";
+import { initializeApp } from "firebase/app";
 
 export default function Signin() {
 	const { t, i18n } = useTranslation();
+	const navigate = useNavigate();
 	const [visiblePassword, setVisiblePassword] = useState(false);
 	const [centredModal, setCentredModal] = useState(false);
 	const [supportModal, setSupportModal] = useState(false);
@@ -35,24 +36,24 @@ export default function Signin() {
 	useEffect(() => {
 		window.scrollTo(0, 0);
 		setVisible(true);
-		// fetchSupportContacts();
-		setSupportContacts({
-			email: "supportemail@exobooster.com",
-			telegram: "@exobooster",
-			whatsapp: "+237 674349485",
-		});
+		fetchSupportContacts();
+		// setSupportContacts({
+		// 	email: "supportemail@exobooster.com",
+		// 	telegram: "@exobooster",
+		// 	whatsapp: "+237 674349485",
+		// });
 		setLoading(false);
 	}, []);
 
-	const fetchSupportContacts = () => {
-		initializeApp();
-		const db = getFirestore();
-		db.collection("Admin")
-			.doc("SupportContacts")
-			.get()
+	const fetchSupportContacts = async () => {
+		initializeApp(firebaseConfig);
+		const docRef = doc(collection(db, "Admin"), "SupportContacts");
+		getDoc(docRef)
 			.then((doc) => {
+				console.log(doc.data());
 				if (doc.exists) {
-					setSupportContacts(doc.data().contacts);
+					console.log(doc.data());
+					setSupportContacts(doc.data());
 				}
 				setLoading(false);
 			})
@@ -82,8 +83,24 @@ export default function Signin() {
 					"Invalid username, should not contain any spaces , or special characters (eg: $ é # â .....)"
 				)
 			)
-			.min(3, t("Username must be at least 3 characters long."))
-			.max(20, t("Username must be at most 20 characters long."))
+			.test(
+				"username-length",
+				t("Username must be at least 3 characters long."),
+				function (value) {
+					if (!value) return false; // If there's no value, it fails the required test later
+					const strippedUsername = value.split("@")[0];
+					return strippedUsername.length >= 3;
+				}
+			)
+			.test(
+				"username-max-length",
+				t("Username must be at most 20 characters long."),
+				function (value) {
+					if (!value) return true; // If there's no value, it fails the required test later
+					const strippedUsername = value.split("@")[0];
+					return strippedUsername.length <= 20;
+				}
+			)
 			.required(t("Username is required.")),
 		password: Yup.string()
 			.min(6, t("Password must be at least 6 characters long."))
@@ -189,14 +206,14 @@ export default function Signin() {
 					<span className="px-3">OR</span>
 					<hr className="flex-grow-1 opacity-100" />
 				</div>
-				<div className="d-flex justify-content-center mt-4 font-black lead">
-					Don't have an account ?
+				<div className="d-sm-flex text-center justify-content-center mt-4 font-black lead">
+					<div>Don't have an account ?</div>
 					<Link to="/auth/signup" className="ms-3 font-black text-primary">
 						CREATE
 					</Link>
 				</div>
-				<div className="d-flex justify-content-center mt-4 font-black lead">
-					Have a problem?
+				<div className="d-sm-flex text-center justify-content-center mt-4 font-black lead">
+					<div>Have a problem?</div>
 					<Link
 						className="ms-3 font-black text-primary"
 						onClick={toggleSupportOpen}
@@ -214,7 +231,7 @@ export default function Signin() {
 						<MDBModalContent>
 							<MDBModalBody className="text-center py-5">
 								<img
-									src="/favcon 2.png"
+									src="/favcon 1.png"
 									className="img-fluid mb-5"
 									alt="logo"
 								/>
@@ -238,7 +255,7 @@ export default function Signin() {
 						<MDBModalContent>
 							<MDBModalBody className="text-center py-5">
 								<img
-									src="/favcon 2.png"
+									src="/favcon 1.png"
 									className="img-fluid mb-5"
 									alt="logo"
 								/>

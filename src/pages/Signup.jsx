@@ -358,8 +358,8 @@ export default function Signup() {
 					<span className="px-3">OR</span>
 					<hr className="flex-grow-1 opacity-100" />
 				</div>
-				<div className="d-flex justify-content-center mt-4 font-black lead">
-					Already have an account?
+				<div className="d-sm-flex text-center justify-content-center mt-4 font-black lead">
+					<div>Already have an account?</div>
 					<Link to="/auth/signin" className="ms-3 font-black text-primary">
 						LOGIN
 					</Link>
@@ -374,7 +374,7 @@ export default function Signup() {
 						<MDBModalContent>
 							<MDBModalBody className="text-center py-5">
 								<img
-									src="/favcon 2.png"
+									src="/favcon 1.png"
 									className="img-fluid mb-5"
 									alt="logo"
 								/>
