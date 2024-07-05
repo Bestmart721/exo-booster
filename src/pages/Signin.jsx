@@ -66,7 +66,7 @@ export default function Signin() {
 			.matches(
 				/^[a-zA-Z0-9.@]+$/,
 				t(
-					"Invalid username, should not contain any spaces , or special characters (eg: $ é # â .....)"
+					"Invalid username, should not contain any spaces, or special characters (eg: $ é # â .....)"
 				)
 			)
 			.test(
@@ -137,7 +137,7 @@ export default function Signin() {
 									name="username"
 									type="text"
 									className="form-control full-radius rounded-end-pill"
-									placeholder="Username"
+									placeholder={t("Username")}
 								/>
 							</div>
 							<div className="error-message-wrapper text-danger px-4">
@@ -155,7 +155,7 @@ export default function Signin() {
 									name="password"
 									type={visiblePassword ? "text" : "password"}
 									className="form-control full-radius"
-									placeholder="Password"
+									placeholder={t("Password")}
 								/>
 								<span className="input-group-text rounded-end-pill bg-white">
 									<MDBIcon
@@ -181,7 +181,7 @@ export default function Signin() {
 									rounded
 									disabled={isSubmitting}
 								>
-									LOGIN
+									{t("LOGIN")}
 								</MDBBtn>
 							</div>
 						</Form>
@@ -189,22 +189,22 @@ export default function Signin() {
 				</Formik>
 				<div className="d-flex align-items-center mt-2 w-250 mx-auto">
 					<hr className="flex-grow-1 opacity-100" />
-					<span className="px-3">OR</span>
+					<span className="px-3">{t("OR")}</span>
 					<hr className="flex-grow-1 opacity-100" />
 				</div>
 				<div className="d-sm-flex text-center justify-content-center mt-4 font-black lead">
-					<div>Don't have an account ?</div>
+					<div>{t("Don't have an account?")}</div>
 					<Link to="/auth/signup" className="ms-3 font-black text-primary">
-						CREATE
+					{t("CREATE")}
 					</Link>
 				</div>
 				<div className="d-sm-flex text-center justify-content-center mt-4 font-black lead">
-					<div>Have a problem?</div>
+					<div>{t("Have a problem?")}</div>
 					<Link
 						className="ms-3 font-black text-primary"
 						onClick={toggleSupportOpen}
 					>
-						Contact Us
+						{t("Contact Us")}
 					</Link>
 				</div>
 
@@ -255,7 +255,7 @@ export default function Signin() {
 								<div className="lead">Whatsapp:</div>
 								<div className="lead text-primary">
 									<a
-										href={`https://wa.me/${supportContacts.whatsapp}`}
+										href={`https://wa.me/${supportContacts.whatsapp.replace(/[^\d]/g, "")}`}
 										target="_blank"
 									>
 										{supportContacts.whatsapp}

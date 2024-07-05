@@ -215,7 +215,7 @@ export default function Signup() {
 									<Field
 										type="text"
 										className="form-control rounded-end-pill"
-										placeholder="Username"
+										placeholder={t("Username")}
 										name="username"
 									/>
 								</div>
@@ -234,7 +234,7 @@ export default function Signup() {
 									<Field
 										type="text"
 										className="form-control rounded-end-pill"
-										placeholder="Whatsapp number"
+										placeholder={t("Whatsapp number")}
 										name="whatsapp_number"
 									/>
 								</div>
@@ -248,7 +248,7 @@ export default function Signup() {
 
 								<Select
 									className="input-group-lg rounded-pill shadow"
-									placeholder="Choose your country"
+									placeholder={t("Choose your country")}
 									name="country"
 									value={curCountry}
 									options={countries}
@@ -264,7 +264,7 @@ export default function Signup() {
 										Placeholder: () => (
 											<div style={{ display: "flex", alignItems: "center" }}>
 												<MDBIcon fas icon="globe" size="lg" className="me-4" />
-												<span>Select a country...</span>
+												<span>{t("Select a country")}...</span>
 											</div>
 										),
 									}}
@@ -284,7 +284,7 @@ export default function Signup() {
 									<Field
 										type={visiblePassword ? "text" : "password"}
 										className="form-control"
-										placeholder="Password"
+										placeholder={t("Password")}
 										name="password"
 									/>
 									<span className="input-group-text rounded-end-pill bg-white">
@@ -311,7 +311,7 @@ export default function Signup() {
 									<Field
 										type={visiblePassword ? "text" : "password"}
 										className="form-control"
-										placeholder="Confirm your password"
+										placeholder={t("Confirm your password")}
 										name="confirm"
 									/>
 									<span className="input-group-text rounded-end-pill bg-white">
@@ -338,7 +338,7 @@ export default function Signup() {
 									<Field
 										type="text"
 										className="form-control rounded-end-pill"
-										placeholder="Referral code (Optional)"
+										placeholder={t("Referral code (Optional)")}
 										name="referralCode"
 									/>
 								</div>
@@ -358,7 +358,7 @@ export default function Signup() {
 										rounded
 										disabled={isSubmitting}
 									>
-										CREATE
+										{t("CREATE")}
 									</MDBBtn>
 								</div>
 							</Form>
@@ -366,13 +366,13 @@ export default function Signup() {
 					</Formik>
 					<div className="d-flex align-items-center mt-4 w-250 mx-auto">
 						<hr className="flex-grow-1 opacity-100" />
-						<span className="px-3">OR</span>
+						<span className="px-3">{t("OR")}</span>
 						<hr className="flex-grow-1 opacity-100" />
 					</div>
 					<div className="d-sm-flex text-center justify-content-center mt-4 font-black lead">
-						<div>Already have an account?</div>
+						<div>{t("Already have an account?")}</div>
 						<Link to="/auth/signin" className="ms-3 font-black text-primary">
-							LOGIN
+						{t("LOGIN")}
 						</Link>
 					</div>
 
