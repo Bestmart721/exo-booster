@@ -202,11 +202,11 @@ export default function AuthLayout() {
 							</MDBCol>
 						</MDBRow>
 						<motion.div
-							initial={{ opacity: 0, translateY: -100 }}
+							initial={{ opacity: 0, translateY: 0 }}
 							animate={{ opacity: 1, translateY: 0 }}
 							transition={{ ease: "easeInOut", delay: 1.5 }}
 						>
-							<div className="w-400 mx-auto px-5 mt-5">
+							<div className="w-400 mx-auto px-5 mt-2 mt-md-5">
 								<MDBBtn
 									size="lg"
 									block
