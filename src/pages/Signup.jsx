@@ -26,38 +26,20 @@ import { use } from "i18next";
 const capitalize = (str) => (str ? str[0].toUpperCase() + str.slice(1) : "");
 
 export async function loadSignupData() {
-	// let response = await axios.get(
-	// 	`https://getsupportedcountries-l2ugzeb65a-uc.a.run.app/`
-	// );
-	let response = {
-		data: {
-			cameroon: {
-				name: "cameroon",
-				currency: "xaf",
-				flag_img_link:
-					"https://firebasestorage.googleapis.com/v0/b/exobooster-59de3.appspot.com/o/flag_thumbnails%2FFlag-Cameroon.webp?alt=media&token=2d2a1fa2-946f-4d54-a56d-15385eb9fb8e",
-				enabled: true,
-			},
-		},
-	};
-	response = {
-		data: {
-			cameroon: {
-				name: "cameroon",
-				currency: "xaf",
-				flag_img_link:
-					"https://firebasestorage.googleapis.com/v0/b/exobooster-59de3.appspot.com/o/flag_thumbnails%2FFlag-Cameroon.webp?alt=media&token=2d2a1fa2-946f-4d54-a56d-15385eb9fb8e",
-				enabled: true,
-			},
-			nigeria: {
-				name: "nigeria",
-				currency: "ngn",
-				flag_img_link:
-					"https://firebasestorage.googleapis.com/v0/b/exobooster-59de3.appspot.com/o/flag_thumbnails%2FFlag-Cameroon.webp?alt=media&token=2d2a1fa2-946f-4d54-a56d-15385eb9fb8e",
-				enabled: true,
-			},
-		},
-	};
+	let response = await axios.get(
+		`https://getsupportedcountries-l2ugzeb65a-uc.a.run.app/`
+	);
+	// let response = {
+	// 	data: {
+	// 		cameroon: {
+	// 			name: "cameroon",
+	// 			currency: "xaf",
+	// 			flag_img_link:
+	// 				"https://firebasestorage.googleapis.com/v0/b/exobooster-59de3.appspot.com/o/flag_thumbnails%2FFlag-Cameroon.webp?alt=media&token=2d2a1fa2-946f-4d54-a56d-15385eb9fb8e",
+	// 			enabled: true,
+	// 		},
+	// 	},
+	// };
 	let countries = Object.keys(response.data).map((key) => response.data[key]);
 	countries = countries.map((country) => ({
 		...country,
