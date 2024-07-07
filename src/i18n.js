@@ -55,6 +55,7 @@ const resources = {
       "Have a problem?": "Have a problem?",
       "Kindly contact us through email": "Kindly contact us through email",
       "Or Telegram": "Or Telegram",
+      "Sign Out": "Sign Out",
     }
   },
   fr: {
@@ -105,12 +106,13 @@ const resources = {
       "Referral code (Optional)": "Code de parrainage (facultatif)",
       "CREATE": "CRÉER",
       "Already have an account?": "Vous avez déjà un compte?",
-      "LOGIN": "SE CONNECTER",
+      "LOGIN": "CONNEXION",
       "Don't have an account?": "Vous n'avez pas de compte?",
       "Contact Us": "Contactez nous",
       "Have a problem?": "Vous avez un problème?",
       "Kindly contact us through email": "Veuillez nous contacter par email",
-      "Or Telegram": "Ou Telegram"
+      "Or Telegram": "Ou Telegram",
+      "Sign Out": "Déconnexion",
     }
   }
 };

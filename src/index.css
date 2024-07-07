@@ -77,6 +77,12 @@
 	--mdb-btn-active-color: #fff;
 	--mdb-btn-box-shadow-state: 0 8px 9px -4px rgba(255, 0, 247, 0.3),
 		0 4px 18px 0 rgba(255, 0, 247, 0.2);
+
+	--mdb-btn-active-border-color: #bb00cc;
+	--mdb-btn-active-shadow: 0 8px 9px -4px rgba(0, 0, 0, 0.15), 0 4px 18px 0 rgba(0, 0, 0, 0.1);
+	--mdb-btn-disabled-color: #fff;
+	--mdb-btn-disabled-bg: #ff00f7;
+	--mdb-btn-disabled-border-color: #ff00f7;
 }
 
 .btn-outline-primary {

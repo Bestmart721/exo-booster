@@ -14,6 +14,7 @@ import {
 	MDBModalFooter,
 	MDBModalHeader,
 	MDBModalTitle,
+	MDBSpinner,
 } from "mdb-react-ui-kit";
 import { motion, AnimatePresence } from "framer-motion";
 // import "./styles.css";
@@ -181,7 +182,15 @@ export default function Signin() {
 									rounded
 									disabled={isSubmitting}
 								>
-									{t("LOGIN")}
+									{isSubmitting ? (
+											<MDBSpinner
+												style={{ width: 22, height: 22 }}
+											>
+												<span className="visually-hidden">Loading...</span>
+											</MDBSpinner>
+										) : (
+											t("LOGIN")
+										)}
 								</MDBBtn>
 							</div>
 						</Form>

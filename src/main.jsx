@@ -13,30 +13,22 @@ import "@fortawesome/fontawesome-free/css/all.min.css";
 // import "bootstrap/scss/bootstrap.scss";
 import "./index.css";
 
-import Root from "./routes/root";
 import AuthLayout from "./layouts/AuthLayout.jsx";
 import ErrorPage from "./pages/error-page";
 import Signup from "./pages/Signup";
 import Signin from "./pages/Signin";
 import { LanguageProvider } from "./layouts/LanguageContext.jsx";
+import RootLayout from "./layouts/RootLayout.jsx";
 
 const router = createBrowserRouter([
 	{
 		path: "/",
-		element: <Root />,
+		element: <RootLayout />,
 		children: [
-			{
-				index: true,
-				element: <AuthLayout/>, // Redirect from root to /auth/signin
-			},
 			{
 				path: "/auth",
 				element: <AuthLayout />,
 				children: [
-					{
-						index: true, // This sets the default child route for /auth
-						element: <Signin />,
-					},
 					{
 						path: "/auth/signup",
 						element: <Signup />,

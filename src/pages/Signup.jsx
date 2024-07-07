@@ -129,25 +129,20 @@ export default function Signup() {
 				/^[a-zA-Z0-9]+$/,
 				t("Only alphanumeric characters are allowed.")
 			),
-
 		whatsapp_number: Yup.string()
 			.required(t("Your Whatsapp number is required."))
 			.matches(
 				/^[0-9]+$/,
 				t("Only numbers are allowed, no spaces or letters.")
 			),
-
 		country: Yup.string().required(t("Country cannot be empty.")),
-
 		password: Yup.string()
 			.required(t("Password cannot be empty."))
 			.min(6, t("Password must be at least 6 characters.")),
-
 		confirm: Yup.string().oneOf(
 			[Yup.ref("password"), null],
 			t("Passwords must match.")
 		),
-
 		referralCode: Yup.string(), // Optional field, no validation required
 	});
 
@@ -217,6 +212,12 @@ export default function Signup() {
 										className="form-control rounded-end-pill"
 										placeholder={t("Username")}
 										name="username"
+										onChange={(event) => {
+											setFieldValue(
+												event.target.name,
+												event.target.value.replace(/ /g, "")
+											);
+										}}
 									/>
 								</div>
 								<div className="error-message-wrapper text-danger px-4">
@@ -358,7 +359,15 @@ export default function Signup() {
 										rounded
 										disabled={isSubmitting}
 									>
-										{t("CREATE")}
+										{isSubmitting ? (
+											<MDBSpinner
+												style={{ width: 22, height: 22 }}
+											>
+												<span className="visually-hidden">Loading...</span>
+											</MDBSpinner>
+										) : (
+											t("CREATE")
+										)}
 									</MDBBtn>
 								</div>
 							</Form>
@@ -372,7 +381,7 @@ export default function Signup() {
 					<div className="d-sm-flex text-center justify-content-center mt-4 font-black lead">
 						<div>{t("Already have an account?")}</div>
 						<Link to="/auth/signin" className="ms-3 font-black text-primary">
-						{t("LOGIN")}
+							{t("LOGIN")}
 						</Link>
 					</div>
 
