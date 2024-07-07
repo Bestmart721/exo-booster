@@ -1,5 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
+import {
+	Link,
+	Navigate,
+	Outlet,
+	useLocation,
+	useNavigate,
+} from "react-router-dom";
 import {
 	MDBContainer,
 	MDBDropdown,
@@ -28,6 +34,7 @@ const languages = {
 const getFlagUrl = (flagCode) => `https://flagcdn.com/${flagCode}`;
 
 export default function RootLayout() {
+	const location = useLocation();
 	const navigate = useNavigate();
 	const { t, i18n } = useTranslation();
 	const [user, setUser] = useState(null);
@@ -37,11 +44,9 @@ export default function RootLayout() {
 	useEffect(() => {
 		const unsubscribe = onAuthStateChanged(auth, (user) => {
 			if (user) {
-				navigate("/home");
 				user.displayName = user.email.split("@")[0];
 				setUser(user);
 			} else {
-				navigate("/auth");
 				setUser(null);
 			}
 			setLoading(false);
@@ -124,7 +129,16 @@ export default function RootLayout() {
 				</MDBContainer>
 			</MDBNavbar>
 
-			<MDBContainer>{!loading && <Outlet />}</MDBContainer>
+			<MDBContainer>
+				{!loading &&
+					(user && location.pathname.includes("/auth") ? (
+						<Navigate to={"/home"} />
+					) : !user && !location.pathname.includes("/auth") ? (
+						<Navigate to={"/auth"} />
+					) : (
+						<Outlet />
+					))}
+			</MDBContainer>
 
 			{loading && (
 				<div className="d-flex justify-content-center align-items-center position-fixed spinner-wrapper">

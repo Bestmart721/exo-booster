@@ -3,7 +3,12 @@ import { Link, useNavigate } from "react-router-dom";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { useTranslation } from "react-i18next";
-import { db, fetchSupportContacts, firebaseConfig, firebaseSignIn2 } from "../firebaseAuth";
+import {
+	db,
+	fetchSupportContacts,
+	firebaseConfig,
+	firebaseSignIn2,
+} from "../firebaseAuth";
 import {
 	MDBBtn,
 	MDBIcon,
@@ -26,29 +31,10 @@ export default function Signin() {
 	const [centredModal, setCentredModal] = useState(false);
 	const [supportModal, setSupportModal] = useState(false);
 	const [supportContacts, setSupportContacts] = useState({});
-	const [loading, setLoading] = useState(true);
+	const [loading, setLoading] = useState(false);
 	const [modalText, setModalText] = useState("");
 	const [user, setUser] = useState(null);
 	const [visible, setVisible] = useState(true);
-
-	useEffect(() => {
-		setVisible(true);
-		fetchSupportContacts().then((data) => {
-			setSupportContacts(data);
-		}
-		).catch((error) => {
-			setModalText(error);
-			setCentredModal(true);
-			setLoading(false);
-		});
-
-		// setSupportContacts({
-		// 	email: "supportemail@exobooster.com",
-		// 	telegram: "@exobooster",
-		// 	whatsapp: "+237 674349485",
-		// });
-		setLoading(false);
-	}, []);
 
 	const togglePasswordVisible = () => {
 		setVisiblePassword(!visiblePassword);
@@ -59,7 +45,23 @@ export default function Signin() {
 	};
 
 	const toggleSupportOpen = () => {
-		setSupportModal(!supportModal);
+		if (!supportModal) {
+			setLoading(true);
+			fetchSupportContacts()
+				.then((data) => {
+					setSupportContacts(data);
+					setLoading(false);
+					setSupportModal(!supportModal);
+					setSupportModal(!supportModal);
+				})
+				.catch((error) => {
+					setModalText(error);
+					setCentredModal(true);
+					setLoading(false);
+				});
+		} else {
+			setSupportModal(!supportModal);
+		}
 	};
 
 	const SignInSchema = Yup.object().shape({
@@ -119,7 +121,9 @@ export default function Signin() {
 			// whileHover={{ scale: 1.1 }}
 		>
 			<div className="position-relative">
-				<h1 className="text-center font-black mb-4 hover-animate">{t("Log in")}</h1>
+				<h1 className="text-center font-black mb-4 hover-animate">
+					{t("Log in")}
+				</h1>
 				<Formik
 					initialValues={{
 						username: "",
@@ -189,14 +193,12 @@ export default function Signin() {
 									disabled={isSubmitting}
 								>
 									{isSubmitting ? (
-											<MDBSpinner
-												style={{ width: 22, height: 22 }}
-											>
-												<span className="visually-hidden">Loading...</span>
-											</MDBSpinner>
-										) : (
-											t("LOGIN")
-										)}
+										<MDBSpinner style={{ width: 22, height: 22 }}>
+											<span className="visually-hidden">Loading...</span>
+										</MDBSpinner>
+									) : (
+										t("LOGIN")
+									)}
 								</MDBBtn>
 							</div>
 						</Form>
@@ -210,7 +212,7 @@ export default function Signin() {
 				<div className="d-sm-flex text-center justify-content-center mt-4 font-black lead">
 					<div>{t("Don't have an account?")}</div>
 					<Link to="/auth/signup" className="ms-3 font-black text-primary">
-					{t("CREATE")}
+						{t("CREATE")}
 					</Link>
 				</div>
 				<div className="d-sm-flex text-center justify-content-center mt-4 font-black lead">
@@ -219,7 +221,13 @@ export default function Signin() {
 						className="ms-3 font-black text-primary"
 						onClick={toggleSupportOpen}
 					>
-						{t("Contact Us")}
+						{loading ? (
+							<MDBSpinner color="primary" style={{ width: 22, height: 22 }}>
+								<span className="visually-hidden">Loading...</span>
+							</MDBSpinner>
+						) : (
+							t("Contact Us")
+						)}
 					</Link>
 				</div>
 
@@ -270,7 +278,10 @@ export default function Signin() {
 								<div className="lead">Whatsapp:</div>
 								<div className="lead text-primary">
 									<a
-										href={`https://wa.me/${supportContacts.whatsapp?.replace(/[^\d]/g, "")}`}
+										href={`https://wa.me/${supportContacts.whatsapp?.replace(
+											/[^\d]/g,
+											""
+										)}`}
 										target="_blank"
 									>
 										{supportContacts.whatsapp}
