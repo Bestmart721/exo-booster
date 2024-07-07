@@ -128,7 +128,7 @@ export default function Signin() {
 					validationSchema={SignInSchema}
 					onSubmit={handleSubmit}
 				>
-					{({ isSubmitting, errors, touched }) => (
+					{({ isSubmitting, errors, setFieldValue }) => (
 						<Form className="w-465 mx-auto">
 							<div className="input-group input-group-lg rounded-pill shadow">
 								<span className="input-group-text rounded-start-pill bg-white">
@@ -139,6 +139,12 @@ export default function Signin() {
 									type="text"
 									className="form-control full-radius rounded-end-pill"
 									placeholder={t("Username")}
+									onChange={(event) => {
+										setFieldValue(
+											event.target.name,
+											event.target.value.replace(/ /g, "")
+										);
+									}}
 								/>
 							</div>
 							<div className="error-message-wrapper text-danger px-4">

@@ -54,7 +54,7 @@ export default function RootLayout() {
 	const signOut = () => {
 		firebaseSignOut().then(() => {
 			setUser(null);
-			navigate("/");
+			navigate("/auth");
 		});
 	};
 
