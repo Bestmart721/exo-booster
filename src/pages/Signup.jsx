@@ -413,7 +413,7 @@ export default function Signup() {
 
 			{loading && (
 				<div className="d-flex justify-content-center align-items-center position-fixed spinner-wrapper">
-					<MDBSpinner color="primary" style={{ width: "3rem", height: "3rem" }}>
+					<MDBSpinner color="white" style={{ width: "3rem", height: "3rem" }}>
 						<span className="visually-hidden">Loading...</span>
 					</MDBSpinner>
 				</div>

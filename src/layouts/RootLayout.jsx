@@ -124,13 +124,11 @@ export default function RootLayout() {
 				</MDBContainer>
 			</MDBNavbar>
 
-			<MDBContainer>
-				<Outlet />
-			</MDBContainer>
+			<MDBContainer>{!loading && <Outlet />}</MDBContainer>
 
 			{loading && (
 				<div className="d-flex justify-content-center align-items-center position-fixed spinner-wrapper">
-					<MDBSpinner color="primary" style={{ width: "3rem", height: "3rem" }}>
+					<MDBSpinner color="white" style={{ width: "3rem", height: "3rem" }}>
 						<span className="visually-hidden">Loading...</span>
 					</MDBSpinner>
 				</div>
