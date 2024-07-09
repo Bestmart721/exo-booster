@@ -30,22 +30,6 @@ export default function AuthLayout() {
 	const { t, i18n } = useTranslation();
 	const isMobile = useMobileMediaQuery();
 	const isMonileOrTablet = useMobileOrTabletMediaQuery();
-	const [user, setUser] = useState(null);
-
-	useEffect(() => {
-		const unsubscribe = onAuthStateChanged(auth, (user) => {
-			if (user) {
-				navigate("/");
-				user.displayName = user.email.split("@")[0];
-				setUser(user);
-			} else {
-				setUser(null);
-			}
-		});
-
-		// Cleanup subscription on unmount
-		return () => unsubscribe();
-	}, []);
 
 	return (
 		<MDBContainer>

@@ -1,67 +1,24 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { useTranslation } from "react-i18next";
-import {
-	db,
-	fetchSupportContacts,
-	firebaseConfig,
-	firebaseSignIn2,
-} from "../firebaseAuth";
-import {
-	MDBBtn,
-	MDBIcon,
-	MDBModal,
-	MDBModalBody,
-	MDBModalContent,
-	MDBModalDialog,
-	MDBModalFooter,
-	MDBModalHeader,
-	MDBModalTitle,
-	MDBSpinner,
-} from "mdb-react-ui-kit";
+import { firebaseSignIn2 } from "../firebaseAuth";
+import { MDBBtn, MDBIcon, MDBSpinner } from "mdb-react-ui-kit";
 import { motion, AnimatePresence } from "framer-motion";
+import { useDispatch } from "react-redux";
+import { showSupport } from "../store/appSlice";
+import { setUser } from "../store/authSlice";
 // import "./styles.css";
 
 export default function Signin() {
 	const { t, i18n } = useTranslation();
 	const navigate = useNavigate();
 	const [visiblePassword, setVisiblePassword] = useState(false);
-	const [centredModal, setCentredModal] = useState(false);
-	const [supportModal, setSupportModal] = useState(false);
-	const [supportContacts, setSupportContacts] = useState({});
-	const [loading, setLoading] = useState(false);
-	const [modalText, setModalText] = useState("");
-	const [user, setUser] = useState(null);
-	const [visible, setVisible] = useState(true);
+	const dispatch = useDispatch();
 
 	const togglePasswordVisible = () => {
 		setVisiblePassword(!visiblePassword);
-	};
-
-	const toggleOpen = () => {
-		setCentredModal(!centredModal);
-	};
-
-	const toggleSupportOpen = () => {
-		if (!supportModal) {
-			setLoading(true);
-			fetchSupportContacts()
-				.then((data) => {
-					setSupportContacts(data);
-					setLoading(false);
-					setSupportModal(!supportModal);
-					setSupportModal(!supportModal);
-				})
-				.catch((error) => {
-					setModalText(error);
-					setCentredModal(true);
-					setLoading(false);
-				});
-		} else {
-			setSupportModal(!supportModal);
-		}
 	};
 
 	const SignInSchema = Yup.object().shape({
@@ -99,13 +56,12 @@ export default function Signin() {
 	const handleSubmit = (values, { setSubmitting }) => {
 		firebaseSignIn2(values.username, values.password)
 			.then((response) => {
-				setUser(response.user);
+				dispatch(setUser(response.user));
 				navigate("/");
 			})
 			.catch((error, a, b) => {
 				console.log(error, a, b);
-				setModalText(error);
-				setCentredModal(true);
+				dispatch(modalError(error));
 				setSubmitting(false);
 			});
 	};
@@ -219,95 +175,11 @@ export default function Signin() {
 					<div>{t("Have a problem?")}</div>
 					<Link
 						className="ms-3 font-black text-primary"
-						onClick={toggleSupportOpen}
+						onClick={() => dispatch(showSupport())}
 					>
-						{loading ? (
-							<MDBSpinner color="primary" style={{ width: 22, height: 22 }}>
-								<span className="visually-hidden">Loading...</span>
-							</MDBSpinner>
-						) : (
-							t("Contact Us")
-						)}
+						{t("Contact Us")}
 					</Link>
 				</div>
-
-				<MDBModal
-					tabIndex="-1"
-					open={centredModal}
-					onClose={() => setCentredModal(false)}
-				>
-					<MDBModalDialog centered style={{ maxWidth: 300 }}>
-						<MDBModalContent>
-							<MDBModalBody className="text-center py-5">
-								<img
-									src="/favcon 1.png"
-									className="img-fluid mb-5"
-									alt="logo"
-								/>
-								<h3 className="mb-0">{t(modalText)}</h3>
-							</MDBModalBody>
-							<MDBModalFooter>
-								<MDBBtn color="primary" onClick={toggleOpen}>
-									OK
-								</MDBBtn>
-							</MDBModalFooter>
-						</MDBModalContent>
-					</MDBModalDialog>
-				</MDBModal>
-
-				<MDBModal
-					tabIndex="-1"
-					open={supportModal}
-					onClose={() => setSupportModal(false)}
-				>
-					<MDBModalDialog centered style={{ maxWidth: 400 }}>
-						<MDBModalContent>
-							<MDBModalBody className="text-center py-5">
-								<img
-									src="/favcon 1.png"
-									className="img-fluid mb-5"
-									alt="logo"
-								/>
-								<h3 className="font-black">Have a problem?</h3>
-								<div className="lead">Kindly contact us through email:</div>
-								<div className="lead text-primary">
-									<a href={`mailto:${supportContacts.email}`} target="_blank">
-										{supportContacts.email}
-									</a>
-								</div>
-								<div className="lead">Whatsapp:</div>
-								<div className="lead text-primary">
-									<a
-										href={`https://wa.me/${supportContacts.whatsapp?.replace(
-											/[^\d]/g,
-											""
-										)}`}
-										target="_blank"
-									>
-										{supportContacts.whatsapp}
-									</a>
-								</div>
-								<div className="lead">Or Telegram:</div>
-								<div className="lead text-primary">
-									<a
-										href={`https://t.me/${supportContacts.telegram?.replace(
-											/@/g,
-											""
-										)}`}
-										target="_blank"
-									>
-										{supportContacts.telegram}
-									</a>
-								</div>
-							</MDBModalBody>
-							<MDBModalFooter>
-								<MDBBtn color="primary" onClick={toggleSupportOpen}>
-									OK
-								</MDBBtn>
-							</MDBModalFooter>
-						</MDBModalContent>
-					</MDBModalDialog>
-				</MDBModal>
 			</div>
 		</motion.div>
 		// </AnimatePresence>

@@ -1,34 +1,26 @@
 import React, { useEffect, useState } from "react";
-import { fetchUserData } from "../firebaseAuth";
 import axios from "axios";
-import { useSelector } from "react-redux";
-import Drawer from "react-modern-drawer";
+import { useDispatch, useSelector } from "react-redux";
 import "react-modern-drawer/dist/index.css";
-import { useMobileOrTabletMediaQuery } from "../responsiveHook";
 import { Link } from "react-router-dom";
 import {
 	MDBBtn,
 	MDBContainer,
-	MDBListGroup,
-	MDBListGroupItem,
 	MDBTabs,
 	MDBTabsItem,
 	MDBTabsLink,
-	MDBTabsContent,
-	MDBTabsPane,
 	MDBIcon,
-	MDBCard,
-	MDBCardBody,
 	MDBInput,
-	MDBRow,
-	MDBCol,
 	MDBTextArea,
 } from "mdb-react-ui-kit";
 import { Input } from "reactstrap";
+import { useTranslation } from "react-i18next";
+import { showSupport } from "../store/appSlice";
 // import { Select } from "reactstrap";
 
 const Home = () => {
-	const isMobileOrTablet = useMobileOrTabletMediaQuery();
+	const { t, i18n } = useTranslation();
+	const dispatch = useDispatch();
 	const location = "home";
 	const user = useSelector((state) => state.auth.user);
 	const [isOpen, setIsOpen] = React.useState(false);
@@ -4177,74 +4169,8 @@ const Home = () => {
 
 	return (
 		<div>
-			<Drawer
-				open={isOpen}
-				onClose={toggleDrawer}
-				direction="left"
-				style={{ paddingTop: isMobileOrTablet ? "64px" : "83px", width: 200 }}
-			>
-				<MDBListGroup light small className="mb-4">
-					<MDBTabs>
-						<MDBListGroupItem
-							action
-							active={location === "home"}
-							noBorders
-							className="px-3"
-							tag={Link}
-							to="/"
-						>
-							Home
-						</MDBListGroupItem>
-						<MDBListGroupItem
-							action
-							active={location === "profile"}
-							noBorders
-							className="px-3"
-							tag={Link}
-							to="/"
-						>
-							My Orders
-						</MDBListGroupItem>
-						<MDBListGroupItem
-							action
-							active={location === "messages"}
-							noBorders
-							className="px-3"
-							tag={Link}
-							to="/"
-						>
-							Wallet
-						</MDBListGroupItem>
-						<MDBListGroupItem
-							action
-							active={location === "settings"}
-							noBorders
-							className="px-3"
-							tag={Link}
-							to="/"
-						>
-							Profile
-						</MDBListGroupItem>
-						<MDBListGroupItem
-							action
-							active={location === "settings"}
-							noBorders
-							className="px-3"
-							tag={Link}
-							to="/"
-						>
-							Referral program
-						</MDBListGroupItem>
-					</MDBTabs>
-				</MDBListGroup>
-				<MDBContainer>
-					<MDBBtn color="danger" block onClick={toggleDrawer}>
-						Sign Out
-					</MDBBtn>
-				</MDBContainer>
-			</Drawer>
 			<div className="font-black text-center mt-4 mb-2">
-				PICK YOUR TARGET SOCIAL MEDIA:
+				PICK YOUR TARGET SOCIAL MEDIA
 			</div>
 			<MDBTabs className="mb-3- justify-content-center">
 				{Object.entries(data).map(([website, service]) => (
@@ -4268,11 +4194,14 @@ const Home = () => {
 					</MDBTabsItem>
 				))}
 			</MDBTabs>
-			<div className="border-2 border-top border-primary">
+			<div className="border-2 border-top border-primary pb-4 shadow">
 				<MDBContainer style={{ maxWidth: 400 }} className="mx-auto">
 					{selected.website && (
 						<>
-							<label htmlFor="service" className="form-label mb-0 mt-2">
+							<label
+								htmlFor="service"
+								className="form-label font-black mb-0 mt-2"
+							>
 								Service:
 							</label>
 							<Input
@@ -4299,7 +4228,10 @@ const Home = () => {
 					)}
 					{selected.website && selected.service && (
 						<>
-							<label htmlFor="subService" className="form-label mb-0 mt-2">
+							<label
+								htmlFor="subService"
+								className="form-label font-black mb-0 mt-2"
+							>
 								Type:
 							</label>
 							<Input
@@ -4326,7 +4258,7 @@ const Home = () => {
 					)}
 					{selected.website && selected.service && selected.subService && (
 						<>
-							<label htmlFor="link" className="form-label mb-0 mt-2">
+							<label htmlFor="link" className="form-label font-black mb-0 mt-2">
 								{
 									data[selected.website].services[selected.service].subservices[
 										selected.subService
@@ -4344,7 +4276,10 @@ const Home = () => {
 								selected.subService
 							]?.type == "default" && (
 								<>
-									<label htmlFor="quantity" className="form-label mb-0 mt-2">
+									<label
+										htmlFor="quantity"
+										className="form-label font-black mb-0 mt-2"
+									>
 										Quantity:
 									</label>
 									<MDBInput
@@ -4354,12 +4289,14 @@ const Home = () => {
 										name="quantity"
 										className="bg-white"
 										onChange={handleChange}
-										min={data[selected.website].services[selected.service].subservices[
-											selected.subService
-										]?.min}
-										max={data[selected.website].services[selected.service].subservices[
-											selected.subService
-										]?.max}
+										min={
+											data[selected.website].services[selected.service]
+												.subservices[selected.subService]?.min
+										}
+										max={
+											data[selected.website].services[selected.service]
+												.subservices[selected.subService]?.max
+										}
 									/>
 								</>
 							)}
@@ -4367,11 +4304,14 @@ const Home = () => {
 								selected.subService
 							]?.type == "custom_comments" && (
 								<>
-									<label htmlFor="comments" className="form-label mb-0 mt-2">
+									<label
+										htmlFor="comments"
+										className="form-label font-black mb-0 mt-2"
+									>
 										Comments:
 									</label>
 									<MDBTextArea
-									rows={4}
+										rows={4}
 										id="comments"
 										value={selected.comments}
 										name="comments"
@@ -4380,40 +4320,89 @@ const Home = () => {
 									/>
 								</>
 							)}
-							<label htmlFor="price" className="form-label mb-0 mt-2">
+							<label
+								htmlFor="price"
+								className="form-label font-black mb-0 mt-2"
+							>
 								Price
 							</label>
 							<Input
 								id="price"
 								type="text"
-								value={data[selected.website].services[selected.service].subservices[
-									selected.subService
-								]?.price_text.xaf.en}
+								value={
+									data[selected.website].services[selected.service].subservices[
+										selected.subService
+									]?.price_text.xaf.en
+								}
 								name="price"
 								disabled
 								onChange={handleChange}
 							/>
-							<label htmlFor="note" className="form-label mb-0 mt-2">
+							<label htmlFor="note" className="form-label font-black mb-0 mt-2">
 								Note
 							</label>
 							<MDBTextArea
 								id="note"
 								type="text"
-								value={data[selected.website].services[selected.service].subservices[
-									selected.subService
-								]?.description.en.replace(/\|/g, '\n')}
+								value={data[selected.website].services[
+									selected.service
+								].subservices[selected.subService]?.description.en.replace(
+									/\|/g,
+									"\n"
+								)}
 								name="note"
 								style={{ height: 96 }}
 								disabled
 								onChange={handleChange}
+								className="mb-2"
 							/>
-								<div className="text-center my-2">Don’t know how to use this service?<br/>Watch this video: <Link>Tutorial</Link></div>
-								<div className="w-250 mx-auto">
-									<MDBBtn color="success" block>Purchase</MDBBtn>
+							{data[selected.website].services[selected.service].subservices[
+								selected.subService
+							]?.youtube_tutorial && (
+								<div className="text-center mt-2">
+									Don’t know how to use this service?
+									<br />
+									Watch this video:{" "}
+									<a
+										href={
+											data[selected.website].services[selected.service]
+												.subservices[selected.subService]?.youtube_tutorial.en
+										}
+										target="_blank"
+										className="font-black text-primary"
+									>
+										Tutorial
+									</a>
 								</div>
+							)}
+							<div className="w-250 mx-auto pt-3">
+								<MDBBtn color="success" size="lg" className="font-black" block>
+									Purchase
+								</MDBBtn>
+							</div>
 						</>
 					)}
 				</MDBContainer>
+			</div>
+
+			<div className="d-sm-flex text-center justify-content-center mt-4 font-black lead">
+				<div>{t("Have an issue/question?")}</div>
+				<Link
+					className="ms-3 text-primary"
+					onClick={() => dispatch(showSupport())}
+				>
+					{t("Contact Us")}
+				</Link>
+			</div>
+			<div className=" text-center justify-content-center mt-2 pb-5 lead">
+				<div className=" font-black">{t("Have an android phone?")}</div>
+				<div>
+					<span className=" font-black">{t("checkout the Exo Booster app:")}</span>
+					<MDBBtn color="primary" size="sm" className="ms-3">
+						<MDBIcon fas icon="download" className="me-2" />
+						Download
+					</MDBBtn>
+				</div>
 			</div>
 		</div>
 	);

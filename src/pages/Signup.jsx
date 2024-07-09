@@ -1,28 +1,19 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { Link, useLoaderData, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { useTranslation } from "react-i18next";
 import Select, { components } from "react-select";
-import { firbaseSignUp, firebaseSignIn1 } from "../firebaseAuth";
+import { firebaseSignIn1 } from "../firebaseAuth";
 import { motion, AnimatePresence } from "framer-motion";
 import {
 	MDBBtn,
 	MDBIcon,
-	MDBInput,
-	MDBInputGroup,
 	MDBTypography,
-	MDBModal,
-	MDBModalBody,
-	MDBModalContent,
-	MDBModalDialog,
-	MDBModalFooter,
-	MDBModalHeader,
-	MDBModalTitle,
 	MDBSpinner,
 } from "mdb-react-ui-kit";
-import { use } from "i18next";
+import { useDispatch } from "react-redux";
 
 const capitalize = (str) => (str ? str[0].toUpperCase() + str.slice(1) : "");
 
@@ -65,8 +56,7 @@ export default function Signup() {
 	const { t, i18n } = useTranslation();
 	const [curCountry, setCurCountry] = useState("");
 	const [visiblePassword, setVisiblePassword] = useState(false);
-	const [centredModal, setCentredModal] = useState(false);
-	const [modalText, setModalText] = useState("");
+	const dispatch = useDispatch();
 	const [loading, setLoading] = useState(false);
 
 	const initialValues = {
@@ -99,8 +89,7 @@ export default function Signup() {
 				setLoading(false);
 			})
 			.catch((error) => {
-				setModalText(t("Could not get available countries."));
-				setCentredModal(true);
+				dispatch(modalError(t("Could not get available countries.")));
 				setLoading(false);
 			});
 		// let response = {
@@ -153,14 +142,14 @@ export default function Signup() {
 		);
 
 		if (response.data.error) {
-			setModalText(response.data.error[values.language]);
-			setCentredModal(true);
+			dispatch(modalError(response.data.error[values.language]));
 			setSubmitting(false);
 			return;
 		}
 
 		setSubmitting(true);
-		firebaseSignIn1(response.data.data.auth_token).then((res) => {
+		firebaseSignIn1(response.data.data.auth_token).then((response) => {
+			dispatch(setUser(response.user));
 			navigate("/");
 		});
 	};
@@ -179,10 +168,6 @@ export default function Signup() {
 
 	const togglePasswordVisible = () => {
 		setVisiblePassword(!visiblePassword);
-	};
-
-	const toggleOpen = () => {
-		setCentredModal(!centredModal);
 	};
 
 	return (
@@ -385,30 +370,6 @@ export default function Signup() {
 							{t("LOGIN")}
 						</Link>
 					</div>
-
-					<MDBModal
-						tabIndex="-1"
-						open={centredModal}
-						onClose={() => setCentredModal(false)}
-					>
-						<MDBModalDialog centered style={{ maxWidth: 300 }}>
-							<MDBModalContent>
-								<MDBModalBody className="text-center py-5">
-									<img
-										src="/favcon 1.png"
-										className="img-fluid mb-5"
-										alt="logo"
-									/>
-									<h3 className="mb-0">{modalText}</h3>
-								</MDBModalBody>
-								<MDBModalFooter>
-									<MDBBtn color="primary" onClick={toggleOpen}>
-										OK
-									</MDBBtn>
-								</MDBModalFooter>
-							</MDBModalContent>
-						</MDBModalDialog>
-					</MDBModal>
 				</div>
 			</motion.div>
 
