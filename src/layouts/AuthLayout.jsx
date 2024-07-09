@@ -13,6 +13,7 @@ import {
 	MDBIcon,
 	MDBRow,
 	MDBTypography,
+	MDBContainer
 } from "mdb-react-ui-kit";
 import {
 	useMobileMediaQuery,
@@ -34,7 +35,7 @@ export default function AuthLayout() {
 	useEffect(() => {
 		const unsubscribe = onAuthStateChanged(auth, (user) => {
 			if (user) {
-				navigate("/home");
+				navigate("/");
 				user.displayName = user.email.split("@")[0];
 				setUser(user);
 			} else {
@@ -47,7 +48,7 @@ export default function AuthLayout() {
 	}, []);
 
 	return (
-		<>
+		<MDBContainer>
 			{location.pathname === "/auth" ? (
 				<>
 					<MDBRow className="mt-4 mt-lg-5 pt-0 pt-md-5">
@@ -249,6 +250,6 @@ export default function AuthLayout() {
 					</motion.div>
 				</div>
 			</div>
-		</>
+		</MDBContainer>
 	);
 }

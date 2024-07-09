@@ -100,7 +100,7 @@ export default function Signin() {
 		firebaseSignIn2(values.username, values.password)
 			.then((response) => {
 				setUser(response.user);
-				navigate("/home");
+				navigate("/");
 			})
 			.catch((error, a, b) => {
 				console.log(error, a, b);

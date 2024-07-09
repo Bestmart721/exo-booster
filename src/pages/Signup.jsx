@@ -161,7 +161,7 @@ export default function Signup() {
 
 		setSubmitting(true);
 		firebaseSignIn1(response.data.data.auth_token).then((res) => {
-			navigate("/home");
+			navigate("/");
 		});
 	};
 

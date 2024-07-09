@@ -101,3 +101,21 @@ export const fetchSupportContacts = () => {
 			});
 	})
 }
+
+export const fetchUserData = () => {
+	return new Promise((resolve, reject) => {
+		const docRef = doc(collection(db, "Users"), "YqKZwfrmYZcBN4cO4ZnoCoIHmoG3");
+		getDoc(docRef)
+			.then((doc) => {
+				// console.log(doc)
+				if (doc.exists) {
+					resolve(doc.data())
+				}
+				reject("Error getting document")
+			})
+			.catch((error) => {
+				console.log("Error getting document:", error);
+				reject(error)
+			});
+	})
+}
