@@ -7,6 +7,7 @@ import {
 	useNavigate,
 } from "react-router-dom";
 import {
+	MDBBadge,
 	MDBBtn,
 	MDBContainer,
 	MDBDropdown,
@@ -28,7 +29,12 @@ import {
 } from "mdb-react-ui-kit";
 import { useTranslation } from "react-i18next";
 import { onAuthStateChanged } from "firebase/auth";
-import { auth, fetchSupportContacts, firebaseSignOut } from "../firebaseAuth";
+import {
+	auth,
+	fetchSupportContacts,
+	fetchUserData,
+	firebaseSignOut,
+} from "../firebaseAuth";
 import { useLanguage } from "./LanguageContext";
 import { useSelector, useDispatch } from "react-redux";
 import { setUser } from "../store/authSlice";
@@ -43,7 +49,7 @@ import { useMobileOrTabletMediaQuery } from "../responsiveHook";
 // import { R } from "reactstrap";
 
 const languages = {
-	en: { name: "English", flag: "us.svg" },
+	en: { name: "English", flag: "gb.svg" },
 	fr: { name: "Français", flag: "fr.svg" },
 };
 
@@ -67,10 +73,19 @@ export default function RootLayout() {
 	useEffect(() => {
 		const unsubscribe = onAuthStateChanged(auth, (user) => {
 			if (user) {
-				console.log(user);
-				user.displayName = user.email.split("@")[0];
-				const { accessToken, displayName, email, uid } = user;
-				dispatch(setUser({ accessToken, displayName, email, uid }));
+				fetchUserData(user.uid).then((userData) => {
+					dispatch(
+						setUser({
+							accessToken: user.accessToken,
+							uid: user.uid,
+							displayName: userData.username,
+							balance: userData.balance,
+							currency: userData.currency,
+							discount: userData.discount,
+							discountUsesLeft: userData.discount_uses_left,
+						})
+					);
+				});
 			} else {
 				dispatch(setUser(null));
 			}
@@ -80,7 +95,6 @@ export default function RootLayout() {
 					setSupportContacts(data);
 				})
 				.catch((error) => {
-					console.log(error);
 					dispatch(modalError(error));
 				})
 				.finally(() => setLoading(false));
@@ -92,9 +106,13 @@ export default function RootLayout() {
 
 	const signOut = () => {
 		firebaseSignOut().then(() => {
-			dispatch(setUser(null), () => console.log("User signed out"));
-			// navigate("/auth");
+			dispatch(setUser(null));
+			navigate("/auth");
 		});
+	};
+
+	const toggleDrawerIn = () => {
+		dispatch(toggleDrawer());
 	};
 
 	return (
@@ -114,18 +132,31 @@ export default function RootLayout() {
 							className="px-3"
 							tag={Link}
 							to="/"
+							onClick={toggleDrawerIn}
 						>
 							Home
 						</MDBListGroupItem>
 						<MDBListGroupItem
 							action
-							active={location === "profile"}
+							active={location === "settings"}
+							noBorders
+							className="px-3"
+							tag={Link}
+							to="/account"
+							onClick={toggleDrawerIn}
+						>
+							My Account
+						</MDBListGroupItem>
+						<MDBListGroupItem
+							action
+							active={location === "account"}
 							noBorders
 							className="px-3"
 							tag={Link}
 							to="/"
+							onClick={toggleDrawerIn}
 						>
-							My Orders
+							My Orders #
 						</MDBListGroupItem>
 						<MDBListGroupItem
 							action
@@ -134,8 +165,9 @@ export default function RootLayout() {
 							className="px-3"
 							tag={Link}
 							to="/"
+							onClick={toggleDrawerIn}
 						>
-							Wallet
+							Wallet #
 						</MDBListGroupItem>
 						<MDBListGroupItem
 							action
@@ -144,23 +176,21 @@ export default function RootLayout() {
 							className="px-3"
 							tag={Link}
 							to="/"
+							onClick={toggleDrawerIn}
 						>
-							Profile
-						</MDBListGroupItem>
-						<MDBListGroupItem
-							action
-							active={location === "settings"}
-							noBorders
-							className="px-3"
-							tag={Link}
-							to="/"
-						>
-							Referral program
+							Referral program #
 						</MDBListGroupItem>
 					</MDBTabs>
 				</MDBListGroup>
 				<MDBContainer>
-					<MDBBtn color="danger" block onClick={() => dispatch(toggleDrawer())}>
+					<MDBBtn
+						color="danger"
+						block
+						onClick={() => {
+							signOut();
+							dispatch(toggleDrawer());
+						}}
+					>
 						Sign Out
 					</MDBBtn>
 				</MDBContainer>
@@ -174,17 +204,43 @@ export default function RootLayout() {
 				className="shadow-none-"
 			>
 				<MDBContainer>
-					<div className="d-flex align-items-center gap-3">
+					<div className="d-flex align-items-center gap-2">
 						{user && (
-							<MDBIcon icon="bars" onClick={() => dispatch(toggleDrawer())} />
+							<MDBBtn floating color="link" size={isMobileOrTablet && "sm"}>
+								<MDBIcon
+									icon="bars"
+									color="primary"
+									size="lg"
+									onClick={() => dispatch(toggleDrawer())}
+								/>
+							</MDBBtn>
 						)}
 						{/* <MDBIcon fas icon="bars" className="me-3" /> */}
 						<MDBNavbarBrand tag={Link} to="/">
 							<img src="/logopng 1.png" className="logo-img" alt="logo" />
 						</MDBNavbarBrand>
 					</div>
-					<div className="mb-lg-0 d-flex flex-grow-0 w-auto gap-4 gap-md-5">
+					<div className="mb-lg-0 d-flex align-items-center flex-grow-0 w-auto gap-4 gap-md-5">
 						{user && (
+							<span
+								className="cursor-pointer"
+								// onClick={() => dispatch(toggleDrawer())}
+							>
+								<MDBBadge pill light color="warning">
+									<MDBBtn
+										floating
+										style={{ margin: "-0.7em" }}
+										size="sm"
+										color="warning"
+										className="me-1"
+									>
+										<MDBIcon fas icon="plus" color="white" />
+									</MDBBtn>
+									{user.balance?.toFixed(2)} {user.currency?.toUpperCase()}
+								</MDBBadge>
+							</span>
+						)}
+						{/* {user && (
 							<MDBDropdown>
 								<MDBDropdownToggle tag="a" className="nav-link" role="button">
 									{user.displayName}
@@ -199,16 +255,21 @@ export default function RootLayout() {
 									</MDBDropdownItem>
 								</MDBDropdownMenu>
 							</MDBDropdown>
-						)}
+						)} */}
 						<MDBDropdown>
-							<MDBDropdownToggle tag="a" className="nav-link" role="button">
-								<img
-									src={getFlagUrl(languages[language].flag)}
-									alt={languages[language].name}
-									width={28}
-									className="mb-1"
-								/>
-								{/* {i18n.language.toUpperCase()} */}
+							<MDBDropdownToggle
+								tag="a"
+								className="nav-link language-dropdown"
+								role="button"
+							>
+								<MDBBtn floating color="link">
+									<img
+										src={getFlagUrl(languages[language].flag)}
+										alt={languages[language].name}
+										width={28}
+									/>
+									{/* {i18n.language.toUpperCase()} */}
+								</MDBBtn>
 							</MDBDropdownToggle>
 							<MDBDropdownMenu responsive="end">
 								{Object.entries(languages).map(([code, { name, flag }]) => (

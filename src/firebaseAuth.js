@@ -102,12 +102,11 @@ export const fetchSupportContacts = () => {
 	})
 }
 
-export const fetchUserData = () => {
+export const fetchUserData = (uid) => {
 	return new Promise((resolve, reject) => {
-		const docRef = doc(collection(db, "Users"), "YqKZwfrmYZcBN4cO4ZnoCoIHmoG3");
+		const docRef = doc(collection(db, "Users"), uid);
 		getDoc(docRef)
 			.then((doc) => {
-				// console.log(doc)
 				if (doc.exists) {
 					resolve(doc.data())
 				}

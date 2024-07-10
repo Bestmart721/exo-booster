@@ -14,6 +14,8 @@ import {
 	MDBSpinner,
 } from "mdb-react-ui-kit";
 import { useDispatch } from "react-redux";
+import { setUser } from "../store/authSlice";
+import { modalError } from "../store/appSlice";
 
 const capitalize = (str) => (str ? str[0].toUpperCase() + str.slice(1) : "");
 
@@ -148,8 +150,9 @@ export default function Signup() {
 		}
 
 		setSubmitting(true);
-		firebaseSignIn1(response.data.data.auth_token).then((response) => {
-			dispatch(setUser(response.user));
+		firebaseSignIn1(response.data.data.auth_token).then((user) => {
+			const { accessToken, displayName, email, uid } = user;
+			dispatch(setUser({ accessToken, displayName, email, uid }));
 			navigate("/");
 		});
 	};

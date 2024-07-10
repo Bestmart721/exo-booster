@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
@@ -7,7 +7,7 @@ import { firebaseSignIn2 } from "../firebaseAuth";
 import { MDBBtn, MDBIcon, MDBSpinner } from "mdb-react-ui-kit";
 import { motion, AnimatePresence } from "framer-motion";
 import { useDispatch } from "react-redux";
-import { showSupport } from "../store/appSlice";
+import { modalError, showSupport } from "../store/appSlice";
 import { setUser } from "../store/authSlice";
 // import "./styles.css";
 
@@ -55,13 +55,15 @@ export default function Signin() {
 
 	const handleSubmit = (values, { setSubmitting }) => {
 		firebaseSignIn2(values.username, values.password)
-			.then((response) => {
-				dispatch(setUser(response.user));
+			.then((user) => {
+				const { accessToken, displayName, email, uid } = user;
+				dispatch(setUser({ accessToken, displayName, email, uid }));
 				navigate("/");
 			})
 			.catch((error, a, b) => {
-				console.log(error, a, b);
 				dispatch(modalError(error));
+			})
+			.finally(() => {
 				setSubmitting(false);
 			});
 	};

@@ -22,6 +22,7 @@ import ErrorPage from "./pages/error-page";
 import Signup from "./pages/Signup";
 import Signin from "./pages/Signin";
 import Home from "./pages/Home.jsx";
+import Account from "./pages/Account.jsx";
 
 const router = createBrowserRouter([
 	{
@@ -47,6 +48,10 @@ const router = createBrowserRouter([
 				index: true,
 				element: <Home />,
 			},
+			{
+				path: "/account",
+				element: <Account />,
+			}
 		],
 		// errorElement: <ErrorPage />,
 	},
