@@ -32,7 +32,7 @@ export default function AuthLayout() {
 	const isMonileOrTablet = useMobileOrTabletMediaQuery();
 
 	return (
-		<MDBContainer>
+		<MDBContainer id="authLayout">
 			{location.pathname === "/auth" ? (
 				<>
 					<MDBRow className="mt-4 mt-lg-5 pt-0 pt-md-5">

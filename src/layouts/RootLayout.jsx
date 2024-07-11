@@ -31,13 +31,14 @@ import { useTranslation } from "react-i18next";
 import { onAuthStateChanged } from "firebase/auth";
 import {
 	auth,
+	docRef,
 	fetchSupportContacts,
 	fetchUserData,
 	firebaseSignOut,
 } from "../firebaseAuth";
 import { useLanguage } from "./LanguageContext";
 import { useSelector, useDispatch } from "react-redux";
-import { setUser } from "../store/authSlice";
+import { setUser, unsetUser } from "../store/authSlice";
 import {
 	hideError,
 	hideSupport,
@@ -46,7 +47,7 @@ import {
 } from "../store/appSlice";
 import Drawer from "react-modern-drawer";
 import { useMobileOrTabletMediaQuery } from "../responsiveHook";
-// import { R } from "reactstrap";
+import { onSnapshot } from "firebase/firestore";
 
 const languages = {
 	en: { name: "English", flag: "gb.svg" },
@@ -87,7 +88,7 @@ export default function RootLayout() {
 					);
 				});
 			} else {
-				dispatch(setUser(null));
+				dispatch(unsetUser());
 			}
 
 			fetchSupportContacts()
@@ -101,12 +102,30 @@ export default function RootLayout() {
 		});
 
 		// Cleanup subscription on unmount
-		return () => unsubscribe();
+		return unsubscribe;
 	}, []);
+
+	useEffect(() => {
+		if (user?.uid) {
+			const unsubscribe2 = onSnapshot(docRef(user.uid), (doc) => {
+				const userData = doc.data();
+				dispatch(
+					setUser({
+						displayName: userData.username,
+						balance: userData.balance,
+						currency: userData.currency,
+						discount: userData.discount,
+						discountUsesLeft: userData.discount_uses_left,
+					})
+				);
+			});
+			return unsubscribe2;
+		}
+	}, [user?.uid]);
 
 	const signOut = () => {
 		firebaseSignOut().then(() => {
-			dispatch(setUser(null));
+			dispatch(unsetUser());
 			navigate("/auth");
 		});
 	};
@@ -114,6 +133,20 @@ export default function RootLayout() {
 	const toggleDrawerIn = () => {
 		dispatch(toggleDrawer());
 	};
+
+	function formatNumber(num = 0) {
+		if (num >= 1e12) {
+			return (num / 1e12).toFixed(2) + "T";
+		} else if (num >= 1e9) {
+			return (num / 1e9).toFixed(2) + "B";
+		} else if (num >= 1e6) {
+			return (num / 1e6).toFixed(2) + "M";
+		} else if (num >= 1e3) {
+			return (num / 1e3).toFixed(2) + "K";
+		} else {
+			return num.toFixed(2);
+		}
+	}
 
 	return (
 		<>
@@ -206,7 +239,11 @@ export default function RootLayout() {
 				<MDBContainer>
 					<div className="d-flex align-items-center gap-2">
 						{user && (
-							<MDBBtn floating color="link" size={isMobileOrTablet && "sm"}>
+							<MDBBtn
+								floating
+								color="link"
+								size={isMobileOrTablet ? "sm" : "lg"}
+							>
 								<MDBIcon
 									icon="bars"
 									color="primary"
@@ -220,7 +257,7 @@ export default function RootLayout() {
 							<img src="/logopng 1.png" className="logo-img" alt="logo" />
 						</MDBNavbarBrand>
 					</div>
-					<div className="mb-lg-0 d-flex align-items-center flex-grow-0 w-auto gap-4 gap-md-5">
+					<div className="mb-lg-0 d-flex align-items-center flex-grow-0 w-auto gap-2 gap-md-4">
 						{user && (
 							<span
 								className="cursor-pointer"
@@ -236,7 +273,8 @@ export default function RootLayout() {
 									>
 										<MDBIcon fas icon="plus" color="white" />
 									</MDBBtn>
-									{user.balance?.toFixed(2)} {user.currency?.toUpperCase()}
+									{formatNumber(user.balance || 0)}{" "}
+									{user.currency?.toUpperCase() || "XAF"}
 								</MDBBadge>
 							</span>
 						)}
@@ -259,10 +297,14 @@ export default function RootLayout() {
 						<MDBDropdown>
 							<MDBDropdownToggle
 								tag="a"
-								className="nav-link language-dropdown"
-								role="button"
+								className="language-dropdown"
+								// role="button"
 							>
-								<MDBBtn floating color="link">
+								<MDBBtn
+									floating
+									color="link"
+									size={isMobileOrTablet ? "" : "lg"}
+								>
 									<img
 										src={getFlagUrl(languages[language].flag)}
 										alt={languages[language].name}

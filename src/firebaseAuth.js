@@ -104,7 +104,7 @@ export const fetchSupportContacts = () => {
 
 export const fetchUserData = (uid) => {
 	return new Promise((resolve, reject) => {
-		const docRef = doc(collection(db, "Users"), uid);
+		const docRef = doc(db, "Users", uid);
 		getDoc(docRef)
 			.then((doc) => {
 				if (doc.exists) {
@@ -118,3 +118,5 @@ export const fetchUserData = (uid) => {
 			});
 	})
 }
+
+export const docRef = uid => doc(db, "Users", uid);

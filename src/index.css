@@ -1,11 +1,16 @@
 #root {
-	/* display: flex;
+	display: flex;
     flex-direction: column;
     height: 100vh;
     width: 100%;
-    overflow: auto; */
-		min-height: 100vh;
-	background-color: #ffdffe !important;
+    overflow: auto;
+		background-color: #ffe9fe !important;
+}
+#root:has(#authLayout) {
+	background-color: #ffe9fe !important;
+}
+.bg-primary-light {
+	background-color: #ffe9fe !important;
 }
 /* 
 @media (min-width: 1400px) {
@@ -80,7 +85,8 @@
 		0 4px 18px 0 rgba(255, 0, 247, 0.2);
 
 	--mdb-btn-active-border-color: #bb00cc;
-	--mdb-btn-active-shadow: 0 8px 9px -4px rgba(0, 0, 0, 0.15), 0 4px 18px 0 rgba(0, 0, 0, 0.1);
+	--mdb-btn-active-shadow: 0 8px 9px -4px rgba(0, 0, 0, 0.15),
+		0 4px 18px 0 rgba(0, 0, 0, 0.1);
 	--mdb-btn-disabled-color: #fff;
 	--mdb-btn-disabled-bg: #ff00f7;
 	--mdb-btn-disabled-border-color: #ff00f7;
@@ -219,7 +225,6 @@
 	z-index: 999;
 }
 
-
 .sidebar {
 	position: fixed;
 	top: 0;
@@ -240,15 +245,15 @@
 	border-top-right-radius: 0.5rem !important;
 	padding: 0.7rem !important;
 }
-.media-tab .nav-link.active {
-	/* border-bottom-color: red !important; */
-	margin-bottom: -2px;
-}
-.media-tab .nav-link {
+/* .media-tab .nav-link.active { */
+/* border-bottom-color: red !important; */
+/* margin-bottom: -2px; */
+/* } */
+/* .media-tab .nav-link {
 	margin-bottom: 0px;
 	padding: 0.7rem !important;
-	border-bottom-color: #ffdffe !important;
-}
+	border-bottom-color: #ffe9fe !important;
+} */
 .rounded-top-4 {
 	border-top-left-radius: 0.4rem !important;
 	border-top-right-radius: 0.4rem !important;
@@ -260,4 +265,31 @@
 
 .language-dropdown::after {
 	content: none;
+}
+
+.nav-tabs .nav-link {
+	margin-bottom: -2px;
+	background: 0 0;
+	border: 2px solid transparent;
+	padding: 0.7rem !important;
+	text-align: center;
+}
+.nav-link {
+	display: block;
+	padding: 0.5rem 1rem;
+	color: #0d6efd;
+	text-decoration: none;
+	transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
+		border-color 0.15s ease-in-out;
+}
+.nav-tabs .nav-link:hover {
+	background-color: #ffe9fe;
+	border-color: transparent;
+	border-bottom-color: #ff00f7;
+}
+.nav-tabs .nav-item.show .nav-link,
+.nav-tabs .nav-link.active {
+	color: #495057;
+	background-color: #fff;
+	border-color: #ff00f7 #ff00f7 #fff;
 }
