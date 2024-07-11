@@ -61,7 +61,7 @@ export default function Signin() {
 				navigate("/");
 			})
 			.catch((error, a, b) => {
-				dispatch(modalError(error));
+				dispatch(modalError(t(error)));
 			})
 			.finally(() => {
 				setSubmitting(false);

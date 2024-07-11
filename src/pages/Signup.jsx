@@ -144,7 +144,7 @@ export default function Signup() {
 		);
 
 		if (response.data.error) {
-			dispatch(modalError(response.data.error[values.language]));
+			dispatch(modalError(t(response.data.error[values.language])));
 			setSubmitting(false);
 			return;
 		}

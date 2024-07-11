@@ -87,9 +87,10 @@ export function firebaseSignOut() {
 
 export const fetchSupportContacts = () => {
 	return new Promise((resolve, reject) => {
-		const docRef = doc(collection(db, "Admin"), "SupportContacts");
+		const docRef = doc(collection(db, "Extras"), "SupportContactsLinks");
 		getDoc(docRef)
 			.then((doc) => {
+				console.log(doc.data())
 				if (doc.exists) {
 					resolve(doc.data())
 				}
@@ -97,7 +98,7 @@ export const fetchSupportContacts = () => {
 			})
 			.catch((error) => {
 				console.log("Error getting document:", error);
-				reject(error)
+				reject("Check your internet connection and try again.")
 			});
 	})
 }

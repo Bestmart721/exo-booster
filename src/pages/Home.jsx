@@ -34,9 +34,9 @@ const Home = () => {
 	const [data, setData] = useState({});
 	const [selectedOption, setSelectedOption] = useState(null);
 	const [selected, setSelected] = useState({
-		website: "youtube",
-		service: "youtube_custom_comments",
-		subService: "youtube_custom_comments_avg_quality",
+		website: "",
+		service: "",
+		subService: "",
 		link: "",
 		quantity: "",
 		comments: "",
@@ -67,6 +67,7 @@ const Home = () => {
 		let overwrite = {};
 		switch (e.target.name) {
 			case "service":
+				setSelectedOption(null);
 				overwrite = {
 					subService: "",
 					link: "",
@@ -109,7 +110,7 @@ const Home = () => {
 			})
 			.catch((error) => {
 				console.log(error);
-				modalError(error);
+				dispatch(modalError(t(error)));
 			});
 	}, [axios]);
 
@@ -145,7 +146,7 @@ const Home = () => {
 				<MDBContainer style={{ maxWidth: 720 }}>
 					<MDBRow>
 						{Object.keys(data).length > 0 && selected.website ? (
-							<MDBCol sm={12} md={6}>
+							<MDBCol sm={12}>
 								<label
 									htmlFor="service"
 									className="form-label font-black mb-0 mt-2"
@@ -175,14 +176,14 @@ const Home = () => {
 							</MDBCol>
 						) : (
 							<div className="font-black text-center mt-4 py-2 mb-2">
-								PICK YOUR TARGET SOCIAL MEDIA
+								{Object.entries(data).length ? "PICK YOUR TARGET SOCIAL MEDIA" : "Loading services..."}
 							</div>
 						)}
 
 						{Object.keys(data).length > 0 &&
 							selected.website &&
 							selected.service && (
-								<MDBCol sm={12} md={6}>
+								<MDBCol sm={12}>
 									<label
 										// htmlFor="subService"
 										className="form-label font-black mb-0 mt-2"
@@ -242,7 +243,7 @@ const Home = () => {
 											// ),
 											Placeholder: () => (
 												<div style={{ display: "flex", alignItems: "center" }}>
-													<span>{t("Select a country")}...</span>
+													<span>{t("Select a service")}...</span>
 												</div>
 											),
 										}}
@@ -340,7 +341,7 @@ const Home = () => {
 											htmlFor="price"
 											className="form-label font-black mb-0 mt-2"
 										>
-											Price
+											Price:
 										</label>
 										<Input
 											id="price"
@@ -400,23 +401,21 @@ const Home = () => {
 
 									<MDBCol sm={12}>
 										<label className="form-label font-black mb-0 mt-2">
-											Note
+											Note:
 										</label>
 										<MDBCard border="1">
-											<MDBCardBody
-												className="p-3"
-												style={{ whiteSpace: "pre-wrap" }}
-											>
+											<MDBCardBody className="p-3">
 												{data[selected.website].services[
 													selected.service
 												].subservices[selected.subService]?.description[
 													language
-												].replace(/\|/g, "\n") +
-													"\n" +
-													data[selected.website].services[selected.service]
-														.subservices[selected.subService]?.price_text[
-														user.currency
-													][language]}
+												]
+													.split("|")
+													.map((str, index) => (
+														<div key={index}>
+															{index + 1}. {str}
+														</div>
+													))}
 											</MDBCardBody>
 										</MDBCard>
 									</MDBCol>

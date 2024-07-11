@@ -96,7 +96,7 @@ export default function RootLayout() {
 					setSupportContacts(data);
 				})
 				.catch((error) => {
-					dispatch(modalError(error));
+					dispatch(modalError(t(error)));
 				})
 				.finally(() => setLoading(false));
 		});
@@ -350,13 +350,13 @@ export default function RootLayout() {
 					))}
 			</>
 
-			{loading && (
+			{/* {loading && (
 				<div className="d-flex justify-content-center align-items-center position-fixed spinner-wrapper">
 					<MDBSpinner color="white" style={{ width: "3rem", height: "3rem" }}>
 						<span className="visually-hidden">Loading...</span>
 					</MDBSpinner>
 				</div>
-			)}
+			)} */}
 
 			<MDBModal
 				tabIndex="-1"
@@ -385,40 +385,43 @@ export default function RootLayout() {
 			>
 				<MDBModalDialog centered style={{ maxWidth: 400 }}>
 					<MDBModalContent>
-						<MDBModalBody className="text-center py-5">
-							<img src="/favcon 1.png" className="img-fluid mb-5" alt="logo" />
-							<h3 className="font-black">Have a problem?</h3>
-							<div className="lead">Kindly contact us through email:</div>
-							<div className="lead text-primary">
-								<a href={`mailto:${supportContacts.email}`} target="_blank">
-									{supportContacts.email}
-								</a>
-							</div>
-							<div className="lead">Whatsapp:</div>
-							<div className="lead text-primary">
-								<a
-									href={`https://wa.me/${supportContacts.whatsapp?.replace(
-										/[^\d]/g,
-										""
-									)}`}
-									target="_blank"
-								>
-									{supportContacts.whatsapp}
-								</a>
-							</div>
-							<div className="lead">Or Telegram:</div>
-							<div className="lead text-primary">
-								<a
-									href={`https://t.me/${supportContacts.telegram?.replace(
-										/@/g,
-										""
-									)}`}
-									target="_blank"
-								>
-									{supportContacts.telegram}
-								</a>
-							</div>
-						</MDBModalBody>
+						{supportContacts.Email && (
+							<MDBModalBody className="text-center py-5">
+								<img
+									src="/favcon 1.png"
+									className="img-fluid mb-5"
+									alt="logo"
+								/>
+								<h3 className="font-black">Have a problem?</h3>
+								<div className="lead">Kindly contact us through email:</div>
+								<div className="lead text-primary">
+									<a
+										href={supportContacts.Email[language].link}
+										target="_blank"
+									>
+										{supportContacts.Email[language].name}
+									</a>
+								</div>
+								<div className="lead">Whatsapp:</div>
+								<div className="lead text-primary">
+									<a
+										href={supportContacts.Whatsapp[language].link}
+										target="_blank"
+									>
+										{supportContacts.Whatsapp[language].name}
+									</a>
+								</div>
+								<div className="lead">Or Telegram:</div>
+								<div className="lead text-primary">
+									<a
+										href={supportContacts.Telegram[language].link}
+										target="_blank"
+									>
+										{supportContacts.Telegram[language].name}
+									</a>
+								</div>
+							</MDBModalBody>
+						)}
 						<MDBModalFooter>
 							<MDBBtn color="primary" onClick={() => dispatch(hideSupport())}>
 								OK

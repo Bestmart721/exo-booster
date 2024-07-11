@@ -77,7 +77,7 @@ const Account = () => {
 						<MDBCardBody className="p-3">
 							<div>
 								<span className="font-black-">Current Discount Applied:</span>{" "}
-								<span className="text-primary">{user.discount}</span>
+								<span className="text-primary">{user.discount ? `-${user.discount}%` : "None"}</span>
 							</div>
 							<div>
 								<span className="font-black-">Discount uses left:</span>{" "}
