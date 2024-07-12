@@ -120,9 +120,26 @@ export const fetchUserData = (uid) => {
 	})
 }
 
-export const fetchReferralInfo = (uid) => {
+export const fetchReferralInfo = () => {
 	return new Promise((resolve, reject) => {
 		const docRef = doc(db, "Referral", 'en');
+		getDoc(docRef)
+			.then((doc) => {
+				if (doc.exists) {
+					resolve(doc.data())
+				}
+				reject("Error getting document")
+			})
+			.catch((error) => {
+				console.log("Error getting document:", error);
+				reject(error)
+			});
+	})
+}
+
+export const fetchTotalOrders = () => {
+	return new Promise((resolve, reject) => {
+		const docRef = doc(db, "Admin", 'OrdersCounter');
 		getDoc(docRef)
 			.then((doc) => {
 				if (doc.exists) {

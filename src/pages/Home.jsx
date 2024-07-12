@@ -15,6 +15,8 @@ import {
 	MDBCardBody,
 	MDBRow,
 	MDBCol,
+	MDBIcon,
+	MDBTypography,
 } from "mdb-react-ui-kit";
 import { Input } from "reactstrap";
 import { useTranslation } from "react-i18next";
@@ -30,6 +32,7 @@ const Home = () => {
 	const [isOpen, setIsOpen] = React.useState(false);
 	const data = useSelector((state) => state.app.services);
 	const [selectedOption, setSelectedOption] = useState();
+	const totalOrdersCount = useSelector((state) => state.app.totalOrdersCount);
 	const [selected, setSelected] = useState({
 		website: "",
 		service: "",
@@ -129,8 +132,66 @@ const Home = () => {
 		return keys.length ? keys[0] : undefined;
 	}
 
+	function formatNumber(num = 0) {
+		return num.toLocaleString();
+	}
+
 	return (
 		<div className="bg-primary-light flex-grow-1 d-flex flex-column">
+			<MDBContainer className="mt-4 d-none d-sm-block w-600">
+				<MDBCard className="bg-pink shadow rounded-pill">
+					<MDBCardBody className="row px-4">
+						<MDBCol className="border-end border-1 d-flex align-items-center px-4">
+							<MDBIcon
+								color="primary"
+								fas
+								icon="cart-plus"
+								size="2x"
+								className="me-3"
+							/>
+							<div>
+								<div className="small" style={{ lineHeight: 1.2 }}>
+									Total Orders
+								</div>
+								<MDBTypography tag="h5" className="mb-0 font-black">
+									{formatNumber(totalOrdersCount)}
+								</MDBTypography>
+								<div className="small" style={{ lineHeight: 1.2 }}>
+									3+ years of experience providing SMM services!
+								</div>
+							</div>
+						</MDBCol>
+						<MDBCol className=" d-flex align-items-center px-4">
+							<MDBIcon
+								color="primary"
+								fas
+								icon="dollar-sign"
+								size="2x"
+								className="me-3"
+							/>
+							<div>
+								<div className="small" style={{ lineHeight: 1.2 }}>
+									You Have Spent
+								</div>
+								<MDBTypography tag="h5" className="mb-0 font-black">
+									{formatNumber(user.amount_spent)}{" "}
+									{user.currency.toUpperCase()}
+								</MDBTypography>
+								<div className="small" style={{ lineHeight: 1.2 }}>
+									You have currently
+									<br />
+									<span className="font-black">
+										{formatNumber(user.balance)} {user.currency.toUpperCase()}
+									</span>
+									<br />
+									<Link to="/payment">Deposit more here</Link>
+								</div>
+							</div>
+						</MDBCol>
+					</MDBCardBody>
+				</MDBCard>
+			</MDBContainer>
+
 			<MDBTabs className="mt-3 justify-content-center border-2 border-bottom border-primary ">
 				{Object.entries(data).length ? (
 					Object.entries(data).map(([website, service]) => (

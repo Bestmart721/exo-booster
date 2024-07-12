@@ -6,6 +6,7 @@ const initialState = {
   modalText: "",
   drawer: false,
   services: {},
+  totalOrdersCount: 0,
 }
 
 export const appSlice = createSlice({
@@ -31,10 +32,13 @@ export const appSlice = createSlice({
     setServices: (state, action) => {
       state.services = action.payload
     },
+    setTotalOrdersCount: (state, action) => {
+      state.totalOrdersCount = action.payload
+    },
   },
 })
 
 // Action creators are generated for each case reducer function
-export const { showSupport, hideSupport, modalError, hideError, toggleDrawer, setServices } = appSlice.actions
+export const { showSupport, hideSupport, modalError, hideError, toggleDrawer, setServices, setTotalOrdersCount } = appSlice.actions
 
 export default appSlice.reducer

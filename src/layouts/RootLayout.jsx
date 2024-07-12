@@ -33,6 +33,7 @@ import {
 	auth,
 	docRef,
 	fetchSupportContacts,
+	fetchTotalOrders,
 	fetchUserData,
 	firebaseSignOut,
 } from "../firebaseAuth";
@@ -44,6 +45,7 @@ import {
 	hideSupport,
 	modalError,
 	setServices,
+	setTotalOrdersCount,
 	showSupport,
 	toggleDrawer,
 } from "../store/appSlice";
@@ -81,14 +83,14 @@ export default function RootLayout() {
 					console.log(userData);
 					dispatch(
 						setUser({
+							...userData,
 							accessToken: user.accessToken,
 							uid: user.uid,
-							displayName: userData.username,
-							balance: userData.balance,
-							currency: userData.currency,
-							discount: userData.discount,
-							discountUsesLeft: userData.discount_uses_left,
-							referralCode: userData.referralCode,
+							last_auth: userData.last_auth.toDate().toISOString(),
+							latest_purchase_date: userData.latest_purchase_date
+								.toDate()
+								.toISOString(),
+							created_at: userData.created_at.toDate().toISOString(),
 						})
 					);
 
@@ -106,21 +108,10 @@ export default function RootLayout() {
 							}
 						)
 						.then((response) => {
-							// setData(response.data.data);
 							dispatch(setServices(response.data.data));
-							// const website = getFirstValue(response.data.data);
-							// const service = getFirstValue(website.services);
-							// const subService = getFirstValue(service.subservices);
-							// setSelected({
-							// 	website: getFirstKey(response.data.data),
-							// 	service: getFirstKey(website.services),
-							// 	subService: getFirstKey(service.subservices),
-							// });
-							// setSelectedOption({
-							// 	...subService,
-							// 	label: subService.display_name[language],
-							// 	value: subService.subservice_id,
-							// });
+							fetchTotalOrders().then((data) => {
+								dispatch(setTotalOrdersCount(data.count));
+							});
 						})
 						.catch((error) => {
 							dispatch(modalError(t(error)));
