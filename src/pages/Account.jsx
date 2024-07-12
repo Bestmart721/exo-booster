@@ -23,12 +23,11 @@ const Account = () => {
 	const { t, i18n } = useTranslation();
 	const [visiblePassword, setVisiblePassword] = useState(false);
 
-	useEffect(() => {
-		console.log('--')
-		fetchUserData(user.uid).then((userData) => {
-			console.log(userData);
-		});
-	}, [user]);
+	// useEffect(() => {
+	// 	fetchUserData(user.uid).then((userData) => {
+	// 		console.log(userData);
+	// 	});
+	// }, [user]);
 
 	const initialValues = {
 		country: "",

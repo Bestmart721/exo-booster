@@ -25,6 +25,8 @@ import Home from "./pages/Home.jsx";
 import Account from "./pages/Account.jsx";
 import Referral from "./pages/Referral.jsx";
 import Orders from "./pages/Orders.jsx";
+import Wallet from "./pages/Wallet.jsx";
+import Payment from "./pages/Payment.jsx";
 
 const router = createBrowserRouter([
 	{
@@ -61,7 +63,15 @@ const router = createBrowserRouter([
 			{
 				path: "/orders",
 				element: <Orders />,
-			}
+			},
+			{
+				path: "/wallet",
+				element: <Wallet />,
+			},
+			{
+				path: "/payment",
+				element: <Payment />,
+			},
 		],
 		// errorElement: <ErrorPage />,
 	},

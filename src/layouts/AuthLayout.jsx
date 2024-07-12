@@ -21,8 +21,6 @@ import {
 } from "../responsiveHook";
 import { useTranslation } from "react-i18next";
 import { motion, AnimatePresence } from "framer-motion";
-import { auth, firebaseSignOut } from "../firebaseAuth";
-import { onAuthStateChanged } from "firebase/auth";
 
 export default function AuthLayout() {
 	const navigate = useNavigate();

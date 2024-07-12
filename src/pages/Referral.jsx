@@ -6,18 +6,32 @@ import {
 	MDBCardTitle,
 	MDBCol,
 	MDBContainer,
-	MDBInput,
-	MDBInputGroup,
 	MDBRow,
 	MDBTypography,
 } from "mdb-react-ui-kit";
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { fetchReferralInfo } from "../firebaseAuth";
+import { modalError } from "../store/appSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { Input, InputGroup } from "reactstrap";
 
 const Referral = () => {
-	const refCode = "TESTCODE-CFD";
+	const dispatch = useDispatch();
+	const [data, setData] = useState({});
+	const user = useSelector((state) => state.auth.user);
+
+	useEffect(() => {
+		fetchReferralInfo()
+			.then((data) => {
+				setData(data);
+			})
+			.catch((error) => {
+				dispatch(modalError(error));
+			});
+	}, [dispatch]);
 
 	return (
-		<MDBContainer className="pt-3 mb-4">
+		<MDBContainer className="pt-3">
 			<MDBTypography tag="h4" className="font-black text-center">
 				Referral Program
 			</MDBTypography>
@@ -26,7 +40,7 @@ const Referral = () => {
 					<MDBCol className="align-self-center">
 						<MDBCardBody className="pe-0">
 							<MDBTypography tag="div" className="text-white">
-								Get a 3% reward each time you invite a friend to Exo Booster
+								{data.bannerText}
 							</MDBTypography>
 						</MDBCardBody>
 					</MDBCol>
@@ -38,7 +52,7 @@ const Referral = () => {
 						/>
 					</MDBCol>
 				</MDBRow>
-			</MDBCard> 
+			</MDBCard>
 			<MDBCard className="mb-3">
 				<MDBCardBody>
 					<MDBCardTitle className="font-black">
@@ -47,34 +61,34 @@ const Referral = () => {
 					<MDBTypography tag="small" className="text-secondary">
 						Copy your code and share it with your friends
 					</MDBTypography>
-					<MDBInputGroup>
-						<input
-							className="form-control"
+					<InputGroup>
+						<Input
 							placeholder="Recipient's username"
 							type="text"
-							value={refCode}
+							defaultValue={user.referralCode}
 							readOnly
 						/>
-						<MDBBtn>Copy</MDBBtn>
-					</MDBInputGroup>
+						<MDBBtn
+							onClick={() => {
+								navigator.clipboard.writeText(user.referralCode);
+							}}
+						>
+							Copy
+						</MDBBtn>
+					</InputGroup>
 				</MDBCardBody>
 			</MDBCard>
 			<MDBCard className="mb-3">
 				<MDBCardBody>
 					<MDBCardTitle className="font-black">How it works?</MDBCardTitle>
-					<MDBTypography tag="p" className="mb-1">
-						1. Tell friends/family to download the Exo Booster App
-					</MDBTypography>
-					<MDBTypography tag="p" className="mb-1">
-						2. On the sign up page, they should use your referral code
-					</MDBTypography>
-					<MDBTypography tag="p" className="mb-0">
-						3. Your friend gets a 10% discount on his 5 next orders, and you get a
-						3% equivalent of any amount he deposits into his Exo balance FOREVER
-					</MDBTypography>
+					{data.refSteps?.map((item, index) => (
+						<MDBTypography tag="p" className="mb-1" key={index}>
+							{index + 1}. {item}
+						</MDBTypography>
+					))}
 				</MDBCardBody>
 			</MDBCard>
-			<MDBBtn block>Share your Referral code</MDBBtn>
+			{/* <MDBBtn block>Share your Referral code</MDBBtn> */}
 		</MDBContainer>
 	);
 };

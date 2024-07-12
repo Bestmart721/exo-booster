@@ -9,8 +9,6 @@ import {
 	MDBTabs,
 	MDBTabsItem,
 	MDBTabsLink,
-	MDBIcon,
-	MDBInput,
 	MDBTextArea,
 	MDBSpinner,
 	MDBCard,
@@ -27,12 +25,11 @@ import Select, { components } from "react-select";
 
 const Home = () => {
 	const { t, i18n } = useTranslation();
-	const dispatch = useDispatch();
 	const { language, switchLanguage } = useLanguage();
 	const user = useSelector((state) => state.auth.user);
 	const [isOpen, setIsOpen] = React.useState(false);
-	const [data, setData] = useState({});
-	const [selectedOption, setSelectedOption] = useState(null);
+	const data = useSelector((state) => state.app.services);
+	const [selectedOption, setSelectedOption] = useState();
 	const [selected, setSelected] = useState({
 		website: "",
 		service: "",
@@ -45,14 +42,31 @@ const Home = () => {
 		note: "",
 	});
 
+	useEffect(() => {
+		if (Object.keys(data).length === 0) {
+			return;
+		}
+		const website = getFirstValue(data);
+		const service = getFirstValue(website.services);
+		const subService = getFirstValue(service.subservices);
+		setSelected((prev) => ({
+			...prev,
+			website: getFirstKey(data),
+			service: getFirstKey(website.services),
+			subService: getFirstKey(service.subservices),
+		}));
+		setSelectedOption({
+			...subService,
+			label: subService.display_name[language],
+			value: subService.subservice_id,
+		});
+	}, [data]);
+
 	const toggleDrawer = () => {
 		setIsOpen((prevState) => !prevState);
 	};
 
 	const handleTabClick = (value) => {
-		console.log(value);
-		console.log(getFirstKey(data[value].services));
-		console.log(getFirstKey(getFirstValue(data[value].services).subservices));
 		setSelected({
 			website: value,
 			service: getFirstKey(data[value].services),
@@ -82,7 +96,6 @@ const Home = () => {
 				const firstSubServices = getFirstValue(
 					data[selected.website].services[e.target.value].subservices
 				);
-				console.log(firstSubServices);
 				setSelectedOption({
 					...firstSubServices,
 					label: firstSubServices.display_name[language],
@@ -119,43 +132,6 @@ const Home = () => {
 		const keys = Object.keys(obj);
 		return keys.length ? keys[0] : undefined;
 	}
-
-	useEffect(() => {
-		// console.log(data);
-		axios
-			.post(
-				`https://getcategoriesandservices-l2ugzeb65a-uc.a.run.app/`,
-				{
-					userId: user.uid,
-				},
-				{
-					headers: {
-						// "Content-Type": "application/json",
-						Authorization: `Bearer ${user.accessToken}`,
-					},
-				}
-			)
-			.then((response) => {
-				const website = getFirstValue(response.data.data);
-				const service = getFirstValue(website.services);
-				const subService = getFirstValue(service.subservices);
-				setData(response.data.data);
-				setSelected({
-					website: getFirstKey(response.data.data),
-					service: getFirstKey(website.services),
-					subService: getFirstKey(service.subservices),
-				});
-				setSelectedOption({
-					...subService,
-					label: subService.display_name[language],
-					value: subService.subservice_id,
-				});
-			})
-			.catch((error) => {
-				console.log(error);
-				dispatch(modalError(t(error)));
-			});
-	}, [axios]);
 
 	return (
 		<div className="bg-primary-light flex-grow-1 d-flex flex-column">
@@ -337,7 +313,7 @@ const Home = () => {
 														{" "}
 														Quantity:
 													</label>{" "}
-													<MDBInput
+													<Input
 														id="quantity"
 														type="number"
 														value={selected.quantity}

@@ -8,6 +8,7 @@ import {
 	MDBCardTitle,
 	MDBContainer,
 	MDBFooter,
+	MDBIcon,
 	MDBTable,
 	MDBTableBody,
 	MDBTableHead,
@@ -100,6 +101,36 @@ const Orders = () => {
 		loadData();
 	}, [status, page]);
 
+	const viewport = document.getElementById("root")
+	let mybutton;
+
+	useEffect(() => {
+		viewport.onscroll = function () {
+			mybutton = document.getElementById("btn-back-to-top");
+			scrollFunction(mybutton);
+		};
+
+		return () => {
+			viewport.onscroll = null;
+		};
+	}, []);
+
+	function scrollFunction(mybutton) {
+		if (
+			document.body.scrollTop > 100 ||
+			viewport.scrollTop > 100
+		) {
+			mybutton.style.display = "block";
+		} else {
+			mybutton.style.display = "none";
+		}
+	}
+
+	function backToTop() {
+		document.body.scrollTop = 0;
+		viewport.scrollTop = 0;
+	}
+
 	return (
 		<MDBContainer className="pt-4">
 			<MDBCard>
@@ -185,6 +216,22 @@ const Orders = () => {
 					)}
 				</MDBFooter>
 			</MDBCard>
+
+			<MDBBtn
+				onClick={backToTop}
+				id="btn-back-to-top"
+				style={{
+					bottom: 0,
+					left: "50%",
+					transform: "translateX(-50%)",
+					display: "none",
+				}}
+				className="btn-floating- position-fixed rounded-top-pill pb-1 px-4"
+				color="primary"
+				size="lg"
+			>
+				<MDBIcon fas icon="arrow-up" />
+			</MDBBtn>
 		</MDBContainer>
 	);
 };

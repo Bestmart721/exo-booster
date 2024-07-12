@@ -43,12 +43,14 @@ import {
 	hideError,
 	hideSupport,
 	modalError,
+	setServices,
 	showSupport,
 	toggleDrawer,
 } from "../store/appSlice";
 import Drawer from "react-modern-drawer";
 import { useMobileOrTabletMediaQuery } from "../responsiveHook";
 import { onSnapshot } from "firebase/firestore";
+import axios from "axios";
 
 const languages = {
 	en: { name: "English", flag: "gb.svg" },
@@ -76,6 +78,7 @@ export default function RootLayout() {
 		const unsubscribe = onAuthStateChanged(auth, (user) => {
 			if (user) {
 				fetchUserData(user.uid).then((userData) => {
+					console.log(userData);
 					dispatch(
 						setUser({
 							accessToken: user.accessToken,
@@ -85,8 +88,46 @@ export default function RootLayout() {
 							currency: userData.currency,
 							discount: userData.discount,
 							discountUsesLeft: userData.discount_uses_left,
+							referralCode: userData.referralCode,
 						})
 					);
+
+
+					axios
+					.post(
+						`https://getcategoriesandservices-l2ugzeb65a-uc.a.run.app/`,
+						{
+							userId: user.uid,
+						},
+						{
+							headers: {
+								// "Content-Type": "application/json",
+								Authorization: `Bearer ${user.accessToken}`,
+							},
+						}
+					)
+					.then((response) => {
+						// setData(response.data.data);
+						dispatch(setServices(response.data.data));
+						// const website = getFirstValue(response.data.data);
+						// const service = getFirstValue(website.services);
+						// const subService = getFirstValue(service.subservices);
+						// setSelected({
+						// 	website: getFirstKey(response.data.data),
+						// 	service: getFirstKey(website.services),
+						// 	subService: getFirstKey(service.subservices),
+						// });
+						// setSelectedOption({
+						// 	...subService,
+						// 	label: subService.display_name[language],
+						// 	value: subService.subservice_id,
+						// });
+					})
+					.catch((error) => {
+						dispatch(modalError(t(error)));
+					});
+
+
 				});
 			} else {
 				dispatch(unsetUser());
@@ -199,10 +240,10 @@ export default function RootLayout() {
 							noBorders
 							className="px-3"
 							tag={Link}
-							to="/"
+							to="/wallet"
 							onClick={toggleDrawerIn}
 						>
-							Wallet #
+							Wallet
 						</MDBListGroupItem>
 						<MDBListGroupItem
 							action
@@ -265,7 +306,7 @@ export default function RootLayout() {
 								className="cursor-pointer"
 								// onClick={() => dispatch(toggleDrawer())}
 							>
-								<MDBBadge pill light color="secondary">
+								<MDBBadge pill light color="secondary" tag={Link} to="/payment">
 									<MDBBtn
 										floating
 										style={{ margin: "-0.7em" }}
@@ -353,10 +394,10 @@ export default function RootLayout() {
 			</>
 
 			<div className="flex-grow-1 align-content-center pt-4 pb-5">
-				<div className="d-sm-flex text-center justify-content-center">
+				<div className="gap-3 d-block d-sm-flex align-items-center justify-content-center text-center">
 					<div>{t("Have an issue/question?")}</div>
 					<Link
-						className="ms-3 text-primary font-black"
+						className="text-primary font-black"
 						onClick={() => dispatch(showSupport())}
 					>
 						{t("Contact Us")}
@@ -364,12 +405,11 @@ export default function RootLayout() {
 				</div>
 				<div className=" text-center justify-content-center mt-2 px-5">
 					<div className="">{t("Have an android phone?")}</div>
-					<div>
-						<span className="">{t("checkout the Exo Booster app:")}</span>
+					<div className="gap-3 d-block d-sm-flex align-items-center justify-content-center">
+						<div>{t("checkout the Exo Booster app:")}</div>
 						<MDBBtn
 							color="primary"
 							size="sm"
-							className="ms-3"
 							tag={Link}
 							to="https://www.exobooster.com/"
 							target="_blank"
