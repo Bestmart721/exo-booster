@@ -23,6 +23,8 @@ import Signup from "./pages/Signup";
 import Signin from "./pages/Signin";
 import Home from "./pages/Home.jsx";
 import Account from "./pages/Account.jsx";
+import Referral from "./pages/Referral.jsx";
+import Orders from "./pages/Orders.jsx";
 
 const router = createBrowserRouter([
 	{
@@ -51,6 +53,14 @@ const router = createBrowserRouter([
 			{
 				path: "/account",
 				element: <Account />,
+			},
+			{
+				path: "/referral",
+				element: <Referral />,
+			},
+			{
+				path: "/orders",
+				element: <Orders />,
 			}
 		],
 		// errorElement: <ErrorPage />,

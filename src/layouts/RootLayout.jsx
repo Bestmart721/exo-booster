@@ -43,6 +43,7 @@ import {
 	hideError,
 	hideSupport,
 	modalError,
+	showSupport,
 	toggleDrawer,
 } from "../store/appSlice";
 import Drawer from "react-modern-drawer";
@@ -135,17 +136,18 @@ export default function RootLayout() {
 	};
 
 	function formatNumber(num = 0) {
-		if (num >= 1e12) {
-			return (num / 1e12).toFixed(2) + "T";
-		} else if (num >= 1e9) {
-			return (num / 1e9).toFixed(2) + "B";
-		} else if (num >= 1e6) {
-			return (num / 1e6).toFixed(2) + "M";
-		} else if (num >= 1e3) {
-			return (num / 1e3).toFixed(2) + "K";
-		} else {
-			return num.toFixed(2);
-		}
+		return num.toLocaleString();
+		// if (num >= 1e12) {
+		// 	return (num / 1e12).toFixed(2) + "T";
+		// } else if (num >= 1e9) {
+		// 	return (num / 1e9).toFixed(2) + "B";
+		// } else if (num >= 1e6) {
+		// 	return (num / 1e6).toFixed(2) + "M";
+		// } else if (num >= 1e3) {
+		// 	return (num / 1e3).toFixed(2) + "K";
+		// } else {
+		// 	return num.toFixed(2);
+		// }
 	}
 
 	return (
@@ -186,10 +188,10 @@ export default function RootLayout() {
 							noBorders
 							className="px-3"
 							tag={Link}
-							to="/"
+							to="/orders"
 							onClick={toggleDrawerIn}
 						>
-							My Orders #
+							My Orders
 						</MDBListGroupItem>
 						<MDBListGroupItem
 							action
@@ -208,10 +210,10 @@ export default function RootLayout() {
 							noBorders
 							className="px-3"
 							tag={Link}
-							to="/"
+							to="/referral"
 							onClick={toggleDrawerIn}
 						>
-							Referral program #
+							Referral program
 						</MDBListGroupItem>
 					</MDBTabs>
 				</MDBListGroup>
@@ -263,12 +265,12 @@ export default function RootLayout() {
 								className="cursor-pointer"
 								// onClick={() => dispatch(toggleDrawer())}
 							>
-								<MDBBadge pill light color="warning">
+								<MDBBadge pill light color="secondary">
 									<MDBBtn
 										floating
 										style={{ margin: "-0.7em" }}
 										size="sm"
-										color="warning"
+										color="success"
 										className="me-1"
 									>
 										<MDBIcon fas icon="plus" color="white" />
@@ -350,13 +352,45 @@ export default function RootLayout() {
 					))}
 			</>
 
-			{/* {loading && (
-				<div className="d-flex justify-content-center align-items-center position-fixed spinner-wrapper">
-					<MDBSpinner color="white" style={{ width: "3rem", height: "3rem" }}>
+			<div className="flex-grow-1 align-content-center pt-4 pb-5">
+				<div className="d-sm-flex text-center justify-content-center">
+					<div>{t("Have an issue/question?")}</div>
+					<Link
+						className="ms-3 text-primary font-black"
+						onClick={() => dispatch(showSupport())}
+					>
+						{t("Contact Us")}
+					</Link>
+				</div>
+				<div className=" text-center justify-content-center mt-2 px-5">
+					<div className="">{t("Have an android phone?")}</div>
+					<div>
+						<span className="">{t("checkout the Exo Booster app:")}</span>
+						<MDBBtn
+							color="primary"
+							size="sm"
+							className="ms-3"
+							tag={Link}
+							to="https://www.exobooster.com/"
+							target="_blank"
+						>
+							<MDBIcon fas icon="download" className="me-2" />
+							Download
+						</MDBBtn>
+					</div>
+				</div>
+			</div>
+
+			{loading && (
+				<div className="d-flex justify-content-center align-items-end position-fixed spinner-wrapper">
+					<MDBSpinner
+						color="primary"
+						style={{ width: "3rem", height: "3rem", marginBottom: "3rem" }}
+					>
 						<span className="visually-hidden">Loading...</span>
 					</MDBSpinner>
 				</div>
-			)} */}
+			)}
 
 			<MDBModal
 				tabIndex="-1"

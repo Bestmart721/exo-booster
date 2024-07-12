@@ -142,7 +142,7 @@ export default function AuthLayout() {
 				</div>
 			)}
 
-			<div className="auth-footer position-relative pt-80 pb-5 text-webkit-center">
+			<div className="auth-footer position-relative pt-80 text-webkit-center">
 				<div className="position-relative w-1000">
 					<img
 						src="/cloud-svgrepo-com.svg"
@@ -175,7 +175,7 @@ export default function AuthLayout() {
 				>
 					{t("Why Exo Booster?")}
 				</MDBTypography>
-				<div className="d-md-block d-lg-flex justify-content-center gap-5 mb-5">
+				<div className="d-md-block d-lg-flex justify-content-center gap-5">
 					<motion.div
 						initial={{ scale: 1 }}
 						transition={{ ease: "easeInOut", duration: 0.2 }}

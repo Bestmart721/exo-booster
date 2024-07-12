@@ -50,12 +50,24 @@ const Home = () => {
 	};
 
 	const handleTabClick = (value) => {
+		console.log(value);
+		console.log(getFirstKey(data[value].services));
+		console.log(getFirstKey(getFirstValue(data[value].services).subservices));
 		setSelected({
 			website: value,
-			service: "",
-			subService: "",
+			service: getFirstKey(data[value].services),
+			subService: getFirstKey(getFirstValue(data[value].services).subservices),
 			link: "",
 			quantity: "",
+			comments: "",
+		});
+		const firstSubServices = getFirstValue(
+			data[value].services[getFirstKey(data[value].services)].subservices
+		);
+		setSelectedOption({
+			...firstSubServices,
+			label: firstSubServices.display_name[language],
+			value: firstSubServices.subservice_id,
 		});
 	};
 
@@ -67,17 +79,27 @@ const Home = () => {
 		let overwrite = {};
 		switch (e.target.name) {
 			case "service":
-				setSelectedOption(null);
+				const firstSubServices = getFirstValue(
+					data[selected.website].services[e.target.value].subservices
+				);
+				console.log(firstSubServices);
+				setSelectedOption({
+					...firstSubServices,
+					label: firstSubServices.display_name[language],
+					value: firstSubServices.subservice_id,
+				});
 				overwrite = {
-					subService: "",
+					subService: firstSubServices.subservice_id,
 					link: "",
 					quantity: "",
+					comments: "",
 				};
 				break;
 			case "subService":
 				overwrite = {
 					link: "",
 					quantity: "",
+					comments: "",
 				};
 				break;
 		}
@@ -87,6 +109,15 @@ const Home = () => {
 	function countLines(str) {
 		if (str === "") return 0; // Handle empty string case
 		return str.trim().split("\n").length;
+	}
+
+	function getFirstValue(obj) {
+		const keys = Object.keys(obj);
+		return keys.length ? obj[keys[0]] : undefined;
+	}
+	function getFirstKey(obj) {
+		const keys = Object.keys(obj);
+		return keys.length ? keys[0] : undefined;
 	}
 
 	useEffect(() => {
@@ -105,8 +136,20 @@ const Home = () => {
 				}
 			)
 			.then((response) => {
-				console.log(response.data.data);
+				const website = getFirstValue(response.data.data);
+				const service = getFirstValue(website.services);
+				const subService = getFirstValue(service.subservices);
 				setData(response.data.data);
+				setSelected({
+					website: getFirstKey(response.data.data),
+					service: getFirstKey(website.services),
+					subService: getFirstKey(service.subservices),
+				});
+				setSelectedOption({
+					...subService,
+					label: subService.display_name[language],
+					value: subService.subservice_id,
+				});
 			})
 			.catch((error) => {
 				console.log(error);
@@ -119,19 +162,19 @@ const Home = () => {
 			<MDBTabs className="mt-3 justify-content-center border-2 border-bottom border-primary ">
 				{Object.entries(data).length ? (
 					Object.entries(data).map(([website, service]) => (
-						<MDBTabsItem key={website} className=" media-tab">
+						<MDBTabsItem key={website} className=" media-tab align-self-center">
 							<MDBTabsLink
 								onClick={() => handleTabClick(website)}
 								active={selected.website === website}
 								className="rounded-top-4"
 							>
-								{/* <img width={32} src={service.thumbnail_url} alt={website} /> */}
-								<MDBIcon
+								<img width={32} src={service.thumbnail_url} alt={website} />
+								{/* <MDBIcon
 									fab
 									icon={website}
 									color="primary"
 									style={{ width: 32, fontSize: 28 }}
-								/>
+								/> */}
 							</MDBTabsLink>
 						</MDBTabsItem>
 					))
@@ -142,360 +185,350 @@ const Home = () => {
 					/>
 				)}
 			</MDBTabs>
-			<div className="pb-4 shadow bg-white">
-				<MDBContainer style={{ maxWidth: 720 }}>
+			<div className="py-4 shadow bg-white">
+				<MDBContainer>
+					{Object.keys(data).length === 0 && (
+						<div className="font-black text-center py-2 mb-2">
+							{Object.entries(data).length
+								? "PICK YOUR TARGET SOCIAL MEDIA"
+								: "Loading services..."}
+						</div>
+					)}
 					<MDBRow>
-						{Object.keys(data).length > 0 && selected.website ? (
-							<MDBCol sm={12}>
-								<label
-									htmlFor="service"
-									className="form-label font-black mb-0 mt-2"
-								>
-									Service:
-								</label>
-								<Input
-									id="service"
-									type="select"
-									value={selected.service}
-									name="service"
-									onChange={handleChange}
-								>
-									<option value="" disabled>
-										Select a service.
-									</option>
-									{Object.entries(data[selected.website].services).map(
-										([key, value]) => {
-											return (
-												<option key={key} value={key}>
-													{value.display_name[language]}
-												</option>
-											);
-										}
+						<MDBCol sm={12} lg={6} xl={7} xxl={8}>
+							<MDBRow>
+								{Object.keys(data).length > 0 && selected.website && (
+									<MDBCol className="mb-4" sm={12}>
+										<label
+											htmlFor="service"
+											className="form-label font-black mb-0"
+										>
+											Service:
+										</label>
+										<Input
+											id="service"
+											type="select"
+											value={selected.service}
+											name="service"
+											onChange={handleChange}
+										>
+											<option value="" disabled>
+												Select a service.
+											</option>
+											{Object.entries(data[selected.website].services).map(
+												([key, value]) => {
+													return (
+														<option key={key} value={key}>
+															{value.display_name[language]}
+														</option>
+													);
+												}
+											)}
+										</Input>
+									</MDBCol>
+								)}
+
+								{Object.keys(data).length > 0 &&
+									selected.website &&
+									selected.service && (
+										<MDBCol className="mb-4" sm={12}>
+											<label
+												// htmlFor="subService"
+												className="form-label font-black mb-0"
+											>
+												Type:
+											</label>
+
+											<Select
+												isSearchable={false}
+												className="input-group-lg "
+												placeholder={t("Choose your country")}
+												id="subService"
+												name="subService"
+												value={selectedOption}
+												options={Object.entries(
+													data[selected.website].services[selected.service]
+														.subservices
+												).map(([key, value]) => ({
+													value: key,
+													label: value.display_name[language],
+													...value,
+												}))}
+												onChange={(obj) => {
+													setSelectedOption(obj);
+													setSelected({ ...selected, subService: obj.value });
+												}}
+												styles={{
+													valueContainer: (provided) => ({
+														...provided,
+														display: "flex",
+													}),
+												}}
+												components={{
+													Option: (props) => (
+														<components.Option
+															{...props}
+															className="country-option"
+														>
+															<div>{props.data.label}</div>
+															<div
+																style={{ lineHeight: 1.2 }}
+																className="small text-secondary"
+															>
+																{props.data.sub_display_name[user.currency][
+																	language
+																]
+																	.split("|")
+																	.map((str, index) => (
+																		<div key={index}>{str}</div>
+																	))}
+															</div>
+														</components.Option>
+													),
+													// SingleValue: ({ children, ...props }) => (
+													// 	<components.SingleValue {...props}>
+													// 		<MDBIcon fas icon="globe" size="lg" className="me-4" />
+													// 	</components.SingleValue>
+													// ),
+													Placeholder: () => (
+														<div
+															style={{ display: "flex", alignItems: "center" }}
+														>
+															<span>{t("Select a service")}...</span>
+														</div>
+													),
+												}}
+											/>
+										</MDBCol>
 									)}
-								</Input>
-							</MDBCol>
-						) : (
-							<div className="font-black text-center mt-4 py-2 mb-2">
-								{Object.entries(data).length ? "PICK YOUR TARGET SOCIAL MEDIA" : "Loading services..."}
-							</div>
-						)}
 
-						{Object.keys(data).length > 0 &&
-							selected.website &&
-							selected.service && (
-								<MDBCol sm={12}>
-									<label
-										// htmlFor="subService"
-										className="form-label font-black mb-0 mt-2"
-									>
-										Type:
-									</label>
-
-									<Select
-										className="input-group-lg "
-										placeholder={t("Choose your country")}
-										id="subService"
-										name="subService"
-										value={selectedOption}
-										options={Object.entries(
-											data[selected.website].services[selected.service]
-												.subservices
-										).map(([key, value]) => ({
-											value: key,
-											label: value.display_name[language],
-											...value,
-										}))}
-										onChange={(obj) => {
-											setSelectedOption(obj);
-											setSelected({ ...selected, subService: obj.value });
-										}}
-										styles={{
-											valueContainer: (provided) => ({
-												...provided,
-												display: "flex",
-											}),
-										}}
-										components={{
-											Option: (props) => (
-												<components.Option
-													{...props}
-													className="country-option"
+								{Object.keys(data).length > 0 &&
+									selected.website &&
+									selected.service &&
+									selected.subService && (
+										<>
+											<MDBCol className="mb-4" sm={12}>
+												<label
+													htmlFor="link"
+													className="form-label font-black mb-0"
 												>
-													<div>{props.data.label}</div>
-													<div
-														style={{ lineHeight: 1.2 }}
-														className="small text-secondary"
+													{
+														data[selected.website].services[selected.service]
+															.subservices[selected.subService]
+															?.link_field_text[language]
+													}
+												</label>
+												<Input
+													id="link"
+													type="text"
+													value={selected.link}
+													name="link"
+													onChange={handleChange}
+												/>
+											</MDBCol>
+											{data[selected.website].services[selected.service]
+												.subservices[selected.subService]?.type ==
+												"default" && (
+												<MDBCol className="mb-4 position-relative" sm={12}>
+													<label
+														htmlFor="quantity"
+														className="form-label font-black mb-0"
 													>
-														{props.data.sub_display_name[user.currency][
+														{" "}
+														Quantity:
+													</label>{" "}
+													<MDBInput
+														id="quantity"
+														type="number"
+														value={selected.quantity}
+														name="quantity"
+														className="bg-white"
+														onChange={handleChange}
+														min={
+															data[selected.website].services[selected.service]
+																.subservices[selected.subService]?.min
+														}
+														max={
+															data[selected.website].services[selected.service]
+																.subservices[selected.subService]?.max
+														}
+													/>
+													<small className=" position-absolute">
+														(Min:
+														{
+															data[selected.website].services[selected.service]
+																.subservices[selected.subService]?.min
+														}{" "}
+														- Max:
+														{
+															data[selected.website].services[selected.service]
+																.subservices[selected.subService]?.max
+														}
+														)
+													</small>
+												</MDBCol>
+											)}
+											{data[selected.website].services[selected.service]
+												.subservices[selected.subService]?.type ==
+												"custom_comments" && (
+												<MDBCol className="mb-4" sm={12}>
+													<label
+														htmlFor="comments"
+														className="form-label font-black mb-0"
+													>
+														Comments:
+													</label>
+													<MDBTextArea
+														rows={4}
+														id="comments"
+														value={selected.comments}
+														name="comments"
+														className="bg-white"
+														onChange={handleChange}
+													/>
+												</MDBCol>
+											)}
+											<MDBCol className="mb-4 position-relative" sm={12} md={6}>
+												<label
+													htmlFor="price"
+													className="form-label font-black mb-0"
+												>
+													Price:
+												</label>
+												<Input
+													id="price"
+													type="text"
+													value={
+														(
+															(((data[selected.website].services[
+																selected.service
+															].subservices[selected.subService]?.type ==
+																"default" &&
+																(selected.quantity || 0)) ||
+																(data[selected.website].services[
+																	selected.service
+																].subservices[selected.subService]?.type ==
+																	"custom_comments" &&
+																	countLines(selected.comments)) ||
+																0) /
+																1000) *
+															data[selected.website].services[selected.service]
+																.subservices[selected.subService]?.rate[
+																user.currency
+															]
+														).toLocaleString() +
+														" " +
+														user.currency.toUpperCase()
+													}
+													name="price"
+													disabled
+													onChange={handleChange}
+												/>
+												<small className="position-absolute">
+													{
+														data[selected.website].services[selected.service]
+															.subservices[selected.subService]?.price_text[
+															user.currency
+														][language]
+													}
+												</small>
+											</MDBCol>
+
+											<MDBCol className="mb-4" sm={12} md={6}>
+												<label
+													htmlFor="average_time"
+													className="form-label font-black mb-0"
+												>
+													Average completion time:
+												</label>
+												<Input
+													id="average_time"
+													type="text"
+													value={
+														data[selected.website].services[selected.service]
+															.subservices[selected.subService]?.average_time[
+															language
+														]
+													}
+													name="average_time"
+													disabled
+													onChange={handleChange}
+												/>
+											</MDBCol>
+										</>
+									)}
+							</MDBRow>
+						</MDBCol>
+						<MDBCol sm={12} lg={6} xl={5} xxl={4}>
+							<MDBRow>
+								{Object.keys(data).length > 0 &&
+									selected.website &&
+									selected.service &&
+									selected.subService && (
+										<>
+											<MDBCol className="mb-4" sm={12}>
+												<label className="form-label font-black mb-0">
+													Note:
+												</label>
+												<MDBCard border="1">
+													<MDBCardBody>
+														{data[selected.website].services[
+															selected.service
+														].subservices[selected.subService]?.description[
 															language
 														]
 															.split("|")
 															.map((str, index) => (
-																<div key={index}>{str}</div>
+																<div key={index}>
+																	{index + 1}. {str}
+																</div>
 															))}
-													</div>
-												</components.Option>
-											),
-											// SingleValue: ({ children, ...props }) => (
-											// 	<components.SingleValue {...props}>
-											// 		<MDBIcon fas icon="globe" size="lg" className="me-4" />
-											// 	</components.SingleValue>
-											// ),
-											Placeholder: () => (
-												<div style={{ display: "flex", alignItems: "center" }}>
-													<span>{t("Select a service")}...</span>
-												</div>
-											),
-										}}
-									/>
-								</MDBCol>
-							)}
+													</MDBCardBody>
+												</MDBCard>
+											</MDBCol>
 
+											{data[selected.website].services[selected.service]
+												.subservices[selected.subService]?.youtube_tutorial[
+												language
+											] && (
+												<div className="text-center mb-3">
+													Don’t know how to use this service?
+													<br />
+													Watch this video:{" "}
+													<a
+														href={
+															data[selected.website].services[selected.service]
+																.subservices[selected.subService]
+																?.youtube_tutorial[language]
+														}
+														target="_blank"
+														className="font-black text-primary"
+													>
+														Tutorial
+													</a>
+												</div>
+											)}
+										</>
+									)}
+							</MDBRow>
+						</MDBCol>
 						{Object.keys(data).length > 0 &&
 							selected.website &&
 							selected.service &&
 							selected.subService && (
-								<>
-									<MDBCol sm={12}>
-										<label
-											htmlFor="link"
-											className="form-label font-black mb-0 mt-2"
-										>
-											{
-												data[selected.website].services[selected.service]
-													.subservices[selected.subService]?.link_field_text[
-													language
-												]
-											}
-										</label>
-										<Input
-											id="link"
-											type="text"
-											value={selected.link}
-											name="link"
-											onChange={handleChange}
-										/>
-									</MDBCol>
-									{data[selected.website].services[selected.service]
-										.subservices[selected.subService]?.type == "default" && (
-										<MDBCol sm={12}>
-											<label
-												htmlFor="quantity"
-												className="form-label font-black mb-0 mt-2"
-											>
-												{" "}
-												Quantity:
-											</label>{" "}
-											<small>
-												Min:
-												{
-													data[selected.website].services[selected.service]
-														.subservices[selected.subService]?.min
-												}{" "}
-												- Max:
-												{
-													data[selected.website].services[selected.service]
-														.subservices[selected.subService]?.max
-												}
-											</small>
-											<MDBInput
-												id="quantity"
-												type="number"
-												value={selected.quantity}
-												name="quantity"
-												className="bg-white"
-												onChange={handleChange}
-												min={
-													data[selected.website].services[selected.service]
-														.subservices[selected.subService]?.min
-												}
-												max={
-													data[selected.website].services[selected.service]
-														.subservices[selected.subService]?.max
-												}
-											/>
-										</MDBCol>
-									)}
-									{data[selected.website].services[selected.service]
-										.subservices[selected.subService]?.type ==
-										"custom_comments" && (
-										<MDBCol sm={12}>
-											<label
-												htmlFor="comments"
-												className="form-label font-black mb-0 mt-2"
-											>
-												Comments:
-											</label>
-											<MDBTextArea
-												rows={4}
-												id="comments"
-												value={selected.comments}
-												name="comments"
-												className="bg-white"
-												onChange={handleChange}
-											/>
-										</MDBCol>
-									)}
-									<MDBCol sm={12} md={6}>
-										<label
-											htmlFor="price"
-											className="form-label font-black mb-0 mt-2"
-										>
-											Price:
-										</label>
-										<Input
-											id="price"
-											type="text"
-											value={
-												(
-													(((data[selected.website].services[selected.service]
-														.subservices[selected.subService]?.type ==
-														"default" &&
-														(selected.quantity || 0)) ||
-														(data[selected.website].services[selected.service]
-															.subservices[selected.subService]?.type ==
-															"custom_comments" &&
-															countLines(selected.comments)) ||
-														0) /
-														1000) *
-													data[selected.website].services[selected.service]
-														.subservices[selected.subService]?.rate[
-														user.currency
-													]
-												).toFixed(2) +
-												" " +
-												user.currency.toUpperCase() +
-												" " +
-												data[selected.website].services[selected.service]
-													.subservices[selected.subService]?.price_text[
-													user.currency
-												][language]
-											}
-											name="price"
-											disabled
-											onChange={handleChange}
-										/>
-									</MDBCol>
-
-									<MDBCol sm={12} md={6}>
-										<label
-											htmlFor="average_time"
-											className="form-label font-black mb-0 mt-2"
-										>
-											Average completion time:
-										</label>
-										<Input
-											id="average_time"
-											type="text"
-											value={
-												data[selected.website].services[selected.service]
-													.subservices[selected.subService]?.average_time[
-													language
-												]
-											}
-											name="average_time"
-											disabled
-											onChange={handleChange}
-										/>
-									</MDBCol>
-
-									<MDBCol sm={12}>
-										<label className="form-label font-black mb-0 mt-2">
-											Note:
-										</label>
-										<MDBCard border="1">
-											<MDBCardBody className="p-3">
-												{data[selected.website].services[
-													selected.service
-												].subservices[selected.subService]?.description[
-													language
-												]
-													.split("|")
-													.map((str, index) => (
-														<div key={index}>
-															{index + 1}. {str}
-														</div>
-													))}
-											</MDBCardBody>
-										</MDBCard>
-									</MDBCol>
-									{/* <MDBTextArea
-								id="note"
-								type="text"
-								value={data[selected.website].services[
-									selected.service
-								].subservices[selected.subService]?.description[language].replace(
-									/\|/g,
-									"\n"
-								)}
-								name="note"
-								style={{ height: 120 }}
-								disabled
-								onChange={handleChange}
-								className="mb-2"
-							/> */}
-									{data[selected.website].services[selected.service]
-										.subservices[selected.subService]?.youtube_tutorial && (
-										<div className="text-center mt-2">
-											Don’t know how to use this service?
-											<br />
-											Watch this video:{" "}
-											<a
-												href={
-													data[selected.website].services[selected.service]
-														.subservices[selected.subService]?.youtube_tutorial[
-														language
-													]
-												}
-												target="_blank"
-												className="font-black text-primary"
-											>
-												Tutorial
-											</a>
-										</div>
-									)}
-									<div className="w-250 mx-auto pt-3">
-										<MDBBtn
-											color="success"
-											size="lg"
-											className="font-black"
-											block
-										>
-											Purchase
-										</MDBBtn>
-									</div>
-								</>
+								<div className="w-250 mx-auto">
+									<MDBBtn
+										color="success"
+										size="lg"
+										className="font-black"
+										block
+									>
+										Purchase
+									</MDBBtn>
+								</div>
 							)}
 					</MDBRow>
 				</MDBContainer>
-			</div>
-			<div className="flex-grow-1 align-content-center pt-4 pb-5">
-				<div className="d-sm-flex text-center justify-content-center">
-					<div>{t("Have an issue/question?")}</div>
-					<Link
-						className="ms-3 text-primary font-black"
-						onClick={() => dispatch(showSupport())}
-					>
-						{t("Contact Us")}
-					</Link>
-				</div>
-				<div className=" text-center justify-content-center mt-2 px-4">
-					<div className="">{t("Have an android phone?")}</div>
-					<div>
-						<span className="">{t("checkout the Exo Booster app:")}</span>
-						<MDBBtn
-							color="primary"
-							size="sm"
-							className="ms-3"
-							tag={Link}
-							to="https://www.exobooster.com/"
-							target="_blank"
-						>
-							<MDBIcon fas icon="download" className="me-2" />
-							Download
-						</MDBBtn>
-					</div>
-				</div>
 			</div>
 		</div>
 	);

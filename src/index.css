@@ -1,10 +1,10 @@
 #root {
 	display: flex;
-    flex-direction: column;
-    height: 100vh;
-    width: 100%;
-    overflow: auto;
-		background-color: #ffe9fe !important;
+	flex-direction: column;
+	height: 100vh;
+	width: 100%;
+	overflow: auto;
+	background-color: #ffe9fe !important;
 }
 #root:has(#authLayout) {
 	background-color: #ffe9fe !important;
@@ -150,11 +150,17 @@
 .input-group .form-control:not(:first-child) {
 	border-left: transparent;
 }
-.input-group .form-control:focus {
+.input-group .form-control:focus,
+.form-control:focus {
 	border-color: #ff00f7 !important;
 	border-left: solid 1px #ff00f7 !important;
 	border-right: solid 1px #ff00f7 !important;
 	box-shadow: 0 0 0 0.2rem rgba(255, 0, 247, 0.25);
+}
+
+.gradient-primary {
+	background: linear-gradient(90deg, #ff00f7 0%, #ff00f730 90%);
+
 }
 
 .text-webkit-center {
@@ -214,6 +220,9 @@
 	.modal-dialog {
 		max-width: 100% !important;
 	}
+	.card-body {
+		padding: 1rem;
+	}
 }
 
 .spinner-wrapper {
@@ -221,7 +230,7 @@
 	height: 100vh;
 	top: 0;
 	left: 0;
-	background: rgba(0, 0, 0, 0.5);
+	/* background: rgba(0, 0, 0, 0.5); */
 	z-index: 999;
 }
 
@@ -292,4 +301,17 @@
 	color: #495057;
 	background-color: #fff;
 	border-color: #ff00f7 #ff00f7 #fff;
+}
+.badge-primary {
+	background-color: #ffe9fe;
+	color: #ff00f7;
+}
+
+small,
+.small {
+	font-size: 0.8em;
+}
+
+td {
+	/* padding: 0 !important; */
 }
