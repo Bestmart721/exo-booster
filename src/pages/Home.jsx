@@ -62,10 +62,6 @@ const Home = () => {
 		});
 	}, [data]);
 
-	const toggleDrawer = () => {
-		setIsOpen((prevState) => !prevState);
-	};
-
 	const handleTabClick = (value) => {
 		setSelected({
 			website: value,

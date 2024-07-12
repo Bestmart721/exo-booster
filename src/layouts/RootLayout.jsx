@@ -92,42 +92,39 @@ export default function RootLayout() {
 						})
 					);
 
-
 					axios
-					.post(
-						`https://getcategoriesandservices-l2ugzeb65a-uc.a.run.app/`,
-						{
-							userId: user.uid,
-						},
-						{
-							headers: {
-								// "Content-Type": "application/json",
-								Authorization: `Bearer ${user.accessToken}`,
+						.post(
+							`https://getcategoriesandservices-l2ugzeb65a-uc.a.run.app/`,
+							{
+								userId: user.uid,
 							},
-						}
-					)
-					.then((response) => {
-						// setData(response.data.data);
-						dispatch(setServices(response.data.data));
-						// const website = getFirstValue(response.data.data);
-						// const service = getFirstValue(website.services);
-						// const subService = getFirstValue(service.subservices);
-						// setSelected({
-						// 	website: getFirstKey(response.data.data),
-						// 	service: getFirstKey(website.services),
-						// 	subService: getFirstKey(service.subservices),
-						// });
-						// setSelectedOption({
-						// 	...subService,
-						// 	label: subService.display_name[language],
-						// 	value: subService.subservice_id,
-						// });
-					})
-					.catch((error) => {
-						dispatch(modalError(t(error)));
-					});
-
-
+							{
+								headers: {
+									// "Content-Type": "application/json",
+									Authorization: `Bearer ${user.accessToken}`,
+								},
+							}
+						)
+						.then((response) => {
+							// setData(response.data.data);
+							dispatch(setServices(response.data.data));
+							// const website = getFirstValue(response.data.data);
+							// const service = getFirstValue(website.services);
+							// const subService = getFirstValue(service.subservices);
+							// setSelected({
+							// 	website: getFirstKey(response.data.data),
+							// 	service: getFirstKey(website.services),
+							// 	subService: getFirstKey(service.subservices),
+							// });
+							// setSelectedOption({
+							// 	...subService,
+							// 	label: subService.display_name[language],
+							// 	value: subService.subservice_id,
+							// });
+						})
+						.catch((error) => {
+							dispatch(modalError(t(error)));
+						});
 				});
 			} else {
 				dispatch(unsetUser());
@@ -286,13 +283,9 @@ export default function RootLayout() {
 								floating
 								color="link"
 								size={isMobileOrTablet ? "sm" : "lg"}
+								onClick={() => dispatch(toggleDrawer())}
 							>
-								<MDBIcon
-									icon="bars"
-									color="primary"
-									size="lg"
-									onClick={() => dispatch(toggleDrawer())}
-								/>
+								<MDBIcon icon="bars" color="primary" size="lg" />
 							</MDBBtn>
 						)}
 						{/* <MDBIcon fas icon="bars" className="me-3" /> */}
