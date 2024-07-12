@@ -53,7 +53,7 @@ const Orders = () => {
 		setDataLoading(true);
 		axios
 			.post(
-				`https://cors-anywhere.herokuapp.com/https://getusersorders-l2ugzeb65a-uc.a.run.app/`, //https://cors-anywhere.herokuapp.com/
+				`https://getusersorders-l2ugzeb65a-uc.a.run.app/`, //https://cors-anywhere.herokuapp.com/
 				{
 					userId: user.uid,
 					currentPage: page,
