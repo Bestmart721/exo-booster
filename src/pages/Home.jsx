@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import "react-modern-drawer/dist/index.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
 	MDBBtn,
 	MDBContainer,
@@ -37,6 +37,7 @@ const Home = () => {
 	const [purchaseLoading, setPurchaseLoading] = useState(false);
 	const dispatch = useDispatch();
 	const [swalProps, setSwalProps] = useState({});
+	const navigate = useNavigate();
 	const [selected, setSelected] = useState({
 		website: "",
 		service: "",
@@ -97,9 +98,18 @@ const Home = () => {
 			dispatch(modalError("Please enter a link."));
 			return;
 		}
-		if (!selected.quantity) {
+		
+		const type =
+			data[selected.website].services[selected.service].subservices[
+				selected.subService
+			]?.type;
+		if (type == 'default' && !selected.quantity) {
 			dispatch(modalError("Please enter a quantity."));
 			return;
+		}
+		if (type == 'custom_comments' && !selected.comments) {
+			dispatch(modalError("Please enter comments."));
+			return
 		}
 		if (
 			selected.quantity <
@@ -130,17 +140,15 @@ const Home = () => {
 		setPurchaseLoading(true);
 		axios
 			.post(
-				`https://purchaseserviceglobal-33x3lnhsda-uc.a.run.app/`,
+				`https://cors-anywhere.herokuapp.com/https://purchaseserviceglobal-33x3lnhsda-uc.a.run.app/`,
 				{
 					userId: user.uid,
 					service_id: selected.service,
 					sub_service_id: selected.subService,
-					type: data[selected.website].services[selected.service].subservices[
-						selected.subService
-					]?.type,
+					type: type,
 					link: selected.link,
-					quantity: selected.quantity,
-					comments: selected.comments,
+					quantity: type == 'default' ? Number(selected.quantity) : undefined,
+					comments: type == 'custom_comments' ? selected.comments : undefined,
 				},
 				{
 					headers: {
@@ -153,7 +161,27 @@ const Home = () => {
 				if (response.data.error) {
 					throw new Error(response.data.error[language]);
 				}
-				console.log(response.data);
+				setSwalProps({
+					show: true,
+					title: "Purchase Successful!",
+					text: "Purchase Successful!\nYour order has been placed successfully.",
+					icon: "success",
+					focusConfirm: false,
+					showDenyButton: true,
+					customClass: {
+						confirmButton: "btn btn-primary btn-block",
+						denyButton: "btn btn-primary btn-block",
+					},
+					confirmButtonText: "View My Order",
+					denyButtonText: "Ok",
+					preConfirm: () => {
+						setSwalProps({ show: false });
+						navigate("/orders");
+					},
+					preDeny: () => {
+						setSwalProps({ show: false });
+					},
+				});
 			})
 			.catch((error) => {
 				// dispatch(modalError(error.message));
@@ -163,19 +191,20 @@ const Home = () => {
 					title: "Purchase failed!",
 					text: error.message,
 					icon: "error",
-					showCancelButton: true,
+					focusConfirm: false,
+					showDenyButton: true,
 					customClass: {
 						confirmButton: "btn btn-primary btn-block",
-						cancelButton: "btn btn-primary btn-block",
+						denyButton: "btn btn-primary btn-block",
 					},
 					confirmButtonText: "View My Order",
-					cancelButtonText: "Ok",
+					denyButtonText: "Ok",
 					preConfirm: () => {
-						console.log("Confirmed!");
+						setSwalProps({ show: false });
 						navigate("/orders");
 					},
 					preDeny: () => {
-						console.log("Cancelled!");
+						setSwalProps({ show: false });
 					},
 				});
 			})

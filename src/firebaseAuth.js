@@ -90,7 +90,6 @@ export const fetchSupportContacts = () => {
 		const docRef = doc(collection(db, "Extras"), "SupportContactsLinks");
 		getDoc(docRef)
 			.then((doc) => {
-				console.log(doc.data())
 				if (doc.exists) {
 					resolve(doc.data())
 				}

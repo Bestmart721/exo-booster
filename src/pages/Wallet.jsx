@@ -40,7 +40,6 @@ const Wallet = () => {
 	};
 
 	useEffect(() => {
-		console.log("page", page);
 		loadData();
 	}, [page]);
 
@@ -63,7 +62,6 @@ const Wallet = () => {
 				}
 			)
 			.then((response) => {
-				console.log("response", response.data);
 				if (response.data.error) {
 					throw new Error(response.data.error[language]);
 				}

@@ -131,7 +131,12 @@ const Orders = () => {
 	}
 
 	return (
-		<MDBContainer className="pt-4">
+		<MDBContainer
+			className="pt-4"
+			style={{
+				maxWidth: 720,
+			}}
+		>
 			<MDBCard>
 				<MDBCardHeader className="d-flex align-items-center gap-2 px-3">
 					<MDBTypography tag="h5" className="font-black mb-0">
