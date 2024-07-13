@@ -140,7 +140,7 @@ const Home = () => {
 		setPurchaseLoading(true);
 		axios
 			.post(
-				`https://cors-anywhere.herokuapp.com/https://purchaseserviceglobal-33x3lnhsda-uc.a.run.app/`,
+				`https://purchaseserviceglobal-33x3lnhsda-uc.a.run.app/`,
 				{
 					userId: user.uid,
 					service_id: selected.service,
