@@ -153,7 +153,7 @@ export default function Signup() {
 		firebaseSignIn1(response.data.data.auth_token).then((user) => {
 			const { accessToken, displayName, email, uid } = user;
 			dispatch(setUser({ accessToken, displayName, email, uid }));
-			navigate("/");
+			// navigate("/");
 		});
 	};
 

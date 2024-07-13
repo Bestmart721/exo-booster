@@ -53,6 +53,7 @@ import Drawer from "react-modern-drawer";
 import { useMobileOrTabletMediaQuery } from "../responsiveHook";
 import { onSnapshot } from "firebase/firestore";
 import axios from "axios";
+import { useToaster } from "./ToasterContext";
 
 const languages = {
 	en: { name: "English", flag: "gb.svg" },
@@ -75,10 +76,12 @@ export default function RootLayout() {
 	const isOpen = useSelector((state) => state.app.drawer);
 	const isMobileOrTablet = useMobileOrTabletMediaQuery();
 	const dispatch = useDispatch();
+	const { notify } = useToaster();
 
 	useEffect(() => {
 		const unsubscribe = onAuthStateChanged(auth, (user) => {
 			if (user) {
+				notify("Welcome back!");
 				fetchUserData(user.uid).then((userData) => {
 					console.log(userData);
 					dispatch(
@@ -86,9 +89,9 @@ export default function RootLayout() {
 							...userData,
 							accessToken: user.accessToken,
 							uid: user.uid,
-							last_auth: userData.last_auth.toDate().toISOString(),
+							last_auth: userData.last_auth?.toDate().toISOString(),
 							latest_purchase_date: userData.latest_purchase_date
-								.toDate()
+								?.toDate()
 								.toISOString(),
 							created_at: userData.created_at.toDate().toISOString(),
 						})
@@ -109,13 +112,14 @@ export default function RootLayout() {
 						)
 						.then((response) => {
 							dispatch(setServices(response.data.data));
-							fetchTotalOrders().then((data) => {
-								dispatch(setTotalOrdersCount(data.count));
-							});
 						})
 						.catch((error) => {
 							dispatch(modalError(t(error)));
 						});
+				});
+
+				fetchTotalOrders().then((data) => {
+					dispatch(setTotalOrdersCount(data.count));
 				});
 			} else {
 				dispatch(unsetUser());
@@ -156,7 +160,7 @@ export default function RootLayout() {
 	const signOut = () => {
 		firebaseSignOut().then(() => {
 			dispatch(unsetUser());
-			navigate("/auth");
+			// navigate("/auth");
 		});
 	};
 

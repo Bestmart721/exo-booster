@@ -58,7 +58,7 @@ export default function Signin() {
 			.then((user) => {
 				const { accessToken, displayName, email, uid } = user;
 				dispatch(setUser({ accessToken, displayName, email, uid }));
-				navigate("/");
+				// navigate("/");
 			})
 			.catch((error, a, b) => {
 				dispatch(modalError(t(error)));

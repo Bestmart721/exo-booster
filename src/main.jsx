@@ -12,10 +12,10 @@ import { store } from "./store";
 import { Provider } from "react-redux";
 import "mdb-react-ui-kit/dist/css/mdb.min.css";
 import "@fortawesome/fontawesome-free/css/all.min.css";
-// import "bootstrap/scss/bootstrap.scss";
 import "./index.css";
 
 import { LanguageProvider } from "./layouts/LanguageContext.jsx";
+import { ToasterProvider } from "./layouts/ToasterContext.jsx";
 import AuthLayout from "./layouts/AuthLayout.jsx";
 import RootLayout from "./layouts/RootLayout.jsx";
 import ErrorPage from "./pages/error-page";
@@ -81,7 +81,9 @@ ReactDOM.createRoot(document.getElementById("root")).render(
 	<Provider store={store}>
 		<LanguageProvider>
 			<I18nextProvider i18n={i18n}>
-				<RouterProvider router={router} />
+				<ToasterProvider>
+					<RouterProvider router={router} />
+				</ToasterProvider>
 			</I18nextProvider>
 		</LanguageProvider>
 	</Provider>

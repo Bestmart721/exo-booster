@@ -32,6 +32,7 @@ const Orders = () => {
 	const [dataLoading, setDataLoading] = useState(false);
 	const { language, switchLanguage } = useLanguage();
 	const [error, setError] = useState(null);
+	const [numberOfPages, setNumberOfPages] = useState(0);
 	// const dispatch = useDispatch();
 	const options = [
 		"All",
@@ -77,6 +78,7 @@ const Orders = () => {
 				} else {
 					setData([...data, ...response.data.data]);
 				}
+				setNumberOfPages(response.data.numberOfPages);
 			})
 			.catch((error) => {
 				setError(error.message);
@@ -101,7 +103,7 @@ const Orders = () => {
 		loadData();
 	}, [status, page]);
 
-	const viewport = document.getElementById("root")
+	const viewport = document.getElementById("root");
 	let mybutton;
 
 	useEffect(() => {
@@ -116,10 +118,7 @@ const Orders = () => {
 	}, []);
 
 	function scrollFunction(mybutton) {
-		if (
-			document.body.scrollTop > 100 ||
-			viewport.scrollTop > 100
-		) {
+		if (document.body.scrollTop > 100 || viewport.scrollTop > 100) {
 			mybutton.style.display = "block";
 		} else {
 			mybutton.style.display = "none";
@@ -209,10 +208,12 @@ const Orders = () => {
 								Try Again
 							</MDBBtn>
 						</>
-					) : (
+					) : numberOfPages > page ? (
 						<MDBBtn color="link" onClick={loadMore}>
 							Load More
 						</MDBBtn>
+					) : (
+						"No more data to load."
 					)}
 				</MDBFooter>
 			</MDBCard>
