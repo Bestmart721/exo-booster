@@ -413,7 +413,7 @@ export default function RootLayout() {
 				<div className="d-flex justify-content-center align-items-end position-fixed spinner-wrapper">
 					<MDBSpinner
 						color="primary"
-						style={{ width: "3rem", height: "3rem", marginBottom: "3rem" }}
+						style={{ width: 32, height: 32, marginBottom: "4.2rem" }}
 					>
 						<span className="visually-hidden">Loading...</span>
 					</MDBSpinner>

@@ -15,11 +15,12 @@ import { useSelector } from "react-redux";
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import { useTranslation } from "react-i18next";
 import * as Yup from "yup";
-import { fetchUserData } from "../firebaseAuth";
+import { fetchUserData, firebaseChangePassword } from "../firebaseAuth";
+import SweetAlert2 from "react-sweetalert2";
 
 const Account = () => {
 	const user = useSelector((state) => state.auth.user);
-
+	const [swalProps, setSwalProps] = useState({});
 	const { t, i18n } = useTranslation();
 	const [visiblePassword, setVisiblePassword] = useState(false);
 
@@ -50,7 +51,27 @@ const Account = () => {
 		),
 	});
 
-	const onSubmit = async (values, { setSubmitting }) => {};
+	const onSubmit = async (values, { setSubmitting, resetForm }) => {
+		const { currentPassword, password } = values;
+
+		firebaseChangePassword(currentPassword, password).then(() => {
+			setSwalProps({
+				show: true,
+				title: "Success",
+				text: "Your password has been changed successfully.",
+				icon: "success",
+				customClass: {
+					confirmButton: "btn btn-primary btn-block",
+				},
+				preConfirm: () => {
+					setSwalProps({ show: false });
+				},
+			});
+			resetForm();
+		}).catch((error) => {
+		});
+		setSubmitting(false);
+	};
 
 	const togglePasswordVisible = () => {
 		setVisiblePassword(!visiblePassword);
@@ -58,6 +79,7 @@ const Account = () => {
 
 	return (
 		<MDBContainer className="py-4">
+		<SweetAlert2 {...swalProps} />
 			<MDBCard className="mb-3">
 				<MDBCardBody>
 					<MDBCardTitle className="font-black">Account Details</MDBCardTitle>

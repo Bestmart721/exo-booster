@@ -217,8 +217,10 @@ const Orders = () => {
 						<MDBBtn color="link" onClick={loadMore}>
 							Load More
 						</MDBBtn>
-					) : (
+					) : data.length > 0 ? (
 						"No more data to load."
+					) : (
+						"No data to load."
 					)}
 				</MDBFooter>
 			</MDBCard>

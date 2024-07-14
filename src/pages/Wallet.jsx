@@ -85,7 +85,6 @@ const Wallet = () => {
 	let mybutton;
 
 	useEffect(() => {
-
 		viewport.onscroll = function () {
 			mybutton = document.getElementById("btn-back-to-top");
 			scrollFunction(mybutton);
@@ -205,8 +204,12 @@ const Wallet = () => {
 					<MDBBtn color="link" onClick={loadMore}>
 						Load More
 					</MDBBtn>
-				) : (
+				) : 
+				payments.length > 0 ? (
 					"No more data to load."
+				) :
+				(
+					"No data to load."
 				)}
 			</div>
 

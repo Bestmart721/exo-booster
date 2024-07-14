@@ -140,7 +140,7 @@ const Home = () => {
 		setPurchaseLoading(true);
 		axios
 			.post(
-				`https://purchaseserviceglobal-33x3lnhsda-uc.a.run.app/`,
+				`https://purchaseserviceglobal-l2ugzeb65a-uc.a.run.app/`,
 				{
 					userId: user.uid,
 					service_id: selected.service,
@@ -163,10 +163,9 @@ const Home = () => {
 				}
 				setSwalProps({
 					show: true,
-					title: "Purchase Successful!",
+					title: response.data.message[language],
 					text: "Purchase Successful!\nYour order has been placed successfully.",
 					icon: "success",
-					focusConfirm: false,
 					showDenyButton: true,
 					customClass: {
 						confirmButton: "btn btn-primary btn-block",
@@ -191,7 +190,6 @@ const Home = () => {
 					title: "Purchase failed!",
 					text: error.message,
 					icon: "error",
-					focusConfirm: false,
 					showDenyButton: true,
 					customClass: {
 						confirmButton: "btn btn-primary btn-block",

@@ -14,6 +14,7 @@ const resources = {
       "Password cannot be empty.": "Password cannot be empty.",
       "Password must be at least 6 characters.": "Password must be at least 6 characters.",
       "Passwords must match.": "Passwords must match.",
+      "No more data to load" : "No more data to load",
 
       "Invalid username, should not contain any spaces, or special characters (eg: $ é # â .....)": "Invalid username, should not contain any spaces or special characters (e.g., $ é # â ...)",
       "Username must be at least 3 characters long.": "Username must be at least 3 characters long.",
@@ -70,6 +71,7 @@ const resources = {
       "Password cannot be empty.": "Le mot de passe ne peut pas être vide.",
       "Password must be at least 6 characters.": "Le mot de passe doit comporter au moins 6 caractères.",
       "Passwords must match.": "Les mots de passe doivent correspondre.",
+      "No more data to load" : "Pas de données supplémentaires à charger",
 
       "Invalid username, should not contain any spaces, or special characters (eg: $ é # â .....)": "Nom d'utilisateur non valide, ne doit pas contenir d'espaces ni de caractères spéciaux (ex. : $ é # â ...)",
       "Username must be at least 3 characters long.": "Le nom d'utilisateur doit comporter au moins 3 caractères.",

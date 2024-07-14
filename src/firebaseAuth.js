@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { getAuth, createUserWithEmailAndPassword, signInWithCustomToken, signInWithEmailAndPassword, signOut } from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword, signInWithCustomToken, signInWithEmailAndPassword, signOut, sendPasswordResetEmail, updatePassword } from "firebase/auth";
 import { getFirestore, collection, doc, getDoc } from "firebase/firestore";
 
 // TODO: Replace the following with your app's Firebase project configuration
@@ -72,6 +72,18 @@ export function firebaseSignIn2(username, password) {
 				const errorMessage = error.message;
 				reject(errorMessage)
 			});
+	})
+}
+
+export function firebaseChangePassword(currentPassword, password) {
+	return new Promise((resolve, reject) => {
+		updatePassword(auth.currentUser, password).then(() => {
+			resolve()
+		}).catch((error) => {
+			const errorCode = error.code;
+			const errorMessage = error.message;
+			reject(errorMessage)
+		});
 	})
 }
 
