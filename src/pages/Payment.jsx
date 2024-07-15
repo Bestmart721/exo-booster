@@ -277,8 +277,7 @@ const Payment = () => {
 
 							{Object.keys(formData).map((key) => {
 								const field = formData[key];
-								if (true) {
-									//field.displayed
+								if (field.displayed) {
 									return (
 										<div key={field.index} className="mb-5 position-relative">
 											<label>{field.field_name[language]}</label>
