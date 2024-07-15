@@ -105,7 +105,6 @@ export default function RootLayout() {
 							},
 							{
 								headers: {
-									// "Content-Type": "application/json",
 									Authorization: `Bearer ${user.accessToken}`,
 								},
 							}

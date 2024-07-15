@@ -350,3 +350,7 @@ small,
 .text-transform-uppercase {
 	text-transform: uppercase;
 }
+
+.line-height-small {
+	line-height: 1.2;
+}

@@ -98,18 +98,18 @@ const Home = () => {
 			dispatch(modalError("Please enter a link."));
 			return;
 		}
-		
+
 		const type =
 			data[selected.website].services[selected.service].subservices[
 				selected.subService
 			]?.type;
-		if (type == 'default' && !selected.quantity) {
+		if (type == "default" && !selected.quantity) {
 			dispatch(modalError("Please enter a quantity."));
 			return;
 		}
-		if (type == 'custom_comments' && !selected.comments) {
+		if (type == "custom_comments" && !selected.comments) {
 			dispatch(modalError("Please enter comments."));
-			return
+			return;
 		}
 		if (
 			selected.quantity <
@@ -147,8 +147,8 @@ const Home = () => {
 					sub_service_id: selected.subService,
 					type: type,
 					link: selected.link,
-					quantity: type == 'default' ? Number(selected.quantity) : undefined,
-					comments: type == 'custom_comments' ? selected.comments : undefined,
+					quantity: type == "default" ? Number(selected.quantity) : undefined,
+					comments: type == "custom_comments" ? selected.comments : undefined,
 				},
 				{
 					headers: {
@@ -275,13 +275,11 @@ const Home = () => {
 									className="me-3"
 								/>
 								<div>
-									<div className="small" style={{ lineHeight: 1.2 }}>
-										Total Orders
-									</div>
+									<div className="small line-height-small">Total Orders</div>
 									<MDBTypography tag="h5" className="mb-0 font-black">
 										{formatNumber(totalOrdersCount)}
 									</MDBTypography>
-									<div className="small" style={{ lineHeight: 1.2 }}>
+									<div className="small line-height-small">
 										3+ years of experience providing SMM services!
 									</div>
 								</div>
@@ -295,16 +293,14 @@ const Home = () => {
 									className="me-3"
 								/>
 								<div>
-									<div className="small" style={{ lineHeight: 1.2 }}>
-										You Have Spent
-									</div>
+									<div className="small line-height-small">You Have Spent</div>
 									<MDBTypography tag="h5" className="mb-0 font-black">
 										{formatNumber(user.amount_spent)}{" "}
 										<span className="text-transform-uppercase">
 											{user.currency}
 										</span>
 									</MDBTypography>
-									<div className="small" style={{ lineHeight: 1.2 }}>
+									<div className="small line-height-small">
 										You have currently
 										<br />
 										<span className="font-black">
@@ -437,10 +433,7 @@ const Home = () => {
 																className="country-option"
 															>
 																<div>{props.data.label}</div>
-																<div
-																	style={{ lineHeight: 1.2 }}
-																	className="small text-secondary"
-																>
+																<div className="small text-secondary line-height-small">
 																	{props.data.sub_display_name[user.currency][
 																		language
 																	]
