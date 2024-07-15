@@ -14,6 +14,7 @@ import { fetchReferralInfo } from "../firebaseAuth";
 import { modalError } from "../store/appSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { Input, InputGroup } from "reactstrap";
+import { t } from "i18next";
 
 const Referral = () => {
 	const dispatch = useDispatch();
@@ -23,6 +24,7 @@ const Referral = () => {
 	useEffect(() => {
 		fetchReferralInfo()
 			.then((data) => {
+				console.log(data);
 				setData(data);
 			})
 			.catch((error) => {
@@ -33,7 +35,7 @@ const Referral = () => {
 	return (
 		<MDBContainer className="pt-3">
 			<MDBTypography tag="h4" className="font-black text-center">
-				Referral Program
+				{t("Referral Program")}
 			</MDBTypography>
 			<MDBCard className="mb-3 gradient-primary">
 				<MDBRow className="g-0">
@@ -56,10 +58,10 @@ const Referral = () => {
 			<MDBCard className="mb-3">
 				<MDBCardBody>
 					<MDBCardTitle className="font-black">
-						Invite friends & family
+						{t("Invite friends & family")}
 					</MDBCardTitle>
 					<MDBTypography tag="small" className="text-secondary">
-						Copy your code and share it with your friends
+						{t("Share your referral code with friends and family")}
 					</MDBTypography>
 					<InputGroup>
 						<Input
@@ -73,14 +75,16 @@ const Referral = () => {
 								navigator.clipboard.writeText(user.referralCode);
 							}}
 						>
-							Copy
+							{t("Copy")}
 						</MDBBtn>
 					</InputGroup>
 				</MDBCardBody>
 			</MDBCard>
 			<MDBCard className="mb-3">
 				<MDBCardBody>
-					<MDBCardTitle className="font-black">How it works?</MDBCardTitle>
+					<MDBCardTitle className="font-black">
+						{t("How it works?")}
+					</MDBCardTitle>
 					{data.refSteps?.map((item, index) => (
 						<MDBTypography tag="p" className="mb-1" key={index}>
 							{index + 1}. {item}

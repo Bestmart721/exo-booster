@@ -13,6 +13,7 @@ import { useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { useLanguage } from "../layouts/LanguageContext";
 import SweetAlert2 from "react-sweetalert2";
+import { t } from "i18next";
 
 function formatNumber(num = 0) {
 	return num.toLocaleString();
@@ -121,13 +122,13 @@ const Wallet = () => {
 					style={{ zIndex: 3 }}
 				>
 					<MDBCardBody className="text-white text-center">
-						<MDBTypography tag="div">Available balance</MDBTypography>
+						<MDBTypography tag="div">{t("Available balance")}</MDBTypography>
 						<MDBTypography tag="h1" className="font-black">
 							{formatNumber(user.balance || 0)}{" "}
 							{user.currency?.toUpperCase() || "XAF"}
 						</MDBTypography>
 						<MDBBtn outline color="white" rounded tag={Link} to="/payment">
-							Add Funds
+							{t("Add Funds")}
 						</MDBBtn>
 					</MDBCardBody>
 				</MDBCard>
@@ -142,7 +143,7 @@ const Wallet = () => {
 
 			<MDBCard className="mb-3 text-light gradient-primary-2">
 				<MDBCardBody className="d-flex align-items-center py-2">
-					<MDBTypography tag="div">Affiliate Balance:</MDBTypography>
+					<MDBTypography tag="div">{t("Available balance")}:</MDBTypography>
 					<MDBTypography tag="h5" className="font-black mb-0 ms-2">
 						{formatNumber(user.balance || 0)}{" "}
 						{user.currency?.toUpperCase() || "XAF"}
@@ -152,7 +153,7 @@ const Wallet = () => {
 			</MDBCard>
 
 			<MDBTypography className="font-black text-center mb-2">
-				Recent acitivities
+				{t("Recent acitivities")}
 			</MDBTypography>
 			{payments.map((payment) => (
 				<MDBBtn
@@ -189,7 +190,7 @@ const Wallet = () => {
 			<div className="text-center py-2">
 				{dataLoading ? (
 					<MDBBtn color="link" disabled>
-						Loading...
+						{t("Loading")}...
 					</MDBBtn>
 				) : error ? (
 					<>
@@ -197,19 +198,17 @@ const Wallet = () => {
 							{error}
 						</MDBTypography>
 						<MDBBtn color="link" onClick={tryAgain}>
-							Try Again
+							{t("Try again")}
 						</MDBBtn>
 					</>
 				) : numberOfPages > page ? (
 					<MDBBtn color="link" onClick={loadMore}>
-						Load More
+						{t("Load More")}
 					</MDBBtn>
-				) : 
-				payments.length > 0 ? (
-					"No more data to load."
-				) :
-				(
-					"No data to load."
+				) : payments.length > 0 ? (
+					t("No more data to load.")
+				) : (
+					t("No data to load.")
 				)}
 			</div>
 

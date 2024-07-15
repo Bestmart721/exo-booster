@@ -201,7 +201,7 @@ export default function RootLayout() {
 							to="/"
 							onClick={toggleDrawerIn}
 						>
-							Home
+							{t("Home")}
 						</MDBListGroupItem>
 						<MDBListGroupItem
 							action
@@ -212,7 +212,7 @@ export default function RootLayout() {
 							to="/account"
 							onClick={toggleDrawerIn}
 						>
-							My Account
+							{t("My Account")}
 						</MDBListGroupItem>
 						<MDBListGroupItem
 							action
@@ -223,7 +223,7 @@ export default function RootLayout() {
 							to="/orders"
 							onClick={toggleDrawerIn}
 						>
-							My Orders
+							{t("My Orders")}
 						</MDBListGroupItem>
 						<MDBListGroupItem
 							action
@@ -234,7 +234,7 @@ export default function RootLayout() {
 							to="/wallet"
 							onClick={toggleDrawerIn}
 						>
-							Wallet
+							{t("Wallet")}
 						</MDBListGroupItem>
 						<MDBListGroupItem
 							action
@@ -245,7 +245,7 @@ export default function RootLayout() {
 							to="/referral"
 							onClick={toggleDrawerIn}
 						>
-							Referral program
+							{t("Referral Program")}
 						</MDBListGroupItem>
 					</MDBTabs>
 				</MDBListGroup>
@@ -258,7 +258,7 @@ export default function RootLayout() {
 							dispatch(toggleDrawer());
 						}}
 					>
-						Sign Out
+						{t("Sign Out")}
 					</MDBBtn>
 				</MDBContainer>
 			</Drawer>
@@ -393,7 +393,7 @@ export default function RootLayout() {
 				<div className=" text-center justify-content-center mt-2 px-5">
 					<div className="">{t("Have an android phone?")}</div>
 					<div className="gap-3 d-block d-sm-flex align-items-center justify-content-center">
-						<div>{t("checkout the Exo Booster app:")}</div>
+						<div>{t("Checkout the Exo Booster app:")}</div>
 						<MDBBtn
 							color="primary"
 							size="sm"
@@ -402,7 +402,7 @@ export default function RootLayout() {
 							target="_blank"
 						>
 							<MDBIcon fas icon="download" className="me-2" />
-							Download
+							{t("Download")}
 						</MDBBtn>
 					</div>
 				</div>
@@ -414,7 +414,9 @@ export default function RootLayout() {
 						color="primary"
 						style={{ width: 32, height: 32, marginBottom: "4.2rem" }}
 					>
-						<span className="visually-hidden">Loading...</span>
+						<span className="visually-hidden">
+							{t("Loading")}...
+						</span>
 					</MDBSpinner>
 				</div>
 			)}
@@ -432,7 +434,7 @@ export default function RootLayout() {
 						</MDBModalBody>
 						<MDBModalFooter>
 							<MDBBtn color="primary" onClick={() => dispatch(hideError())}>
-								OK
+								{t("OK")}
 							</MDBBtn>
 						</MDBModalFooter>
 					</MDBModalContent>
@@ -453,8 +455,8 @@ export default function RootLayout() {
 									className="img-fluid mb-5"
 									alt="logo"
 								/>
-								<h3 className="font-black">Have a problem?</h3>
-								<div className="lead">Kindly contact us through email:</div>
+								<h3 className="font-black">{t("Have a problem?")}</h3>
+								<div className="lead">{t("Kindly contact us through email:")}</div>
 								<div className="lead text-primary">
 									<a
 										href={supportContacts.Email[language].link}
@@ -463,7 +465,7 @@ export default function RootLayout() {
 										{supportContacts.Email[language].name}
 									</a>
 								</div>
-								<div className="lead">Whatsapp:</div>
+								<div className="lead">{t("Whatsapp:")}</div>
 								<div className="lead text-primary">
 									<a
 										href={supportContacts.Whatsapp[language].link}
@@ -472,7 +474,7 @@ export default function RootLayout() {
 										{supportContacts.Whatsapp[language].name}
 									</a>
 								</div>
-								<div className="lead">Or Telegram:</div>
+								<div className="lead">{t("Or Telegram:")}</div>
 								<div className="lead text-primary">
 									<a
 										href={supportContacts.Telegram[language].link}
@@ -485,7 +487,7 @@ export default function RootLayout() {
 						)}
 						<MDBModalFooter>
 							<MDBBtn color="primary" onClick={() => dispatch(hideSupport())}>
-								OK
+								{t("OK")}
 							</MDBBtn>
 						</MDBModalFooter>
 					</MDBModalContent>

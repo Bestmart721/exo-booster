@@ -19,7 +19,7 @@ import { useSelector } from "react-redux";
 import { Input } from "reactstrap";
 import { useLanguage } from "../layouts/LanguageContext";
 import { or } from "firebase/firestore";
-import { use } from "i18next";
+import { t, use } from "i18next";
 // import { modalError } from "../store/appSlice";
 
 const capitalize = (str) => (str ? str[0].toUpperCase() + str.slice(1) : "");
@@ -140,7 +140,7 @@ const Orders = () => {
 			<MDBCard>
 				<MDBCardHeader className="d-flex align-items-center gap-2 px-3">
 					<MDBTypography tag="h5" className="font-black mb-0">
-						Orders History
+						{t("Orders History")}
 					</MDBTypography>
 
 					<Input
@@ -161,10 +161,10 @@ const Orders = () => {
 				<MDBTable align="middle" className="text-center">
 					<MDBTableHead className="font-black border-top">
 						<tr>
-							<th className="py-1 px-2">ID</th>
-							<th className="py-1 px-2">Service</th>
-							<th className="py-1 px-2">Qty</th>
-							<th className="py-1 px-2">Status</th>
+							<th className="py-1 px-2">{t("ID")}</th>
+							<th className="py-1 px-2">{t("Service")}</th>
+							<th className="py-1 px-2">{t("Qty")}</th>
+							<th className="py-1 px-2">{t("Status")}</th>
 						</tr>
 					</MDBTableHead>
 					<MDBTableBody>
@@ -202,7 +202,7 @@ const Orders = () => {
 				<MDBFooter className="text-center pb-2">
 					{dataLoading ? (
 						<MDBBtn color="link" disabled>
-							Loading...
+							{t("Loading")}...
 						</MDBBtn>
 					) : error ? (
 						<>
@@ -210,17 +210,17 @@ const Orders = () => {
 								{error}
 							</MDBTypography>
 							<MDBBtn color="link" onClick={tryAgain}>
-								Try Again
+								{t("Try Again")}
 							</MDBBtn>
 						</>
 					) : numberOfPages > page ? (
 						<MDBBtn color="link" onClick={loadMore}>
-							Load More
+							{t("Load More")}
 						</MDBBtn>
 					) : data.length > 0 ? (
-						"No more data to load."
+						t("No more data to load.")
 					) : (
-						"No data to load."
+						t("No data to load.")
 					)}
 				</MDBFooter>
 			</MDBCard>

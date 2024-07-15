@@ -352,8 +352,8 @@ const Home = () => {
 						{Object.keys(data).length === 0 && (
 							<div className="font-black text-center py-2 mb-2">
 								{Object.entries(data).length
-									? "PICK YOUR TARGET SOCIAL MEDIA"
-									: "Loading services..."}
+									? t("PICK YOUR TARGET SOCIAL MEDIA")
+									: t("Loading services...")}
 							</div>
 						)}
 						<MDBRow>
@@ -365,7 +365,7 @@ const Home = () => {
 												htmlFor="service"
 												className="form-label font-black mb-0"
 											>
-												Service:
+												{t("Service")}:
 											</label>
 											<Input
 												id="service"
@@ -375,7 +375,7 @@ const Home = () => {
 												onChange={handleChange}
 											>
 												<option value="" disabled>
-													Select a service.
+													{t("Select a service.")}
 												</option>
 												{Object.entries(data[selected.website].services).map(
 													([key, value]) => {
@@ -398,7 +398,7 @@ const Home = () => {
 													// htmlFor="subService"
 													className="form-label font-black mb-0"
 												>
-													Type:
+													{t("Type")}:
 												</label>
 
 												<Select
@@ -496,8 +496,7 @@ const Home = () => {
 															htmlFor="quantity"
 															className="form-label font-black mb-0"
 														>
-															{" "}
-															Quantity:
+															{t("Quantity")}:
 														</label>{" "}
 														<Input
 															id="quantity"
@@ -542,7 +541,7 @@ const Home = () => {
 															htmlFor="comments"
 															className="form-label font-black mb-0"
 														>
-															Comments:
+															{t("Comments")}:
 														</label>
 														<MDBTextArea
 															rows={4}
@@ -563,7 +562,7 @@ const Home = () => {
 														htmlFor="price"
 														className="form-label font-black mb-0"
 													>
-														Price:
+														{t("Price")}:
 													</label>
 													<Input
 														id="price"
@@ -610,7 +609,7 @@ const Home = () => {
 														htmlFor="average_time"
 														className="form-label font-black mb-0"
 													>
-														Average completion time:
+														{t("Average completion time")}:
 													</label>
 													<Input
 														id="average_time"
@@ -639,7 +638,7 @@ const Home = () => {
 											<>
 												<MDBCol className="mb-4" sm={12}>
 													<label className="form-label font-black mb-0">
-														Note:
+														{t("Note")}:
 													</label>
 													<MDBCard border="1">
 														<MDBCardBody>
@@ -663,9 +662,9 @@ const Home = () => {
 													language
 												] && (
 													<div className="text-center mb-3">
-														Don’t know how to use this service?
+														{t("Don’t know how to use this service?")}
 														<br />
-														Watch this video:{" "}
+														{t("Watch this video:")}
 														<a
 															href={
 																data[selected.website].services[
@@ -676,7 +675,7 @@ const Home = () => {
 															target="_blank"
 															className="font-black text-primary"
 														>
-															Tutorial
+															{t("Tutorial")}
 														</a>
 													</div>
 												)}
@@ -702,10 +701,10 @@ const Home = () => {
 													style={{ width: 18, height: 18 }}
 													color="light"
 												>
-													<span className="visually-hidden">Loading...</span>
+													<span className="visually-hidden">{t("Loading")}...</span>
 												</MDBSpinner>
 											) : (
-												"Purchase"
+												t("Purchase")
 											)}
 										</MDBBtn>
 									</div>

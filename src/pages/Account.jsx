@@ -82,20 +82,28 @@ const Account = () => {
 		<SweetAlert2 {...swalProps} />
 			<MDBCard className="mb-3">
 				<MDBCardBody>
-					<MDBCardTitle className="font-black">Account Details</MDBCardTitle>
+					<MDBCardTitle className="font-black">
+						{t("Account Details")}
+					</MDBCardTitle>
 					{/* <MDBCardSubTitle>Card subtitle</MDBCardSubTitle> */}
 					<MDBCardText>
-						<span className="font-black">Username:</span> {user.displayName}
+						<span className="font-black">
+							{t("Username")}:
+							</span> {user.displayName}
 					</MDBCardText>
 
 					<MDBCard border="2">
 						<MDBCardBody>
 							<div>
-								<span className="font-black-">Current Discount Applied:</span>{" "}
+								<span className="font-black-">
+									{t("Current Discount Applied")}:
+									</span>{" "}
 								<span className="text-primary">{user.discount ? `-${user.discount}%` : "None"}</span>
 							</div>
 							<div>
-								<span className="font-black-">Discount uses left:</span>{" "}
+								<span className="font-black-">
+									{t("Discount Uses Left")}:
+									</span>{" "}
 								<span className="text-primary">{user.discountUsesLeft}</span>
 							</div>
 						</MDBCardBody>
@@ -104,7 +112,9 @@ const Account = () => {
 			</MDBCard>
 			<MDBCard>
 				<MDBCardBody>
-					<MDBCardTitle className="font-black">Security</MDBCardTitle>
+					<MDBCardTitle className="font-black">
+						{t("Security")}
+					</MDBCardTitle>
 
 					<Formik
 						initialValues={initialValues}
@@ -205,7 +215,7 @@ const Account = () => {
 											<MDBSpinner
 												style={{ width: 22, height: 22 }}
 											>
-												<span className="visually-hidden">Loading...</span>
+												<span className="visually-hidden">{t("Loading")}...</span>
 											</MDBSpinner>
 										) : (
 											t("save")

@@ -173,11 +173,11 @@ const Payment = () => {
 							<MDBIcon fas icon="arrow-left" color="primary" size="2x" />
 						</MDBBtn>
 						<MDBTypography tag="h4" className="font-black mb-0 ms-2">
-							Add Funds
+							{t("Add Funds")}
 						</MDBTypography>
 					</div>
 					<MDBTypography tag="p" className="text-muted">
-						Choose a payment method:
+						{t("Choose a payment method:")}
 					</MDBTypography>
 
 					<MDBRow>
@@ -233,16 +233,16 @@ const Payment = () => {
 							<MDBIcon fas icon="arrow-left" color="primary" size="2x" />
 						</MDBBtn>
 						<MDBTypography tag="h4" className="font-black mb-0 ms-2">
-							Payment Info
+							{t("Payment Info")}
 						</MDBTypography>
 					</div>
 					<MDBTypography tag="p" className="text-muted">
-						Fill in the information below and press pay.
+						{t("Fill in the information below and press pay.")}
 					</MDBTypography>
 
 					{selectedProvider?.payment_provider_id ? (
 						<>
-							<label>Payment method:</label>
+							<label>{t("Payment Method")}:</label>
 							<MDBCard className="mb-4">
 								<MDBRow>
 									<MDBCol className="align-self-center">
@@ -326,12 +326,19 @@ const Payment = () => {
 									}
 									onClick={handlePayment}
 								>
-									{processing ? <MDBSpinner color="light" /> : "Pay"}
+									{processing ? (
+										<MDBSpinner
+											style={{ width: 18, height: 18 }}
+											color="light"
+										/>
+									) : (
+										t("Pay")
+									)}
 								</MDBBtn>
 							</div>
 						</>
 					) : (
-						<div className="text-center">
+						<div className="text-center mt-5">
 							<MDBSpinner color="primary" />
 						</div>
 					)}
