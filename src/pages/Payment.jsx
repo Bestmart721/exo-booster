@@ -136,31 +136,30 @@ const Payment = () => {
 
 		setProcessing(true);
 		axios
-			.post(
-				"https://cors-anywhere.herokuapp.com/" +
-					selectedProvider.link_generator_url,
-				data,
-				{
-					headers: {
-						Authorization: `Bearer ${user.accessToken}`,
-					},
-				}
-			)
+			.post(selectedProvider.link_generator_url, data, {
+				headers: {
+					Authorization: `Bearer ${user.accessToken}`,
+				},
+			})
 			.then((response) => {
 				if (response.data.field_error) {
 					throw response.data.field_error[language];
 				}
 
 				if (selectedProvider.return_type == "payment_link") {
-					window.location.href = response.data.data[selectedProvider.return_type];
+					window.location.href =
+						response.data.data[selectedProvider.return_type];
 				} else if (selectedProvider.return_type == "html_text") {
-					dispatch(modalError(response.data.data[selectedProvider.return_type]));
+					dispatch(
+						modalError(response.data.data[selectedProvider.return_type])
+					);
 				}
 			})
 			.catch((error) => {
 				console.log(error);
 				dispatch(modalError(t(error)));
-			}).finally(() => {
+			})
+			.finally(() => {
 				setProcessing(false);
 			});
 	};
@@ -322,18 +321,13 @@ const Payment = () => {
 									size="lg"
 									className="font-black"
 									block
-									disabled={Object.keys(formData).some(
-										(key) => !formData[key].match
-									) || processing}
+									disabled={
+										Object.keys(formData).some((key) => !formData[key].match) ||
+										processing
+									}
 									onClick={handlePayment}
 								>
-									{
-										processing ? (
-											<MDBSpinner color="light" />
-										) : (
-											"Pay"
-										)
-									}
+									{processing ? <MDBSpinner color="light" /> : "Pay"}
 								</MDBBtn>
 							</div>
 						</>
