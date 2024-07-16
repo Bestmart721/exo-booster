@@ -21,6 +21,7 @@ export const appSlice = createSlice({
     },
     modalError: (state, action) => {
       state.modalText = action.payload
+      state.retryFunction = null
       state.errorModal = true
     },
     hideError: (state) => {
@@ -39,6 +40,6 @@ export const appSlice = createSlice({
 })
 
 // Action creators are generated for each case reducer function
-export const { showSupport, hideSupport, modalError, hideError, toggleDrawer, setServices, setTotalOrdersCount } = appSlice.actions
+export const { showSupport, hideSupport, modalError, modalError2, hideError, toggleDrawer, setServices, setTotalOrdersCount } = appSlice.actions
 
 export default appSlice.reducer

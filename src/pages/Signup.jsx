@@ -12,10 +12,16 @@ import {
 	MDBIcon,
 	MDBTypography,
 	MDBSpinner,
+	MDBModal,
+	MDBModalDialog,
+	MDBModalContent,
+	MDBModalBody,
+	MDBModalFooter,
 } from "mdb-react-ui-kit";
 import { useDispatch } from "react-redux";
 import { setTmpUser } from "../store/authSlice";
 import { modalError } from "../store/appSlice";
+import { useLanguage } from "../layouts/LanguageContext";
 
 const capitalize = (str) => (str ? str[0].toUpperCase() + str.slice(1) : "");
 
@@ -60,6 +66,9 @@ export default function Signup() {
 	const [visiblePassword, setVisiblePassword] = useState(false);
 	const dispatch = useDispatch();
 	const [loading, setLoading] = useState(false);
+	const [errorModalLocal, setErrorModalLocal] = useState(false);
+	const [modalTextLocal, setModalTextLocal] = useState("");
+	const { language, switchLanguage } = useLanguage();
 
 	const initialValues = {
 		country: "",
@@ -74,6 +83,20 @@ export default function Signup() {
 				? "fr"
 				: "en",
 		referralCode: "",
+	};
+
+	const modalErrorLocal = (text) => {
+		setModalTextLocal(text);
+		setErrorModalLocal(true);
+	};
+
+	const hideErrorLocal = () => {
+		setErrorModalLocal(false);
+	};
+
+	const retry = () => {
+		hideErrorLocal();
+		loadSignupData();
 	};
 
 	const loadSignupData = async () => {
@@ -91,7 +114,7 @@ export default function Signup() {
 				setLoading(false);
 			})
 			.catch((error) => {
-				dispatch(modalError(t("Could not get available countries.")));
+				modalErrorLocal(t("Could not get available countries."));
 				setLoading(false);
 			});
 		// let response = {
@@ -137,24 +160,34 @@ export default function Signup() {
 		referralCode: Yup.string(), // Optional field, no validation required
 	});
 
-	const onSubmit = async (values, { setSubmitting }) => {
-		let response = await axios.post(
-			`https://createuser-l2ugzeb65a-uc.a.run.app/`,
-			values
-		);
+	const onSubmit = (values, { setSubmitting }) => {
+		axios
+			.post(`https://createuser-l2ugzeb65a-uc.a.run.app/`, values)
+			.then((response) => {
+				if (response.data.error) {
+					dispatch(modalError(t(response.data.error[language])));
+					return;
+				}
 
-		if (response.data.error) {
-			dispatch(modalError(t(response.data.error[values.language])));
-			setSubmitting(false);
-			return;
-		}
-
-		setSubmitting(true);
-		firebaseSignIn1(response.data.data.auth_token).then((user) => {
-			const { accessToken, displayName, email, uid } = user;
-			dispatch(setTmpUser({ accessToken, displayName, email, uid }));
-			// navigate("/");
-		});
+				setSubmitting(true);
+				firebaseSignIn1(response.data.data.auth_token)
+					.then((user) => {
+						const { accessToken, displayName, email, uid } = user;
+						dispatch(setTmpUser({ accessToken, displayName, email, uid }));
+						// navigate("/");
+					})
+					.finally(() => {
+						setSubmitting(false);
+					});
+			})
+			.catch((error) => {
+				dispatch(
+					modalError(t(error))
+				);
+			})
+			.finally(() => {
+				setSubmitting(false);
+			});
 	};
 
 	const SingleValue = ({ children, ...props }) => (
@@ -349,9 +382,7 @@ export default function Signup() {
 										disabled={isSubmitting}
 									>
 										{isSubmitting ? (
-											<MDBSpinner
-												style={{ width: 22, height: 22 }}
-											>
+											<MDBSpinner style={{ width: 22, height: 22 }}>
 												<span className="visually-hidden">Loading...</span>
 											</MDBSpinner>
 										) : (
@@ -375,6 +406,25 @@ export default function Signup() {
 					</div>
 				</div>
 			</motion.div>
+
+			<MDBModal tabIndex="-1" open={errorModalLocal} onClose={hideErrorLocal}>
+				<MDBModalDialog centered style={{ maxWidth: 300 }}>
+					<MDBModalContent>
+						<MDBModalBody className="text-center py-5">
+							<img src="/favcon 1.png" className="img-fluid mb-5" alt="logo" />
+							<h3 className="mb-0">{t(modalTextLocal)}</h3>
+						</MDBModalBody>
+						<MDBModalFooter>
+							<MDBBtn color="warning" onClick={retry}>
+								{t("Retry")}
+							</MDBBtn>
+							<MDBBtn color="primary" onClick={hideErrorLocal}>
+								{t("OK")}
+							</MDBBtn>
+						</MDBModalFooter>
+					</MDBModalContent>
+				</MDBModalDialog>
+			</MDBModal>
 
 			{loading && (
 				<div className="d-flex justify-content-center align-items-center position-fixed spinner-wrapper">

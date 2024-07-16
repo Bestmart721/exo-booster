@@ -328,7 +328,8 @@ const Home = () => {
 								<MDBTabsLink
 									onClick={() => handleTabClick(website)}
 									active={selected.website === website}
-									className="rounded-top-4"
+									className="rounded-top-4 align-content-center"
+									style={{ width: 58, height: 58 }}
 								>
 									<img width={32} src={service.thumbnail_url} alt={website} />
 									{/* <MDBIcon
@@ -516,7 +517,7 @@ const Home = () => {
 																].subservices[selected.subService]?.max
 															}
 														/>
-														<small className=" position-absolute">
+														<small className="position-absolute">
 															(Min:
 															{
 																data[selected.website].services[

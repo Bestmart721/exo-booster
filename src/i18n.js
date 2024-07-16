@@ -66,7 +66,6 @@ const resources = {
       "Have an android phone?": "Have an android phone?",
       "Checkout the Exo Booster app:": "Checkout the Exo Booster app:",
       "Loading": "Loading",
-      "Have a problem?": "Have a problem?",
       "Kindly contact us through email:": "Kindly contact us through email:",
       "Whatsapp:": "Whatsapp:",
       "Or Telegram:": "Or Telegram:",
@@ -88,6 +87,9 @@ const resources = {
       "PICK YOUR TARGET SOCIAL MEDIA": "PICK YOUR TARGET SOCIAL MEDIA",
       "Loading services...": "Loading services...",
       "Account Details": "Account Details",
+      "Whatsapp:" : "Whatsapp:",
+      "Firebase: Error (auth/network-request-failed).": "Check your internet connection and try again.",
+      "FirebaseError: [code=unavailable]: Failed to get document because the client is offline.": "Check your internet connection and try again.",
     }
   },
   fr: {
@@ -155,9 +157,8 @@ const resources = {
       "Have an android phone?": "Vous avez un téléphone Android?",
       "Checkout the Exo Booster app:": "Découvrez l'application Exo Booster:",
       "Loading": "Chargement",
-      "Have a problem?": "Vous avez un problème?",
       "Kindly contact us through email:": "Veuillez nous contacter par email:",
-      "Whatsapp:": "Whatsapp:",
+      // "Whatsapp:": "Whatsapp:",
       "Or Telegram:": "Ou Telegram:",
       "OK": "OK",
       "Download": "Télécharger",
@@ -203,6 +204,8 @@ const resources = {
       "Fill in the information below and press pay.": "Remplissez les informations ci-dessous et appuyez sur payer.",
       "Payment Method": "Méthode de paiement",
       "Pay": "Payer",
+      "Firebase: Error (auth/network-request-failed)." : "Vérifiez votre connexion internet et réessayez.",
+      "FirebaseError: [code=unavailable]: Failed to get document because the client is offline.": "Vérifiez votre connexion internet et réessayez.",
     }
   }
 };

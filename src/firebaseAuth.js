@@ -50,10 +50,7 @@ export function firebaseSignIn1(token) {
 				resolve(user)
 			})
 			.catch((error) => {
-				console.log(error)
-				const errorCode = error.code;
-				const errorMessage = error.message;
-				reject(errorMessage)
+				reject(error)
 			})
 	})
 }
@@ -109,7 +106,7 @@ export const fetchSupportContacts = () => {
 			})
 			.catch((error) => {
 				console.log("Error getting document:", error);
-				reject("Check your internet connection and try again.")
+				reject(error)
 			});
 	})
 }

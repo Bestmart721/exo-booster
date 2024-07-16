@@ -28,7 +28,7 @@ const Referral = () => {
 				setData(data);
 			})
 			.catch((error) => {
-				dispatch(modalError(error));
+				dispatch(modalError("Check your internet connection and try again."));
 			});
 	}, [dispatch]);
 

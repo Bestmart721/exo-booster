@@ -60,7 +60,7 @@ export default function Signin() {
 				dispatch(setTmpUser({ accessToken, displayName, email, uid }));
 				// navigate("/");
 			})
-			.catch((error, a, b) => {
+			.catch((error) => {
 				dispatch(modalError(t(error)));
 			})
 			.finally(() => {
@@ -175,12 +175,12 @@ export default function Signin() {
 				</div>
 				<div className="d-sm-flex text-center justify-content-center mt-4 font-black lead">
 					<div>{t("Have a problem?")}</div>
-					<Link
-						className="ms-3 font-black text-primary"
+					<span
+						className="ms-3 font-black text-primary cursor-pointer"
 						onClick={() => dispatch(showSupport())}
 					>
 						{t("Contact Us")}
-					</Link>
+					</span>
 				</div>
 			</div>
 		</motion.div>

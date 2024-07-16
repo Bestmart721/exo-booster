@@ -9,6 +9,7 @@ import {
 import {
 	MDBBadge,
 	MDBBtn,
+	MDBCardLink,
 	MDBContainer,
 	MDBDropdown,
 	MDBDropdownItem,
@@ -83,6 +84,14 @@ export default function RootLayout() {
 		if (JSON.parse(localStorage.getItem("user")))
 			dispatch(setTmpUser(JSON.parse(localStorage.getItem("user"))));
 		else dispatch(unsetUser());
+
+		fetchSupportContacts()
+			.then((data) => {
+				setSupportContacts(data);
+			})
+			.catch((error) => {
+				// dispatch(modalError(t(error)));
+			});
 	}, []);
 
 	useEffect(() => {
@@ -124,7 +133,12 @@ export default function RootLayout() {
 							})
 							.catch((error) => {
 								dispatch(modalError(t(error)));
+							})
+							.finally(() => {
+								setLoading(false);
 							});
+					}).finally(() => {
+						setLoading(false);
 					});
 
 					fetchTotalOrders().then((data) => {
@@ -133,15 +147,6 @@ export default function RootLayout() {
 				} else {
 					dispatch(unsetUser());
 				}
-
-				fetchSupportContacts()
-					.then((data) => {
-						setSupportContacts(data);
-					})
-					.catch((error) => {
-						dispatch(modalError(t(error)));
-					})
-					.finally(() => setLoading(false));
 			});
 
 			// Cleanup subscription on unmount
@@ -394,12 +399,12 @@ export default function RootLayout() {
 			<div className="flex-grow-1 align-content-center pt-4 pb-5">
 				<div className="gap-3 d-block d-sm-flex align-items-center justify-content-center text-center">
 					<div>{t("Have an issue/question?")}</div>
-					<Link
-						className="text-primary font-black"
+					<span
+						className="text-primary font-black cursor-pointer"
 						onClick={() => dispatch(showSupport())}
 					>
 						{t("Contact Us")}
-					</Link>
+					</span>
 				</div>
 				<div className=" text-center justify-content-center mt-2 px-5">
 					<div className="">{t("Have an android phone?")}</div>
@@ -419,10 +424,10 @@ export default function RootLayout() {
 				</div>
 			</div>
 			{loading && (
-				<div className="d-flex justify-content-center align-items-end position-fixed spinner-wrapper">
+				<div className="d-flex justify-content-center align-items-start position-fixed spinner-wrapper">
 					<MDBSpinner
 						color="primary"
-						style={{ width: 32, height: 32, marginBottom: "4.2rem" }}
+						style={{ width: 32, height: 32, marginTop: "5.3rem" }}
 					>
 						<span className="visually-hidden">{t("Loading")}...</span>
 					</MDBSpinner>
@@ -447,6 +452,7 @@ export default function RootLayout() {
 					</MDBModalContent>
 				</MDBModalDialog>
 			</MDBModal>
+
 			<MDBModal
 				tabIndex="-1"
 				open={supportModal}
@@ -473,7 +479,7 @@ export default function RootLayout() {
 										{supportContacts.Email[language].name}
 									</a>
 								</div>
-								<div className="lead">{t("Whatsapp:")}</div>
+								<div className="lead">{t("Whatsapp")}:</div>
 								<div className="lead text-primary">
 									<a
 										href={supportContacts.Whatsapp[language].link}
@@ -482,7 +488,7 @@ export default function RootLayout() {
 										{supportContacts.Whatsapp[language].name}
 									</a>
 								</div>
-								<div className="lead">{t("Or Telegram:")}</div>
+								<div className="lead">{t("Or Telegram")}:</div>
 								<div className="lead text-primary">
 									<a
 										href={supportContacts.Telegram[language].link}
