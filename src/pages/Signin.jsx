@@ -8,7 +8,7 @@ import { MDBBtn, MDBIcon, MDBSpinner } from "mdb-react-ui-kit";
 import { motion, AnimatePresence } from "framer-motion";
 import { useDispatch } from "react-redux";
 import { modalError, showSupport } from "../store/appSlice";
-import { setUser } from "../store/authSlice";
+import { setTmpUser } from "../store/authSlice";
 // import "./styles.css";
 
 export default function Signin() {
@@ -57,7 +57,7 @@ export default function Signin() {
 		firebaseSignIn2(values.username, values.password)
 			.then((user) => {
 				const { accessToken, displayName, email, uid } = user;
-				dispatch(setUser({ accessToken, displayName, email, uid }));
+				dispatch(setTmpUser({ accessToken, displayName, email, uid }));
 				// navigate("/");
 			})
 			.catch((error, a, b) => {

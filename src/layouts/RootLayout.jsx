@@ -39,7 +39,7 @@ import {
 } from "../firebaseAuth";
 import { useLanguage } from "./LanguageContext";
 import { useSelector, useDispatch } from "react-redux";
-import { setUser, unsetUser } from "../store/authSlice";
+import { setTmpUser, setUser, unsetUser } from "../store/authSlice";
 import {
 	hideError,
 	hideSupport,
@@ -75,68 +75,81 @@ export default function RootLayout() {
 	const modalText = useSelector((state) => state.app.modalText);
 	const isOpen = useSelector((state) => state.app.drawer);
 	const isMobileOrTablet = useMobileOrTabletMediaQuery();
+	const tmpUser = useSelector((state) => state.auth.tmpUser);
 	const dispatch = useDispatch();
 	const { notify } = useToaster();
 
 	useEffect(() => {
-		const unsubscribe = onAuthStateChanged(auth, (user) => {
-			if (user) {
-				notify("Welcome back!");
-				fetchUserData(user.uid).then((userData) => {
-					console.log(userData);
-					dispatch(
-						setUser({
-							...userData,
-							accessToken: user.accessToken,
-							uid: user.uid,
-							last_auth: userData.last_auth?.toDate().toISOString(),
-							latest_purchase_date: userData.latest_purchase_date
-								?.toDate()
-								.toISOString(),
-							created_at: userData.created_at.toDate().toISOString(),
-						})
-					);
-
-					axios
-						.post(
-							`https://getcategoriesandservices-l2ugzeb65a-uc.a.run.app/`,
-							{
-								userId: user.uid,
-							},
-							{
-								headers: {
-									Authorization: `Bearer ${user.accessToken}`,
-								},
-							}
-						)
-						.then((response) => {
-							dispatch(setServices(response.data.data));
-						})
-						.catch((error) => {
-							dispatch(modalError(t(error)));
-						});
-				});
-
-				fetchTotalOrders().then((data) => {
-					dispatch(setTotalOrdersCount(data.count));
-				});
-			} else {
-				dispatch(unsetUser());
-			}
-
-			fetchSupportContacts()
-				.then((data) => {
-					setSupportContacts(data);
-				})
-				.catch((error) => {
-					dispatch(modalError(t(error)));
-				})
-				.finally(() => setLoading(false));
-		});
-
-		// Cleanup subscription on unmount
-		return unsubscribe;
+		if (JSON.parse(localStorage.getItem("user")))
+			dispatch(setTmpUser(JSON.parse(localStorage.getItem("user"))));
+		else dispatch(unsetUser());
 	}, []);
+
+	useEffect(() => {
+		if (tmpUser) {
+			setLoading(true);
+			setUser(tmpUser);
+			const unsubscribe = onAuthStateChanged(auth, (user) => {
+				if (user) {
+					notify("Welcome back!");
+					fetchUserData(user.uid).then((userData) => {
+						console.log(userData);
+						dispatch(
+							setUser({
+								...userData,
+								accessToken: user.accessToken,
+								uid: user.uid,
+								last_auth: userData.last_auth?.toDate().toISOString(),
+								latest_purchase_date: userData.latest_purchase_date
+									?.toDate()
+									.toISOString(),
+								created_at: userData.created_at.toDate().toISOString(),
+							})
+						);
+
+						axios
+							.post(
+								`https://getcategoriesandservices-l2ugzeb65a-uc.a.run.app/`,
+								{
+									userId: user.uid,
+								},
+								{
+									headers: {
+										Authorization: `Bearer ${user.accessToken}`,
+									},
+								}
+							)
+							.then((response) => {
+								dispatch(setServices(response.data.data));
+							})
+							.catch((error) => {
+								dispatch(modalError(t(error)));
+							});
+					});
+
+					fetchTotalOrders().then((data) => {
+						dispatch(setTotalOrdersCount(data.count));
+					});
+				} else {
+					dispatch(unsetUser());
+				}
+
+				fetchSupportContacts()
+					.then((data) => {
+						setSupportContacts(data);
+					})
+					.catch((error) => {
+						dispatch(modalError(t(error)));
+					})
+					.finally(() => setLoading(false));
+			});
+
+			// Cleanup subscription on unmount
+			return unsubscribe;
+		} else {
+			setLoading(false);
+		}
+	}, [tmpUser]);
 
 	useEffect(() => {
 		if (user?.uid) {
@@ -262,7 +275,6 @@ export default function RootLayout() {
 					</MDBBtn>
 				</MDBContainer>
 			</Drawer>
-
 			<MDBNavbar
 				expand="lg"
 				light
@@ -379,7 +391,6 @@ export default function RootLayout() {
 						<Outlet />
 					))}
 			</>
-
 			<div className="flex-grow-1 align-content-center pt-4 pb-5">
 				<div className="gap-3 d-block d-sm-flex align-items-center justify-content-center text-center">
 					<div>{t("Have an issue/question?")}</div>
@@ -407,20 +418,16 @@ export default function RootLayout() {
 					</div>
 				</div>
 			</div>
-
 			{loading && (
 				<div className="d-flex justify-content-center align-items-end position-fixed spinner-wrapper">
 					<MDBSpinner
 						color="primary"
 						style={{ width: 32, height: 32, marginBottom: "4.2rem" }}
 					>
-						<span className="visually-hidden">
-							{t("Loading")}...
-						</span>
+						<span className="visually-hidden">{t("Loading")}...</span>
 					</MDBSpinner>
 				</div>
 			)}
-
 			<MDBModal
 				tabIndex="-1"
 				open={errorModal}
@@ -440,7 +447,6 @@ export default function RootLayout() {
 					</MDBModalContent>
 				</MDBModalDialog>
 			</MDBModal>
-
 			<MDBModal
 				tabIndex="-1"
 				open={supportModal}
@@ -456,7 +462,9 @@ export default function RootLayout() {
 									alt="logo"
 								/>
 								<h3 className="font-black">{t("Have a problem?")}</h3>
-								<div className="lead">{t("Kindly contact us through email:")}</div>
+								<div className="lead">
+									{t("Kindly contact us through email:")}
+								</div>
 								<div className="lead text-primary">
 									<a
 										href={supportContacts.Email[language].link}

@@ -350,7 +350,7 @@ const Home = () => {
 				<div className="py-4 shadow bg-white">
 					<MDBContainer>
 						{Object.keys(data).length === 0 && (
-							<div className="font-black text-center py-2 mb-2">
+							<div className="font-black justify-content-center d-flex align-items-center" style={{height:300}}>
 								{Object.entries(data).length
 									? t("PICK YOUR TARGET SOCIAL MEDIA")
 									: t("Loading services...")}
