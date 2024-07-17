@@ -37,8 +37,11 @@ const Payment = () => {
 	const [formData, setFormData] = useState({});
 	const dispatch = useDispatch();
 	const [processing, setProcessing] = useState(false);
+	const [loading, setLoading] = useState(true);
+	const [dirty, setDirty] = useState(false);
 
 	useEffect(() => {
+		setLoading(true);
 		axios
 			.post(
 				`https://paymentprocessor-l2ugzeb65a-uc.a.run.app/`,
@@ -60,6 +63,9 @@ const Payment = () => {
 			.catch((error) => {
 				console.log(error);
 				dispatch(modalError(t(error)));
+			})
+			.finally(() => {
+				setLoading(false);
 			});
 	}, []);
 
@@ -121,6 +127,10 @@ const Payment = () => {
 	};
 
 	const handlePayment = () => {
+		setDirty(true);
+		if (Object.keys(formData).some((key) => !formData[key].match)) {
+			return;
+		}
 		let data = {
 			userId: user.uid,
 			userCountry: user.country,
@@ -140,6 +150,10 @@ const Payment = () => {
 				},
 			})
 			.then((response) => {
+				if (response.data.error) {
+					throw response.data.error[language];
+				}
+
 				if (response.data.field_error) {
 					throw response.data.field_error[language];
 				}
@@ -178,47 +192,53 @@ const Payment = () => {
 						{t("Choose a payment method:")}
 					</MDBTypography>
 
-					<MDBRow>
-						{paymentProviders
-							.sort((a, b) => a.order_index - b.order_index)
-							.map((provider) => (
-								<MDBCol md="4" key={provider.order_index}>
-									<motion.div
-										initial={{ scale: 1 }}
-										transition={{ ease: "easeInOut", duration: 0.2 }}
-										whileHover={{ scale: 1.05 }}
-									>
-										<MDBCard
-											className="mb-4"
-											onClick={() => {
-												setActive("paymentInfo");
-												setPaymentPlatformId(provider.payment_platform_id);
-											}}
+					{!loading ? (
+						<MDBRow>
+							{paymentProviders
+								.sort((a, b) => a.order_index - b.order_index)
+								.map((provider) => (
+									<MDBCol md="4" key={provider.order_index}>
+										<motion.div
+											initial={{ scale: 1 }}
+											transition={{ ease: "easeInOut", duration: 0.2 }}
+											whileHover={{ scale: 1.05 }}
 										>
-											<MDBCardHeader
-												style={{ backgroundColor: "#feca05", height: 120 }}
-												className="d-flex align-items-center p-2"
+											<MDBCard
+												className="mb-4"
+												onClick={() => {
+													setActive("paymentInfo");
+													setPaymentPlatformId(provider.payment_platform_id);
+												}}
 											>
-												<MDBCardImage
-													src={provider.thumbnail_url}
-													alt={provider.display_name[language]}
-													className="img-fluid mx-auto"
-													width={200}
-												/>
-											</MDBCardHeader>
-											<MDBCardFooter>
-												<MDBCardTitle
-													tag="h5"
-													className="font-black mb-0 text-center"
+												<MDBCardHeader
+													style={{ height: 120, background: "whitesmoke" }}
+													className="d-flex align-items-center p-2"
 												>
-													{provider.display_name[language]}
-												</MDBCardTitle>
-											</MDBCardFooter>
-										</MDBCard>
-									</motion.div>
-								</MDBCol>
-							))}
-					</MDBRow>
+													<MDBCardImage
+														src={provider.thumbnail_url}
+														alt={provider.display_name[language]}
+														className="img-fluid mx-auto"
+														width={200}
+													/>
+												</MDBCardHeader>
+												<MDBCardFooter>
+													<MDBCardTitle
+														tag="h5"
+														className="font-black mb-0 text-center"
+													>
+														{provider.display_name[language]}
+													</MDBCardTitle>
+												</MDBCardFooter>
+											</MDBCard>
+										</motion.div>
+									</MDBCol>
+								))}
+						</MDBRow>
+					) : (
+						<div className="text-center mt-5">
+							<MDBSpinner color="primary" />
+						</div>
+					)}
 				</MDBTabsPane>
 
 				<MDBTabsPane open={active == "paymentInfo"} id="paymentInfo">
@@ -261,7 +281,7 @@ const Payment = () => {
 									<MDBCol style={{ maxWidth: 150 }}>
 										<div
 											className="p-2 rounded-5 rounded-start-0 h-100 align-content-center"
-											style={{ backgroundColor: "#feca05" }}
+											style={{ background: "whitesmoke" }}
 										>
 											<MDBCardImage
 												src={selectedProvider.thumbnail_url}
@@ -303,7 +323,7 @@ const Payment = () => {
 												)}
 												{field.regex && !field.match && (
 													<div className="text-danger">
-														{field.regex_error[language]}
+														{dirty && field.regex_error[language]}
 													</div>
 												)}
 											</div>
@@ -318,10 +338,10 @@ const Payment = () => {
 									size="lg"
 									className="font-black"
 									block
-									disabled={
-										Object.keys(formData).some((key) => !formData[key].match) ||
-										processing
-									}
+									// disabled={
+									// 	Object.keys(formData).some((key) => !formData[key].match) ||
+									// 	processing
+									// }
 									onClick={handlePayment}
 								>
 									{processing ? (

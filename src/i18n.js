@@ -87,9 +87,10 @@ const resources = {
       "PICK YOUR TARGET SOCIAL MEDIA": "PICK YOUR TARGET SOCIAL MEDIA",
       "Loading services...": "Loading services...",
       "Account Details": "Account Details",
-      "Whatsapp:" : "Whatsapp:",
+      "Whatsapp:": "Whatsapp:",
       "Firebase: Error (auth/network-request-failed).": "Check your internet connection and try again.",
       "FirebaseError: [code=unavailable]: Failed to get document because the client is offline.": "Check your internet connection and try again.",
+      "AxiosError: Network Error": "Check your internet connection and try again.",
     }
   },
   fr: {
@@ -204,12 +205,14 @@ const resources = {
       "Fill in the information below and press pay.": "Remplissez les informations ci-dessous et appuyez sur payer.",
       "Payment Method": "Méthode de paiement",
       "Pay": "Payer",
-      "Firebase: Error (auth/network-request-failed)." : "Vérifiez votre connexion internet et réessayez.",
+      "Firebase: Error (auth/network-request-failed).": "Vérifiez votre connexion internet et réessayez.",
       "FirebaseError: [code=unavailable]: Failed to get document because the client is offline.": "Vérifiez votre connexion internet et réessayez.",
-      "Invalid link." : "Lien invalide.",
+      "AxiosError: Network Error": "Vérifiez votre connexion internet et réessayez.",
+      "Invalid link.": "Lien invalide.",
       "Please enter a quantity/comments between": "Veuillez entrer une quantité/commentaire entre",
       "and": "et",
-      "Your password has been changed successfully." : "Votre mot de passe a été changé avec succès.",
+      "Your password has been changed successfully.": "Votre mot de passe a été changé avec succès.",
+      "Affiliate balance": "Solde d'affiliation",
     }
   }
 };

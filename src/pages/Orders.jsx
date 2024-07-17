@@ -186,9 +186,8 @@ const Orders = () => {
 					</MDBTableHead>
 					<MDBTableBody>
 						{data.map((order) => (
-							<>
+							<React.Fragment key={order.order_index}>
 								<tr
-									key={order.order_index}
 									onClick={() => toggleCollapse(order.order_index)}
 									className="cursor-pointer"
 								>
@@ -196,7 +195,7 @@ const Orders = () => {
 										{order.order_index}
 									</td>
 									<td className="py-1 px-2 border-bottom-0">
-										{order.service_display_name[language]}
+										{order.service_display_name[language]} - <span className="text-capitalize">{order.service_category}</span>
 									</td>
 									<td align="right" className="py-1 px-2 border-bottom-0">
 										{order.quantity}
@@ -210,8 +209,6 @@ const Orders = () => {
 													: order.statusCodeName === "Pending" ||
 													  order.statusCodeName === "Processing" ||
 													  order.statusCodeName === "In progress"
-													? "warning"
-													: order.statusCodeName === "Partial"
 													? "info"
 													: "danger"
 											}
@@ -244,7 +241,7 @@ const Orders = () => {
 											<div>
 												<span className="font-black">Date</span> :{" "}
 												<span>
-													{timestampToString(order.timestamp._seconds)}
+													{timestampToString(order.timestamp._seconds) || ""}
 												</span>
 											</div>
 											<div>
@@ -254,7 +251,7 @@ const Orders = () => {
 										</MDBCollapse>
 									</td>
 								</tr>
-							</>
+							</React.Fragment>
 						))}
 					</MDBTableBody>
 				</MDBTable>

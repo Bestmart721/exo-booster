@@ -3,6 +3,7 @@ import {
 	MDBBtn,
 	MDBCard,
 	MDBCardBody,
+	MDBCollapse,
 	MDBContainer,
 	MDBIcon,
 	MDBTable,
@@ -20,8 +21,6 @@ function formatNumber(num = 0) {
 }
 
 const Wallet = () => {
-	const navigate = useNavigate();
-	const [swalProps, setSwalProps] = useState({});
 	const user = useSelector((state) => state.auth.user);
 	const [payments, setPayments] = useState([]);
 	const { language } = useLanguage();
@@ -29,9 +28,15 @@ const Wallet = () => {
 	const [error, setError] = useState(null);
 	const [page, setPage] = useState(0);
 	const [numberOfPages, setNumberOfPages] = useState(0);
+	const [openList, setOpenList] = useState([]);
 
 	function timestampToString(timestampInSeconds) {
+		if (!timestampInSeconds) return "";
 		return new Date(timestampInSeconds * 1000).toLocaleDateString();
+	}
+	function timestampToTimeString(timestampInSeconds) {
+		if (!timestampInSeconds) return "";
+		return new Date(timestampInSeconds * 1000).toLocaleString();
 	}
 	const tryAgain = () => {
 		loadData();
@@ -109,12 +114,16 @@ const Wallet = () => {
 		viewport.scrollTop = 0;
 	}
 
+	const toggleCollapse = (index) => {
+		if (openList.includes(index)) {
+			setOpenList(openList.filter((item) => item !== index));
+		} else {
+			setOpenList([...openList, index]);
+		}
+	};
+
 	return (
 		<MDBContainer className="pt-4" style={{ maxWidth: 720 }}>
-			{/* <MDBTypography tag="h4" className="font-black text-center">
-				Wallet
-			</MDBTypography> */}
-			<SweetAlert2 {...swalProps} />
 
 			<div className="position-relative">
 				<MDBCard
@@ -141,11 +150,11 @@ const Wallet = () => {
 				</MDBCard>
 			</div>
 
-			<MDBCard className="mb-3 text-light gradient-primary-2">
+			<MDBCard className="mb-3 text-light gradient-primary-2" tag={Link} to="/affiliate">
 				<MDBCardBody className="d-flex align-items-center py-2">
-					<MDBTypography tag="div">{t("Available balance")}:</MDBTypography>
+					<MDBTypography tag="div">{t("Affiliate balance")}:</MDBTypography>
 					<MDBTypography tag="h5" className="font-black mb-0 ms-2">
-						{formatNumber(user.balance || 0)}{" "}
+						{formatNumber(user.affiliate_balance || 0)}{" "}
 						{user.currency?.toUpperCase() || "XAF"}
 					</MDBTypography>
 					<MDBIcon fas icon="angle-right" className="ms-auto" />
@@ -156,35 +165,100 @@ const Wallet = () => {
 				{t("Recent acitivities")}
 			</MDBTypography>
 			{payments.map((payment) => (
-				<MDBBtn
-					key={payment.id}
-					color="light"
-					block
-					className="d-flex text-start align-items-center text-transform-none"
-				>
-					{payment.type == "payment" && (
-						<MDBIcon fas icon="money-bill" className="me-3" size="2x" />
-					)}
-					{payment.type == "refund" && (
-						<MDBIcon fas icon="undo" className="me-3" size="2x" />
-					)}
-					{payment.type == "referral" && (
-						<MDBIcon fas icon="gift" className="me-3" size="2x" />
-					)}
-					<div className="me-auto">
-						<div className="text-transform-capitalize font-black">
-							{payment.type}
+				<React.Fragment key={payment.id}>
+					<MDBBtn
+						color="light"
+						block
+						className="d-flex text-start align-items-center text-transform-none mt-2"
+						onClick={() => toggleCollapse(payment.id)}
+					>
+						{payment.type == "payment" && (
+							<MDBIcon fas icon="money-bill" className="me-3" size="2x" />
+						)}
+						{payment.type == "refund" && (
+							<MDBIcon fas icon="undo" className="me-3" size="2x" />
+						)}
+						{payment.type == "referral" && (
+							<MDBIcon fas icon="gift" className="me-3" size="2x" />
+						)}
+						<div className="me-auto">
+							<div className="text-transform-capitalize font-black">
+								{payment.type}
+							</div>
+							<div>
+								{payment.order_status && payment.order_status[language]}
+							</div>
 						</div>
-						<div>{payment.order_status && payment.order_status[language]}</div>
-					</div>
-					<div className="text-end">
-						<div className="text-success text-transform-uppercase">
-							{payment.amount && "+"} {formatNumber(payment.amount)}{" "}
-							{payment.currency}
+						<div className="text-end">
+							<div className="text-success text-transform-uppercase">
+								{payment.amount && "+"} {formatNumber(payment.amount)}{" "}
+								{payment.currency}
+							</div>
+							<div>{timestampToString(payment.date._seconds)}</div>
 						</div>
-						<div>{timestampToString(payment.date._seconds)}</div>
-					</div>
-				</MDBBtn>
+					</MDBBtn>
+					<MDBCollapse open={openList.includes(payment.id)} className="ps-4">
+						<div>
+							<span className="font-black">Amount</span> :{" "}
+							<span className="text-transform-uppercase text-success">
+								{formatNumber(payment.amount)} {payment.currency}
+							</span>
+						</div>
+						<div>
+							<span className="font-black">Date</span> :{" "}
+							<span>
+								{timestampToTimeString(
+									payment.order_date?._seconds || payment.date._seconds
+								) || ""}
+							</span>
+						</div>
+						{(payment.payment_method || payment.type == "referral") && (
+							<div>
+								<span className="font-black">Payment Method</span> :{" "}
+								<span>
+									{payment.payment_method
+										? payment.payment_method[language]
+										: "Referral"}
+								</span>
+							</div>
+						)}
+						{payment.type == "refund" && (
+							<div>
+								<span className="font-black">Refunded order</span> :<br />
+								<div className="ps-2 small">
+									<span className="font-black">Service name</span> :{" "}
+									<span>
+										{payment.subservice_name[language]}
+									</span>
+								</div>
+								<div className="ps-2 small">
+									<span className="font-black">Quantity</span> :{" "}
+									<span>{payment.quantity}</span>
+								</div>
+								<div className="ps-2 small">
+									<span className="font-black">Order status</span> :{" "}
+									<span>
+										{payment.order_status[language]}
+									</span>
+								</div>
+								<div className="ps-2 small">
+									<span className="font-black">Order date</span> :{" "}
+									<span>
+										{timestampToTimeString(payment.order_date)}
+									</span>
+								</div>
+								<div className="ps-2 small">
+									<span className="font-black">Order ID</span> :{" "}
+									<span>{payment.order_id}</span>
+								</div>
+							</div>
+						)}
+						<div>
+							<span className="font-black">ID</span> :{" "}
+							<span className="small">{payment.id}</span>
+						</div>
+					</MDBCollapse>
+				</React.Fragment>
 			))}
 
 			<div className="text-center py-2">
