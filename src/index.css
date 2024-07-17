@@ -53,11 +53,11 @@ body{
 }
 
 .logo-img {
-	height: 48px;
+	height: 40px;
 }
 @media screen and (max-width: 992px) {
 	.logo-img {
-		height: 24px;
+		height: 26px;
 	}
 }
 /* .nav-link {

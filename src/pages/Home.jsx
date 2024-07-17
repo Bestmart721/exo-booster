@@ -544,6 +544,7 @@ const Home = () => {
 														<Input
 															id="quantity"
 															type="number"
+															inputMode="numeric"
 															value={selected.quantity}
 															name="quantity"
 															className="bg-white"
