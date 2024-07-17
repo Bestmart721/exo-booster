@@ -25,6 +25,13 @@ import { t, use } from "i18next";
 
 const capitalize = (str) => (str ? str[0].toUpperCase() + str.slice(1) : "");
 
+function formatNumber(num = 0) {
+	return num.toLocaleString();
+}
+function timestampToString(timestampInSeconds) {
+	return new Date(timestampInSeconds * 1000).toLocaleDateString();
+}
+
 const Orders = () => {
 	const [status, setStatus] = useState("All");
 	const user = useSelector((state) => state.auth.user);
@@ -183,15 +190,18 @@ const Orders = () => {
 								<tr
 									key={order.order_index}
 									onClick={() => toggleCollapse(order.order_index)}
+									className="cursor-pointer"
 								>
-									<td className="py-1 px-2">{order.order_index}</td>
-									<td className="py-1 px-2">
+									<td className="py-1 px-2 border-bottom-0">
+										{order.order_index}
+									</td>
+									<td className="py-1 px-2 border-bottom-0">
 										{order.service_display_name[language]}
 									</td>
-									<td align="right" className="py-1 px-2">
+									<td align="right" className="py-1 px-2 border-bottom-0">
 										{order.quantity}
 									</td>
-									<td className="py-1 px-2">
+									<td className="py-1 px-2 border-bottom-0">
 										<MDBBadge
 											pill
 											color={
@@ -211,13 +221,38 @@ const Orders = () => {
 									</td>
 								</tr>
 								<tr>
-									<MDBCollapse
-										open={openList.includes(order.order_index)}
-										tag="td"
-										colSpan="4"
-									>
-										sdf
-									</MDBCollapse>
+									<td className="py-1 " colSpan="4" align="left">
+										<MDBCollapse open={openList.includes(order.order_index)}>
+											<div>
+												<span className="font-black">Price</span> :{" "}
+												<span className="text-transform-uppercase">
+													{formatNumber(order.charge)} {order.currency}
+												</span>
+											</div>
+											<div>
+												<span className="font-black">Link</span> :{" "}
+												<span>{order.link}</span>
+											</div>
+											<div>
+												<span className="font-black">Start Count</span> :{" "}
+												<span>{order.start_count}</span>
+											</div>
+											<div>
+												<span className="font-black">Remains</span> :{" "}
+												<span>{order.remains}</span>
+											</div>
+											<div>
+												<span className="font-black">Date</span> :{" "}
+												<span>
+													{timestampToString(order.timestamp._seconds)}
+												</span>
+											</div>
+											<div>
+												<span className="font-black">Completed in</span> :{" "}
+												<span>{order.completionTime}</span>
+											</div>
+										</MDBCollapse>
+									</td>
 								</tr>
 							</>
 						))}

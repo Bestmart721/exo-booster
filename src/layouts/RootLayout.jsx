@@ -101,45 +101,48 @@ export default function RootLayout() {
 			const unsubscribe = onAuthStateChanged(auth, (user) => {
 				if (user) {
 					// notify("Welcome back!");
-					fetchUserData(user.uid).then((userData) => {
-						// console.log(userData);
-						dispatch(
-							setUser({
-								...userData,
-								accessToken: user.accessToken,
-								uid: user.uid,
-								last_auth: userData.last_auth?.toDate().toISOString(),
-								latest_purchase_date: userData.latest_purchase_date
-									?.toDate()
-									.toISOString(),
-								created_at: userData.created_at.toDate().toISOString(),
-							})
-						);
+					fetchUserData(user.uid)
+						.then((userData) => {
+							// console.log(userData);
+							dispatch(
+								setUser({
+									...userData,
+									accessToken: user.accessToken,
+									uid: user.uid,
+									last_auth: userData.last_auth?.toDate().toISOString(),
+									latest_purchase_date: userData.latest_purchase_date
+										?.toDate()
+										.toISOString(),
+									created_at: userData.created_at.toDate().toISOString(),
+								})
+							);
 
-						axios
-							.post(
-								`https://getcategoriesandservices-l2ugzeb65a-uc.a.run.app/`,
-								{
-									userId: user.uid,
-								},
-								{
-									headers: {
-										Authorization: `Bearer ${user.accessToken}`,
+							axios
+								.post(
+									`https://getcategoriesandservices-l2ugzeb65a-uc.a.run.app/`,
+									{
+										userId: user.uid,
+										userCurrency: userData.currency,
 									},
-								}
-							)
-							.then((response) => {
-								dispatch(setServices(response.data.data));
-							})
-							.catch((error) => {
-								dispatch(modalError(t(error)));
-							})
-							.finally(() => {
-								setLoading(false);
-							});
-					}).finally(() => {
-						setLoading(false);
-					});
+									{
+										headers: {
+											Authorization: `Bearer ${user.accessToken}`,
+										},
+									}
+								)
+								.then((response) => {
+									dispatch(setServices(response.data.data));
+								})
+								.catch((error) => {
+									dispatch(modalError(t(error)));
+								})
+								.finally(() => {
+									setLoading(false);
+								});
+						})
+						.finally(() => {
+							setLoading(false);
+						});
 
 					fetchTotalOrders().then((data) => {
 						dispatch(setTotalOrdersCount(data.count));
@@ -352,12 +355,12 @@ export default function RootLayout() {
 									color="link"
 									size={isMobileOrTablet ? "" : "lg"}
 								> */}
-									{/* <img
+								{/* <img
 										src={getFlagUrl(languages[language].flag)}
 										alt={languages[language].name}
 										width={28}
 									/> */}
-									{i18n.language.toUpperCase()}
+								{i18n.language.toUpperCase()}
 								{/* </MDBBtn> */}
 							</MDBDropdownToggle>
 							<MDBDropdownMenu responsive="end">
@@ -460,45 +463,44 @@ export default function RootLayout() {
 			>
 				<MDBModalDialog centered style={{ maxWidth: 400 }}>
 					<MDBModalContent>
-						{supportContacts.Email && (
-							<MDBModalBody className="text-center py-5">
-								<img
-									src="/favcon 1.png"
-									className="img-fluid mb-5"
-									alt="logo"
-								/>
-								<h3 className="font-black">{t("Have a problem?")}</h3>
-								<div className="lead">
-									{t("Kindly contact us through email:")}
-								</div>
-								<div className="lead text-primary">
-									<a
-										href={supportContacts.Email[language].link}
-										target="_blank"
-									>
-										{supportContacts.Email[language].name}
-									</a>
-								</div>
-								<div className="lead">{t("Whatsapp")}:</div>
-								<div className="lead text-primary">
-									<a
-										href={supportContacts.Whatsapp[language].link}
-										target="_blank"
-									>
-										{supportContacts.Whatsapp[language].name}
-									</a>
-								</div>
-								<div className="lead">{t("Or Telegram")}:</div>
-								<div className="lead text-primary">
-									<a
-										href={supportContacts.Telegram[language].link}
-										target="_blank"
-									>
-										{supportContacts.Telegram[language].name}
-									</a>
-								</div>
-							</MDBModalBody>
-						)}
+						<MDBModalBody className="text-center py-5">
+							<img src="/favcon 1.png" className="img-fluid mb-5" alt="logo" />
+
+							{supportContacts.Email && (
+								<>
+									<h3 className="font-black">{t("Have a problem?")}</h3>
+									<div className="lead">
+										{t("Kindly contact us through email:")}
+									</div>
+									<div className="lead text-primary">
+										<a
+											href={supportContacts.Email[language].link}
+											target="_blank"
+										>
+											{supportContacts.Email[language].name}
+										</a>
+									</div>
+									<div className="lead">{t("Whatsapp")}:</div>
+									<div className="lead text-primary">
+										<a
+											href={supportContacts.Whatsapp[language].link}
+											target="_blank"
+										>
+											{supportContacts.Whatsapp[language].name}
+										</a>
+									</div>
+									<div className="lead">{t("Or Telegram")}:</div>
+									<div className="lead text-primary">
+										<a
+											href={supportContacts.Telegram[language].link}
+											target="_blank"
+										>
+											{supportContacts.Telegram[language].name}
+										</a>
+									</div>
+								</>
+							)}
+						</MDBModalBody>
 						<MDBModalFooter>
 							<MDBBtn color="primary" onClick={() => dispatch(hideSupport())}>
 								{t("OK")}

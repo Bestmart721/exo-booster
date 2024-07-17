@@ -168,6 +168,7 @@ const Home = () => {
 					link: selected.link,
 					quantity: type == "default" ? Number(selected.quantity) : undefined,
 					comments: type == "custom_comments" ? selected.comments : undefined,
+					appVersion : "web"
 				},
 				{
 					headers: {

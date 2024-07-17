@@ -74,7 +74,7 @@ const router = createBrowserRouter([
 				element: <Payment />,
 			},
 		],
-		errorElement: <ErrorPage />,
+		// errorElement: <ErrorPage />,
 	},
 ]);
 
