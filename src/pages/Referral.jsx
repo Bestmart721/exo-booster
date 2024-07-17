@@ -24,7 +24,6 @@ const Referral = () => {
 	useEffect(() => {
 		fetchReferralInfo()
 			.then((data) => {
-				console.log(data);
 				setData(data);
 			})
 			.catch((error) => {

@@ -6,6 +6,7 @@ import {
 	MDBCardBody,
 	MDBCardHeader,
 	MDBCardTitle,
+	MDBCollapse,
 	MDBContainer,
 	MDBFooter,
 	MDBIcon,
@@ -33,6 +34,7 @@ const Orders = () => {
 	const { language, switchLanguage } = useLanguage();
 	const [error, setError] = useState(null);
 	const [numberOfPages, setNumberOfPages] = useState(0);
+	const [openList, setOpenList] = useState([]);
 	// const dispatch = useDispatch();
 	const options = [
 		"All",
@@ -130,6 +132,14 @@ const Orders = () => {
 		viewport.scrollTop = 0;
 	}
 
+	const toggleCollapse = (index) => {
+		if (openList.includes(index)) {
+			setOpenList(openList.filter((item) => item !== index));
+		} else {
+			setOpenList([...openList, index]);
+		}
+	};
+
 	return (
 		<MDBContainer
 			className="pt-4"
@@ -169,33 +179,47 @@ const Orders = () => {
 					</MDBTableHead>
 					<MDBTableBody>
 						{data.map((order) => (
-							<tr key={order.order_index}>
-								<td className="py-1 px-2">{order.order_index}</td>
-								<td className="py-1 px-2">
-									{order.service_display_name[language]}
-								</td>
-								<td align="right" className="py-1 px-2">
-									{order.quantity}
-								</td>
-								<td className="py-1 px-2">
-									<MDBBadge
-										pill
-										color={
-											order.statusCodeName === "Completed"
-												? "success"
-												: order.statusCodeName === "Pending" ||
-												  order.statusCodeName === "Processing" ||
-												  order.statusCodeName === "In progress"
-												? "warning"
-												: order.statusCodeName === "Partial"
-												? "info"
-												: "danger"
-										}
+							<>
+								<tr
+									key={order.order_index}
+									onClick={() => toggleCollapse(order.order_index)}
+								>
+									<td className="py-1 px-2">{order.order_index}</td>
+									<td className="py-1 px-2">
+										{order.service_display_name[language]}
+									</td>
+									<td align="right" className="py-1 px-2">
+										{order.quantity}
+									</td>
+									<td className="py-1 px-2">
+										<MDBBadge
+											pill
+											color={
+												order.statusCodeName === "Completed"
+													? "success"
+													: order.statusCodeName === "Pending" ||
+													  order.statusCodeName === "Processing" ||
+													  order.statusCodeName === "In progress"
+													? "warning"
+													: order.statusCodeName === "Partial"
+													? "info"
+													: "danger"
+											}
+										>
+											{order.statusCodeName}
+										</MDBBadge>
+									</td>
+								</tr>
+								<tr>
+									<MDBCollapse
+										open={openList.includes(order.order_index)}
+										tag="td"
+										colSpan="4"
 									>
-										{order.statusCodeName}
-									</MDBBadge>
-								</td>
-							</tr>
+										sdf
+									</MDBCollapse>
+								</tr>
+							</>
 						))}
 					</MDBTableBody>
 				</MDBTable>

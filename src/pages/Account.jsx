@@ -23,6 +23,7 @@ const Account = () => {
 	const [swalProps, setSwalProps] = useState({});
 	const { t, i18n } = useTranslation();
 	const [visiblePassword, setVisiblePassword] = useState(false);
+	const [visiblePassword2, setVisiblePassword2] = useState(false);
 
 	const initialValues = {
 		country: "",
@@ -51,14 +52,15 @@ const Account = () => {
 		),
 	});
 
-	const onSubmit = async (values, { setSubmitting, resetForm }) => {
+	const onSubmit = (values, { setSubmitting, resetForm }) => {
 		const { currentPassword, password } = values;
 
+		setSubmitting(true);
 		firebaseChangePassword(currentPassword, password).then(() => {
 			setSwalProps({
 				show: true,
 				title: "Success",
-				text: "Your password has been changed successfully.",
+				text: t("Your password has been changed successfully."),
 				icon: "success",
 				customClass: {
 					confirmButton: "btn btn-primary btn-block",
@@ -69,12 +71,29 @@ const Account = () => {
 			});
 			resetForm();
 		}).catch((error) => {
+			console.log(error);
+			setSwalProps({
+				show: true,
+				title: "Error",
+				text: t(error),
+				icon: "error",
+				customClass: {
+					confirmButton: "btn btn-primary btn-block",
+				},
+				preConfirm: () => {
+					setSwalProps({ show: false });
+				},
+			});
+		}).finally(() => {
+			setSubmitting(false);
 		});
-		setSubmitting(false);
 	};
 
 	const togglePasswordVisible = () => {
 		setVisiblePassword(!visiblePassword);
+	};
+	const togglePasswordVisible2 = () => {
+		setVisiblePassword2(!visiblePassword2);
 	};
 
 	return (
@@ -128,7 +147,7 @@ const Account = () => {
 									<MDBIcon fas icon="lock-open" size="lg" />
 								</span>
 								<Field
-									type={visiblePassword ? "text" : "password"}
+									type={visiblePassword2 ? "text" : "password"}
 									className="form-control"
 									placeholder={t("Current Password")}
 									name="currentPassword"
@@ -136,8 +155,8 @@ const Account = () => {
 								<span className="input-group-text rounded-end-pill bg-white">
 									<MDBIcon
 										far
-										icon={visiblePassword ? "eye" : "eye-slash"}
-										onClick={togglePasswordVisible}
+										icon={visiblePassword2 ? "eye" : "eye-slash"}
+										onClick={togglePasswordVisible2}
 										size="lg"
 									/>
 								</span>
@@ -206,8 +225,8 @@ const Account = () => {
 								
 								<div className="text-end mt-2 mx-auto">
 									<MDBBtn
-										type="submit"
-										size="lg"
+										type="submit" className="w-200"
+										size="lg" block
 										rounded
 										disabled={isSubmitting}
 									>

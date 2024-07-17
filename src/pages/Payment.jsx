@@ -55,7 +55,6 @@ const Payment = () => {
 				}
 			)
 			.then((response) => {
-				console.log(response.data);
 				setPaymentProviders(response.data.data);
 			})
 			.catch((error) => {
@@ -85,7 +84,6 @@ const Payment = () => {
 				)
 				.then((response) => {
 					setSelectedProvider(response.data.data);
-					console.log(response.data.data);
 					let tmpFormData = {};
 					Object.keys(response.data.data.form_data).map((key) => {
 						tmpFormData[key] = {

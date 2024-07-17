@@ -57,7 +57,7 @@ body{
 }
 @media screen and (max-width: 992px) {
 	.logo-img {
-		height: 32px;
+		height: 24px;
 	}
 }
 /* .nav-link {
@@ -129,6 +129,9 @@ body{
 
 .w-250 {
 	max-width: 250px;
+}
+.w-200 {
+	max-width: 200px;
 }
 
 .pt-80 {
@@ -353,4 +356,8 @@ small,
 
 .line-height-small {
 	line-height: 1.2;
+}
+
+.collapse-content {
+	padding: 0 !important;
 }

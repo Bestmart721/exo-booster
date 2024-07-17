@@ -206,6 +206,10 @@ const resources = {
       "Pay": "Payer",
       "Firebase: Error (auth/network-request-failed)." : "Vérifiez votre connexion internet et réessayez.",
       "FirebaseError: [code=unavailable]: Failed to get document because the client is offline.": "Vérifiez votre connexion internet et réessayez.",
+      "Invalid link." : "Lien invalide.",
+      "Please enter a quantity/comments between": "Veuillez entrer une quantité/commentaire entre",
+      "and": "et",
+      "Your password has been changed successfully." : "Votre mot de passe a été changé avec succès.",
     }
   }
 };

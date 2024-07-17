@@ -161,6 +161,7 @@ export default function Signup() {
 	});
 
 	const onSubmit = (values, { setSubmitting }) => {
+		setSubmitting(true);
 		axios
 			.post(`https://createuser-l2ugzeb65a-uc.a.run.app/`, values)
 			.then((response) => {
@@ -181,9 +182,7 @@ export default function Signup() {
 					});
 			})
 			.catch((error) => {
-				dispatch(
-					modalError(t(error))
-				);
+				dispatch(modalError(t(error)));
 			})
 			.finally(() => {
 				setSubmitting(false);

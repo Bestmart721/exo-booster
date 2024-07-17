@@ -38,6 +38,8 @@ const Home = () => {
 	const dispatch = useDispatch();
 	const [swalProps, setSwalProps] = useState({});
 	const navigate = useNavigate();
+	const [linkErrorMsg, setLinkErrorMsg] = useState("");
+	const [dirty, setDirty] = useState(false);
 	const [selected, setSelected] = useState({
 		website: "",
 		service: "",
@@ -90,12 +92,23 @@ const Home = () => {
 	};
 
 	const purchase = () => {
+		setDirty(true);
 		if (!selected.website || !selected.service || !selected.subService) {
 			dispatch(modalError("Please select a service."));
 			return;
 		}
 		if (!selected.link) {
 			dispatch(modalError("Please enter a link."));
+			return;
+		}
+		const validity_regex = new RegExp(
+			data[selected.website]?.services[selected.service]?.subservices[
+				selected.subService
+			]?.validity_regex
+		);
+		if (validity_regex && !validity_regex.test(selected.link)) {
+			dispatch(modalError(t("Invalid link.")));
+			setLinkErrorMsg(t("Invalid link."));
 			return;
 		}
 
@@ -111,23 +124,29 @@ const Home = () => {
 			dispatch(modalError("Please enter comments."));
 			return;
 		}
+		const quantity =
+			type == "default"
+				? Number(selected.quantity)
+				: type == "custom_comments"
+				? countLines(selected.comments)
+				: 0;
 		if (
-			selected.quantity <
+			quantity <
 				data[selected.website].services[selected.service].subservices[
 					selected.subService
 				]?.min ||
-			selected.quantity >
+			quantity >
 				data[selected.website].services[selected.service].subservices[
 					selected.subService
 				]?.max
 		) {
 			dispatch(
 				modalError(
-					`Please enter a quantity between ${
+					`${t("Please enter a quantity/comments between")} ${
 						data[selected.website].services[selected.service].subservices[
 							selected.subService
 						]?.min
-					} and ${
+					} ${t("and")} ${
 						data[selected.website].services[selected.service].subservices[
 							selected.subService
 						]?.max
@@ -237,6 +256,18 @@ const Home = () => {
 					comments: "",
 				};
 				break;
+			case "link":
+				const validity_regex = new RegExp(
+					data[selected.website]?.services[selected.service]?.subservices[
+						selected.subService
+					]?.validity_regex
+				);
+				if (validity_regex && !validity_regex.test(e.target.value)) {
+					setLinkErrorMsg(t("Invalid link."));
+				} else {
+					setLinkErrorMsg("");
+				}
+				break;
 		}
 		setSelected({ ...selected, [e.target.name]: e.target.value, ...overwrite });
 	};
@@ -318,6 +349,10 @@ const Home = () => {
 					</MDBCard>
 				</MDBContainer>
 
+				<MDBTypography className="font-black text-center mt-3 mb-0" tag="h6">
+					{t("PICK YOUR TARGET SOCIAL MEDIA")}:
+				</MDBTypography>
+
 				<MDBTabs className="mt-3 justify-content-center border-2 border-bottom border-primary ">
 					{Object.entries(data).length ? (
 						Object.entries(data).map(([website, service]) => (
@@ -351,7 +386,10 @@ const Home = () => {
 				<div className="py-4 shadow bg-white">
 					<MDBContainer>
 						{Object.keys(data).length === 0 && (
-							<div className="font-black justify-content-center d-flex align-items-center" style={{height:300}}>
+							<div
+								className="font-black justify-content-center d-flex align-items-center"
+								style={{ height: 300 }}
+							>
 								{Object.entries(data).length
 									? t("PICK YOUR TARGET SOCIAL MEDIA")
 									: t("Loading services...")}
@@ -470,7 +508,7 @@ const Home = () => {
 										selected.service &&
 										selected.subService && (
 											<>
-												<MDBCol className="mb-4" sm={12}>
+												<MDBCol className="mb-4 position-relative" sm={12}>
 													<label
 														htmlFor="link"
 														className="form-label font-black mb-0"
@@ -488,6 +526,9 @@ const Home = () => {
 														name="link"
 														onChange={handleChange}
 													/>
+													<small className="position-absolute text-danger">
+														{dirty && linkErrorMsg}
+													</small>
 												</MDBCol>
 												{data[selected.website].services[selected.service]
 													.subservices[selected.subService]?.type ==
@@ -519,17 +560,17 @@ const Home = () => {
 														/>
 														<small className="position-absolute">
 															(Min:
-															{
+															{formatNumber(
 																data[selected.website].services[
 																	selected.service
 																].subservices[selected.subService]?.min
-															}{" "}
+															)}{" "}
 															- Max:
-															{
+															{formatNumber(
 																data[selected.website].services[
 																	selected.service
 																].subservices[selected.subService]?.max
-															}
+															)}
 															)
 														</small>
 													</MDBCol>
@@ -537,7 +578,7 @@ const Home = () => {
 												{data[selected.website].services[selected.service]
 													.subservices[selected.subService]?.type ==
 													"custom_comments" && (
-													<MDBCol className="mb-4" sm={12}>
+													<MDBCol className="mb-4 position-relative" sm={12}>
 														<label
 															htmlFor="comments"
 															className="form-label font-black mb-0"
@@ -552,6 +593,21 @@ const Home = () => {
 															className="bg-white"
 															onChange={handleChange}
 														/>
+														<small className="position-absolute">
+															(Min:
+															{
+																data[selected.website].services[
+																	selected.service
+																].subservices[selected.subService]?.min
+															}{" "}
+															- Max:
+															{
+																data[selected.website].services[
+																	selected.service
+																].subservices[selected.subService]?.max
+															}
+															)
+														</small>
 													</MDBCol>
 												)}
 												<MDBCol
@@ -651,7 +707,10 @@ const Home = () => {
 																.split("|")
 																.map((str, index) => (
 																	<div key={index}>
-																		{index + 1}. {str}
+																		<span className="font-black">
+																			{index + 1}.
+																		</span>{" "}
+																		{str}
 																	</div>
 																))}
 														</MDBCardBody>
@@ -702,7 +761,9 @@ const Home = () => {
 													style={{ width: 18, height: 18 }}
 													color="light"
 												>
-													<span className="visually-hidden">{t("Loading")}...</span>
+													<span className="visually-hidden">
+														{t("Loading")}...
+													</span>
 												</MDBSpinner>
 											) : (
 												t("Purchase")

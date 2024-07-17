@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { getAuth, createUserWithEmailAndPassword, signInWithCustomToken, signInWithEmailAndPassword, signOut, sendPasswordResetEmail, updatePassword } from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword, signInWithCustomToken, signInWithEmailAndPassword, signOut, sendPasswordResetEmail, updatePassword, reauthenticateWithCredential, EmailAuthProvider } from "firebase/auth";
 import { getFirestore, collection, doc, getDoc } from "firebase/firestore";
 
 // TODO: Replace the following with your app's Firebase project configuration
@@ -26,7 +26,7 @@ export function firbaseSignUp(username, password) {
 	const email = username + "@exobooster.com";
 	createUserWithEmailAndPassword(auth, email, password)
 		.then((userCredential) => {
-			console.log(userCredential)
+			// console.log(userCredential)
 			// Signed up 
 			const user = userCredential.user;
 			firebaseSignInWithToken(user.accessToken)
@@ -44,7 +44,7 @@ export function firebaseSignIn1(token) {
 	return new Promise((resolve, reject) => {
 		signInWithCustomToken(auth, token)
 			.then((userCredential) => {
-				console.log(userCredential)
+				// console.log(userCredential)
 				// Signed in
 				const user = userCredential.user;
 				resolve(user)
@@ -74,13 +74,28 @@ export function firebaseSignIn2(username, password) {
 
 export function firebaseChangePassword(currentPassword, password) {
 	return new Promise((resolve, reject) => {
-		updatePassword(auth.currentUser, password).then(() => {
-			resolve()
-		}).catch((error) => {
-			const errorCode = error.code;
-			const errorMessage = error.message;
-			reject(errorMessage)
-		});
+
+		const user = auth.currentUser;
+
+		if (user) {
+
+			const credential = EmailAuthProvider.credential(user.email, currentPassword);
+			reauthenticateWithCredential(user, credential).then(() => {
+				console.log("Reauthenticated")
+
+				updatePassword(auth.currentUser, password).then(() => {
+					console.log("Password updated")
+					resolve()
+				});
+			}).catch((error) => {
+				const errorCode = error.code;
+				const errorMessage = error.message;
+				reject(errorMessage)
+			})
+		} else {
+			reject("User not found")
+
+		}
 	})
 }
 
@@ -147,7 +162,7 @@ export const fetchReferralInfo = () => {
 
 export const fetchTotalOrders = () => {
 	return new Promise((resolve, reject) => {
-		const docRef = doc(db, "Admin", 'OrdersCounter');
+		const docRef = doc(db, "Extras", 'OrdersCounter');
 		getDoc(docRef)
 			.then((doc) => {
 				if (doc.exists) {

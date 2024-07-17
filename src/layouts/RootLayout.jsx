@@ -100,9 +100,9 @@ export default function RootLayout() {
 			setUser(tmpUser);
 			const unsubscribe = onAuthStateChanged(auth, (user) => {
 				if (user) {
-					notify("Welcome back!");
+					// notify("Welcome back!");
 					fetchUserData(user.uid).then((userData) => {
-						console.log(userData);
+						// console.log(userData);
 						dispatch(
 							setUser({
 								...userData,
@@ -344,21 +344,21 @@ export default function RootLayout() {
 						<MDBDropdown>
 							<MDBDropdownToggle
 								tag="a"
-								className="language-dropdown"
-								// role="button"
+								className="language-dropdown-"
+								role="button"
 							>
-								<MDBBtn
+								{/* <MDBBtn
 									floating
 									color="link"
 									size={isMobileOrTablet ? "" : "lg"}
-								>
-									<img
+								> */}
+									{/* <img
 										src={getFlagUrl(languages[language].flag)}
 										alt={languages[language].name}
 										width={28}
-									/>
-									{/* {i18n.language.toUpperCase()} */}
-								</MDBBtn>
+									/> */}
+									{i18n.language.toUpperCase()}
+								{/* </MDBBtn> */}
 							</MDBDropdownToggle>
 							<MDBDropdownMenu responsive="end">
 								{Object.entries(languages).map(([code, { name, flag }]) => (
