@@ -12,7 +12,7 @@ import {
 } from "mdb-react-ui-kit";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { fetchReferralInfo } from "../firebaseAuth";
 import axios from "axios";
 import { modalError } from "../store/appSlice";
@@ -123,7 +123,7 @@ const Affiliate = () => {
 				</MDBCardBody>
 			</MDBCard>
 
-			<MDBCard className="mb-3 gradient-primary">
+			<MDBCard className="mb-3 gradient-primary" tag={Link} to="/referral">
 				<MDBRow className="g-0">
 					<MDBCol className="align-self-center">
 						<MDBCardBody className="pe-0">

@@ -103,7 +103,7 @@ export default function RootLayout() {
 					// notify("Welcome back!");
 					fetchUserData(user.uid)
 						.then((userData) => {
-							console.log(userData);
+							// console.log(userData);
 							dispatch(
 								setUser({
 									...userData,
