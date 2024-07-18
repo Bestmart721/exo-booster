@@ -124,7 +124,6 @@ const Wallet = () => {
 
 	return (
 		<MDBContainer className="pt-4" style={{ maxWidth: 720 }}>
-
 			<div className="position-relative">
 				<MDBCard
 					className="mb-4 text-light gradient-primary-2 z-3"
@@ -150,7 +149,11 @@ const Wallet = () => {
 				</MDBCard>
 			</div>
 
-			<MDBCard className="mb-3 text-light gradient-primary-2" tag={Link} to="/affiliate">
+			<MDBCard
+				className="mb-3 text-light gradient-primary-2"
+				tag={Link}
+				to="/affiliate"
+			>
 				<MDBCardBody className="d-flex align-items-center py-2">
 					<MDBTypography tag="div">{t("Affiliate balance")}:</MDBTypography>
 					<MDBTypography tag="h5" className="font-black mb-0 ms-2">
@@ -197,7 +200,10 @@ const Wallet = () => {
 							<div>{timestampToString(payment.date._seconds)}</div>
 						</div>
 					</MDBBtn>
-					<MDBCollapse open={openList.includes(payment.id)} className="ps-4">
+					<MDBCollapse
+						open={openList.includes(payment.id)}
+						className="ps-4 small"
+					>
 						<div>
 							<span className="font-black">Amount</span> :{" "}
 							<span className="text-transform-uppercase text-success">
@@ -225,29 +231,25 @@ const Wallet = () => {
 						{payment.type == "refund" && (
 							<div>
 								<span className="font-black">Refunded order</span> :<br />
-								<div className="ps-2 small">
-									<span className="font-black">Service name</span> :{" "}
-									<span>
-										{payment.subservice_name[language]}
-									</span>
+								<div className="ps-2 ">
+									<span className="font-black ">Service name</span> :{" "}
+									<span>{payment.subservice_name[language]}</span>
 								</div>
-								<div className="ps-2 small">
+								<div className="ps-2 ">
 									<span className="font-black">Quantity</span> :{" "}
 									<span>{payment.quantity}</span>
 								</div>
-								<div className="ps-2 small">
+								<div className="ps-2 ">
 									<span className="font-black">Order status</span> :{" "}
-									<span>
-										{payment.order_status[language]}
-									</span>
+									<span>{payment.order_status[language]}</span>
 								</div>
-								<div className="ps-2 small">
+								<div className="ps-2 ">
 									<span className="font-black">Order date</span> :{" "}
 									<span>
-										{timestampToTimeString(payment.order_date)}
+										{timestampToTimeString(payment.order_date?._seconds)}
 									</span>
 								</div>
-								<div className="ps-2 small">
+								<div className="ps-2 ">
 									<span className="font-black">Order ID</span> :{" "}
 									<span>{payment.order_id}</span>
 								</div>
@@ -255,7 +257,7 @@ const Wallet = () => {
 						)}
 						<div>
 							<span className="font-black">ID</span> :{" "}
-							<span className="small">{payment.id}</span>
+							<span className="">{payment.id}</span>
 						</div>
 					</MDBCollapse>
 				</React.Fragment>

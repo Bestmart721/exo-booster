@@ -213,6 +213,8 @@ const resources = {
       "and": "et",
       "Your password has been changed successfully.": "Votre mot de passe a été changé avec succès.",
       "Affiliate balance": "Solde d'affiliation",
+      "Check your internet connection and try again.": "Vérifiez votre connexion internet et réessayez.",
+      "Transfer to wallet balance": "Transférer au solde du portefeuille",
     }
   }
 };
@@ -232,3 +234,4 @@ i18n
   });
 
 export default i18n;
+

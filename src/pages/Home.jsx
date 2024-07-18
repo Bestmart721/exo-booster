@@ -465,6 +465,11 @@ const Home = () => {
 															...provided,
 															display: "flex",
 														}),
+														option: (provided, {isFocused, isSelected}) => ({
+															...provided,
+															backgroundColor: isSelected? '#ff00f7': isFocused ? "#ffe9fe" : "white",
+															color: isSelected? 'white !important': isFocused ? "black !important" : "black !important",
+														}),
 													}}
 													components={{
 														Option: (props) => (
@@ -473,7 +478,7 @@ const Home = () => {
 																className="country-option"
 															>
 																<div>{props.data.label}</div>
-																<div className="small text-secondary line-height-small">
+																<div className="small line-height-small">
 																	{props.data.sub_display_name[user.currency][
 																		language
 																	]
@@ -561,13 +566,13 @@ const Home = () => {
 															}
 														/>
 														<small className="position-absolute">
-															(Min:
+															(Min:{" "}
 															{formatNumber(
 																data[selected.website].services[
 																	selected.service
 																].subservices[selected.subService]?.min
 															)}{" "}
-															- Max:
+															- Max:{" "}
 															{formatNumber(
 																data[selected.website].services[
 																	selected.service

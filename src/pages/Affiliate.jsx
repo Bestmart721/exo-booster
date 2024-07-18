@@ -37,7 +37,7 @@ const Affiliate = () => {
 				setData(data);
 			})
 			.catch((error) => {
-				dispatch(modalError("Check your internet connection and try again."));
+				dispatch(modalError(t("Check your internet connection and try again.")));
 			});
 	}, [dispatch]);
 
