@@ -389,6 +389,16 @@ export default function RootLayout() {
 				</MDBContainer>
 			</MDBNavbar>
 
+			{loading && (
+				<div className="d-flex justify-content-center align-items-start spinner-wrapper">
+					<MDBSpinner
+						color="primary"
+						style={{ width: 32, height: 32, marginTop: "2.3rem" }}
+					>
+						<span className="visually-hidden">{t("Loading")}...</span>
+					</MDBSpinner>
+				</div>
+			)}
 			<>
 				{!loading &&
 					(user && location.pathname.includes("/auth") ? (
@@ -426,16 +436,6 @@ export default function RootLayout() {
 					</div>
 				</div>
 			</div>
-			{loading && (
-				<div className="d-flex justify-content-center align-items-start position-fixed spinner-wrapper">
-					<MDBSpinner
-						color="primary"
-						style={{ width: 32, height: 32, marginTop: "5.3rem" }}
-					>
-						<span className="visually-hidden">{t("Loading")}...</span>
-					</MDBSpinner>
-				</div>
-			)}
 			<MDBModal
 				tabIndex="-1"
 				open={errorModal}
