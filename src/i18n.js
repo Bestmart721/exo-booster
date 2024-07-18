@@ -148,8 +148,8 @@ const resources = {
       "Or Telegram": "Ou Telegram",
       "Sign Out": "Déconnexion",
       "Home": "Accueil",
-      "My Account": "Mon compte",
-      "My Orders": "Mes commandes",
+      "Account": "Compte",
+      "Orders": "Commandes",
       "Wallet": "Portefeuille",
       "Referral Program": "Programme de parrainage",
       "Sign Out": "Déconnexion",
@@ -215,6 +215,9 @@ const resources = {
       "Affiliate balance": "Solde d'affiliation",
       "Check your internet connection and try again.": "Vérifiez votre connexion internet et réessayez.",
       "Transfer to wallet balance": "Transférer au solde du portefeuille",
+      "Loading available countries..." : "Chargement des pays disponibles...",
+      "Please enter a quantity." : "Veuillez entrer une quantité.",
+      "Please enter comments." : "Veuillez entrer des commentaires.",
     }
   }
 };

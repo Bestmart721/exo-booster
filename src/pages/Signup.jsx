@@ -22,6 +22,7 @@ import { useDispatch } from "react-redux";
 import { setTmpUser } from "../store/authSlice";
 import { modalError } from "../store/appSlice";
 import { useLanguage } from "../layouts/LanguageContext";
+import { count } from "firebase/firestore";
 
 const capitalize = (str) => (str ? str[0].toUpperCase() + str.slice(1) : "");
 
@@ -69,6 +70,9 @@ export default function Signup() {
 	const [errorModalLocal, setErrorModalLocal] = useState(false);
 	const [modalTextLocal, setModalTextLocal] = useState("");
 	const { language, switchLanguage } = useLanguage();
+	const [countryPlaceHolder, setCountryPlaceHolder] = useState(
+		t("Loading available countries...")
+	);
 
 	const initialValues = {
 		country: "",
@@ -101,6 +105,7 @@ export default function Signup() {
 
 	const loadSignupData = async () => {
 		setLoading(true);
+		setCountryPlaceHolder(t("Loading available countries..."));
 		axios
 			.get(`https://getsupportedcountries-l2ugzeb65a-uc.a.run.app/`)
 			.then((response) => {
@@ -112,9 +117,10 @@ export default function Signup() {
 				}));
 				setCountries(cs);
 				setLoading(false);
+				setCountryPlaceHolder(t("Choose your country"));
 			})
 			.catch((error) => {
-				modalErrorLocal(t("Could not get available countries."));
+				setCountryPlaceHolder(t("Could not get available countries."));
 				setLoading(false);
 			});
 		// let response = {
@@ -279,6 +285,7 @@ export default function Signup() {
 										setFieldValue("country", value.name);
 										setFieldValue("currency", value.currency);
 									}}
+									isDisabled={countryPlaceHolder == t("Loading available countries...")}
 									styles={customStyles}
 									components={{
 										Option,
@@ -286,7 +293,29 @@ export default function Signup() {
 										Placeholder: () => (
 											<div style={{ display: "flex", alignItems: "center" }}>
 												<MDBIcon fas icon="globe" size="lg" className="me-4" />
-												<span>{t("Select a country")}...</span>
+												<MDBTypography
+													tag="span"
+													color={
+														countryPlaceHolder == t("Choose your country")
+															? "black"
+															: countryPlaceHolder ==
+															  t("Could not get available countries.")
+															? "danger"
+															: "secondary"
+													}
+												>
+													{countryPlaceHolder}
+													{countryPlaceHolder ==
+														t("Could not get available countries.") && (
+														<MDBIcon
+															fas
+															icon="refresh"
+															size="lg"
+															className="ms-2 cursor-pointer"
+															onClick={loadSignupData}
+														/>
+													)}
+												</MDBTypography>
 											</div>
 										),
 									}}
@@ -425,13 +454,13 @@ export default function Signup() {
 				</MDBModalDialog>
 			</MDBModal>
 
-			{loading && (
+			{/* {loading && (
 				<div className="d-flex justify-content-center align-items-center position-fixed spinner-wrapper">
 					<MDBSpinner color="primary" style={{ width: "3rem", height: "3rem" }}>
 						<span className="visually-hidden">Loading...</span>
 					</MDBSpinner>
 				</div>
-			)}
+			)} */}
 		</>
 	);
 }

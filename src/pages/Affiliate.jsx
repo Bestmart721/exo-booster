@@ -8,6 +8,7 @@ import {
 	MDBContainer,
 	MDBIcon,
 	MDBRow,
+	MDBSpinner,
 	MDBTypography,
 } from "mdb-react-ui-kit";
 import React, { useEffect, useState } from "react";
@@ -30,6 +31,7 @@ const Affiliate = () => {
 	const dispatch = useDispatch();
 	const { language } = useLanguage();
 	const [swalProps, setSwalProps] = useState({});
+	const [transferring, setTransferring] = useState(false);
 
 	useEffect(() => {
 		fetchReferralInfo()
@@ -42,6 +44,7 @@ const Affiliate = () => {
 	}, [dispatch]);
 
 	const transferBalance = () => {
+		setTransferring(true);
 		axios
 			.post(
 				`https://convertaffiliatebalance-l2ugzeb65a-uc.a.run.app/`,
@@ -64,9 +67,6 @@ const Affiliate = () => {
 						customClass: {
 							confirmButton: "btn btn-primary btn-block",
 						},
-						preConfirm: () => {
-							setSwalProps({ show: false });
-						},
 					});
 				}
 				setSwalProps({
@@ -74,7 +74,7 @@ const Affiliate = () => {
 					title:
 						response.data.en ==
 						"Your affiliate balance is empty, invite people to the Exo Booster App and earn !"
-							? "Inform"
+							? "Note"
 							: "Success",
 					text: response.data[language],
 					icon:
@@ -89,6 +89,8 @@ const Affiliate = () => {
 						setSwalProps({ show: false });
 					},
 				});
+			}).finally(() => {
+				setTransferring(false);
 			});
 	};
 
@@ -117,8 +119,14 @@ const Affiliate = () => {
 						{formatNumber(user.affiliate_balance || 0)}{" "}
 						{user.currency?.toUpperCase() || "XAF"}
 					</MDBTypography>
-					<MDBBtn outline color="white" rounded onClick={transferBalance}>
-						{t("Transfer to wallet balance")}
+					<MDBBtn outline color="white" rounded onClick={transferBalance} disabled={
+						transferring
+					}>
+						{
+							transferring ? 
+							 <MDBSpinner color="light" size="sm" />
+							: t("Transfer to wallet balance")
+						}
 					</MDBBtn>
 				</MDBCardBody>
 			</MDBCard>

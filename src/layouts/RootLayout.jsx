@@ -42,6 +42,7 @@ import { useLanguage } from "./LanguageContext";
 import { useSelector, useDispatch } from "react-redux";
 import { setTmpUser, setUser, unsetUser } from "../store/authSlice";
 import {
+	fetchSupportContactsThunk,
 	hideError,
 	hideSupport,
 	modalError,
@@ -55,6 +56,7 @@ import { useMobileOrTabletMediaQuery } from "../responsiveHook";
 import { onSnapshot } from "firebase/firestore";
 import axios from "axios";
 import { useToaster } from "./ToasterContext";
+import favcon from "../assets/images/favcon 1.png";
 
 const languages = {
 	en: { name: "English", flag: "gb.svg" },
@@ -64,6 +66,10 @@ const languages = {
 const getFlagUrl = (flagCode) => `https://flagcdn.com/${flagCode}`;
 
 export default function RootLayout() {
+
+
+	const {loading : appLoading, contactInfo} = useSelector(({app}) => app);
+
 	const location = useLocation();
 	const navigate = useNavigate();
 	const { t, i18n } = useTranslation();
@@ -80,19 +86,33 @@ export default function RootLayout() {
 	const dispatch = useDispatch();
 	const { notify } = useToaster();
 
+	// useEffect(() => {
+	// 	if (JSON.parse(localStorage.getItem("user")))
+	// 		dispatch(setTmpUser(JSON.parse(localStorage.getItem("user"))));
+	// 	else dispatch(unsetUser());
+
+	// 	fetchSupportContacts()
+	// 		.then((data) => {
+	// 			setSupportContacts(data);
+	// 		})
+	// 		.catch((error) => {
+	// 			// dispatch(modalError(t(error)));
+	// 		});
+	// }, []);
+
+	
+
+
+	
 	useEffect(() => {
 		if (JSON.parse(localStorage.getItem("user")))
 			dispatch(setTmpUser(JSON.parse(localStorage.getItem("user"))));
 		else dispatch(unsetUser());
 
-		fetchSupportContacts()
-			.then((data) => {
-				setSupportContacts(data);
-			})
-			.catch((error) => {
-				// dispatch(modalError(t(error)));
-			});
-	}, []);
+
+		dispatch(fetchSupportContactsThunk())
+		
+	}, [dispatch]);
 
 	useEffect(() => {
 		if (tmpUser) {
@@ -167,6 +187,7 @@ export default function RootLayout() {
 					setUser({
 						displayName: userData.username,
 						balance: userData.balance,
+						affiliate_balance: userData.affiliate_balance,
 						currency: userData.currency,
 						discount: userData.discount,
 						discountUsesLeft: userData.discount_uses_left,
@@ -226,17 +247,6 @@ export default function RootLayout() {
 						</MDBListGroupItem>
 						<MDBListGroupItem
 							action
-							active={location === "settings"}
-							noBorders
-							className="px-3"
-							tag={Link}
-							to="/account"
-							onClick={toggleDrawerIn}
-						>
-							{t("My Account")}
-						</MDBListGroupItem>
-						<MDBListGroupItem
-							action
 							active={location === "account"}
 							noBorders
 							className="px-3"
@@ -244,7 +254,7 @@ export default function RootLayout() {
 							to="/orders"
 							onClick={toggleDrawerIn}
 						>
-							{t("My Orders")}
+							{t("Orders")}
 						</MDBListGroupItem>
 						<MDBListGroupItem
 							action
@@ -267,6 +277,17 @@ export default function RootLayout() {
 							onClick={toggleDrawerIn}
 						>
 							{t("Referral Program")}
+						</MDBListGroupItem>
+						<MDBListGroupItem
+							action
+							active={location === "settings"}
+							noBorders
+							className="px-3"
+							tag={Link}
+							to="/account"
+							onClick={toggleDrawerIn}
+						>
+							{t("Account")}
 						</MDBListGroupItem>
 					</MDBTabs>
 				</MDBListGroup>
@@ -444,7 +465,7 @@ export default function RootLayout() {
 				<MDBModalDialog centered style={{ maxWidth: 300 }}>
 					<MDBModalContent>
 						<MDBModalBody className="text-center py-5">
-							<img src="/favcon 1.png" className="img-fluid mb-5" alt="logo" />
+							<img src={favcon} className="img-fluid mb-5" alt="logo" />
 							<h3 className="mb-0">{t(modalText)}</h3>
 						</MDBModalBody>
 						<MDBModalFooter>
@@ -464,9 +485,9 @@ export default function RootLayout() {
 				<MDBModalDialog centered style={{ maxWidth: 400 }}>
 					<MDBModalContent>
 						<MDBModalBody className="text-center py-5">
-							<img src="/favcon 1.png" className="img-fluid mb-5" alt="logo" />
+							<img src={favcon} className="img-fluid mb-5" alt="logo" />
 
-							{supportContacts.Email && (
+							{contactInfo ? (
 								<>
 									<h3 className="font-black">{t("Have a problem?")}</h3>
 									<div className="lead">
@@ -474,32 +495,36 @@ export default function RootLayout() {
 									</div>
 									<div className="lead text-primary">
 										<a
-											href={supportContacts.Email[language].link}
+											href={contactInfo.Email[language].link}
 											target="_blank"
 										>
-											{supportContacts.Email[language].name}
+											{contactInfo.Email[language].name}
 										</a>
 									</div>
 									<div className="lead">{t("Whatsapp")}:</div>
 									<div className="lead text-primary">
 										<a
-											href={supportContacts.Whatsapp[language].link}
+											href={contactInfo.Whatsapp[language].link}
 											target="_blank"
 										>
-											{supportContacts.Whatsapp[language].name}
+											{contactInfo.Whatsapp[language].name}
 										</a>
 									</div>
 									<div className="lead">{t("Or Telegram")}:</div>
 									<div className="lead text-primary">
 										<a
-											href={supportContacts.Telegram[language].link}
+											href={contactInfo.Telegram[language].link}
 											target="_blank"
 										>
-											{supportContacts.Telegram[language].name}
+											{contactInfo.Telegram[language].name}
 										</a>
 									</div>
 								</>
-							)}
+							) :
+							<div>
+								<MDBSpinner color="primary" />
+							</div>
+						}
 						</MDBModalBody>
 						<MDBModalFooter>
 							<MDBBtn color="primary" onClick={() => dispatch(hideSupport())}>

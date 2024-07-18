@@ -36,9 +36,11 @@ const Home = () => {
 	const totalOrdersCount = useSelector((state) => state.app.totalOrdersCount);
 	const [purchaseLoading, setPurchaseLoading] = useState(false);
 	const dispatch = useDispatch();
-	const [swalProps, setSwalProps] = useState({});
+	const [swalProps, setSwalProps] = useState({ show: false });
 	const navigate = useNavigate();
+	const [countInvalid, setCountInvalid] = useState(0);
 	const [linkErrorMsg, setLinkErrorMsg] = useState("");
+	const [qtyErrorMsg, setQtyErrorMsg] = useState("");
 	const [dirty, setDirty] = useState(false);
 	const [selected, setSelected] = useState({
 		website: "",
@@ -89,74 +91,100 @@ const Home = () => {
 			label: firstSubServices.display_name[language],
 			value: firstSubServices.subservice_id,
 		});
+		clearDirty();
 	};
 
-	const purchase = () => {
+	const checkValidation = () => {
 		setDirty(true);
+
+		let count = 0;
+
 		if (!selected.website || !selected.service || !selected.subService) {
 			dispatch(modalError("Please select a service."));
-			return;
+			count++;
 		}
-		if (!selected.link) {
-			dispatch(modalError("Please enter a link."));
-			return;
-		}
+
 		const validity_regex = new RegExp(
 			data[selected.website]?.services[selected.service]?.subservices[
 				selected.subService
 			]?.validity_regex
 		);
-		if (validity_regex && !validity_regex.test(selected.link)) {
-			dispatch(modalError(t("Invalid link.")));
+		if (!selected.link) {
+			setLinkErrorMsg(t("Please enter a link."));
+			count++;
+		} else if (
+			validity_regex &&
+			selected.link &&
+			!validity_regex.test(selected.link)
+		) {
 			setLinkErrorMsg(t("Invalid link."));
-			return;
+			count++;
+		} else {
+			setLinkErrorMsg("");
 		}
 
 		const type =
 			data[selected.website].services[selected.service].subservices[
 				selected.subService
 			]?.type;
-		if (type == "default" && !selected.quantity) {
-			dispatch(modalError("Please enter a quantity."));
-			return;
-		}
-		if (type == "custom_comments" && !selected.comments) {
-			dispatch(modalError("Please enter comments."));
-			return;
-		}
 		const quantity =
 			type == "default"
 				? Number(selected.quantity)
 				: type == "custom_comments"
 				? countLines(selected.comments)
 				: 0;
-		if (
-			quantity <
+		if (type == "default" && !selected.quantity) {
+			setQtyErrorMsg(t("Please enter a quantity."));
+			count++;
+		} else if (type == "custom_comments" && !selected.comments) {
+			setQtyErrorMsg(t("Please enter comments."));
+			count++;
+		} else if (
+			quantity &&
+			(quantity <
 				data[selected.website].services[selected.service].subservices[
 					selected.subService
 				]?.min ||
-			quantity >
-				data[selected.website].services[selected.service].subservices[
-					selected.subService
-				]?.max
+				quantity >
+					data[selected.website].services[selected.service].subservices[
+						selected.subService
+					]?.max)
 		) {
-			dispatch(
-				modalError(
-					`${t("Please enter a quantity/comments between")} ${
-						data[selected.website].services[selected.service].subservices[
-							selected.subService
-						]?.min
-					} ${t("and")} ${
-						data[selected.website].services[selected.service].subservices[
-							selected.subService
-						]?.max
-					}.`
-				)
+			setQtyErrorMsg(
+				`${t("Please enter a quantity/comments between")} ${
+					data[selected.website].services[selected.service].subservices[
+						selected.subService
+					]?.min
+				} ${t("and")} ${
+					data[selected.website].services[selected.service].subservices[
+						selected.subService
+					]?.max
+				}.`
 			);
-			return;
+			count++;
+		} else {
+			setQtyErrorMsg("");
 		}
 
+		setCountInvalid(count);
+		return count === 0;
+	};
+
+	useEffect(() => {
+		if (dirty) {
+			checkValidation();
+		}
+	}, [selected.link, selected.quantity, selected.comments, dirty]);
+
+	const purchase = () => {
+		if (!checkValidation()) {
+			return;
+		}
 		setPurchaseLoading(true);
+		const type =
+			data[selected.website].services[selected.service].subservices[
+				selected.subService
+			]?.type;
 		axios
 			.post(
 				`https://purchaseserviceglobal-l2ugzeb65a-uc.a.run.app/`,
@@ -168,7 +196,7 @@ const Home = () => {
 					link: selected.link,
 					quantity: type == "default" ? Number(selected.quantity) : undefined,
 					comments: type == "custom_comments" ? selected.comments : undefined,
-					appVersion : "web"
+					appVersion: "web",
 				},
 				{
 					headers: {
@@ -194,10 +222,9 @@ const Home = () => {
 					confirmButtonText: "View My Order",
 					denyButtonText: "Ok",
 					preConfirm: () => {
-						setSwalProps({ show: false });
 						navigate("/orders");
 					},
-					preDeny: () => {
+					onResolve: () => {
 						setSwalProps({ show: false });
 					},
 				});
@@ -210,18 +237,10 @@ const Home = () => {
 					title: "Purchase failed!",
 					text: error.message,
 					icon: "error",
-					showDenyButton: true,
 					customClass: {
 						confirmButton: "btn btn-primary btn-block",
-						denyButton: "btn btn-primary btn-block",
 					},
-					confirmButtonText: "View My Order",
-					denyButtonText: "Ok",
-					preConfirm: () => {
-						setSwalProps({ show: false });
-						navigate("/orders");
-					},
-					preDeny: () => {
+					onResolve: () => {
 						setSwalProps({ show: false });
 					},
 				});
@@ -229,6 +248,13 @@ const Home = () => {
 			.finally(() => {
 				setPurchaseLoading(false);
 			});
+	};
+
+	const clearDirty = () => {
+		setCountInvalid(0);
+		setLinkErrorMsg("");
+		setQtyErrorMsg("");
+		setDirty(false);
 	};
 
 	const handleChange = (e) => {
@@ -249,6 +275,7 @@ const Home = () => {
 					quantity: "",
 					comments: "",
 				};
+				clearDirty();
 				break;
 			case "subService":
 				overwrite = {
@@ -256,18 +283,7 @@ const Home = () => {
 					quantity: "",
 					comments: "",
 				};
-				break;
-			case "link":
-				const validity_regex = new RegExp(
-					data[selected.website]?.services[selected.service]?.subservices[
-						selected.subService
-					]?.validity_regex
-				);
-				if (validity_regex && !validity_regex.test(e.target.value)) {
-					setLinkErrorMsg(t("Invalid link."));
-				} else {
-					setLinkErrorMsg("");
-				}
+				clearDirty();
 				break;
 		}
 		setSelected({ ...selected, [e.target.name]: e.target.value, ...overwrite });
@@ -465,10 +481,18 @@ const Home = () => {
 															...provided,
 															display: "flex",
 														}),
-														option: (provided, {isFocused, isSelected}) => ({
+														option: (provided, { isFocused, isSelected }) => ({
 															...provided,
-															backgroundColor: isSelected? '#ff00f7': isFocused ? "#ffe9fe" : "white",
-															color: isSelected? 'white !important': isFocused ? "black !important" : "black !important",
+															backgroundColor: isSelected
+																? "#ff00f7"
+																: isFocused
+																? "#ffe9fe"
+																: "white",
+															color: isSelected
+																? "white !important"
+																: isFocused
+																? "black !important"
+																: "black !important",
 														}),
 													}}
 													components={{
@@ -578,7 +602,8 @@ const Home = () => {
 																	selected.service
 																].subservices[selected.subService]?.max
 															)}
-															)
+															){" "}
+															<span className="text-danger">{qtyErrorMsg}</span>
 														</small>
 													</MDBCol>
 												)}
@@ -613,7 +638,8 @@ const Home = () => {
 																	selected.service
 																].subservices[selected.subService]?.max
 															}
-															)
+															){" "}
+															<span className="text-danger">{qtyErrorMsg}</span>
 														</small>
 													</MDBCol>
 												)}
@@ -761,7 +787,7 @@ const Home = () => {
 											className="font-black"
 											block
 											onClick={purchase}
-											disabled={purchaseLoading}
+											disabled={purchaseLoading || countInvalid > 0}
 										>
 											{purchaseLoading ? (
 												<MDBSpinner
@@ -774,7 +800,8 @@ const Home = () => {
 												</MDBSpinner>
 											) : (
 												t("Purchase")
-											)}
+											)}{" "}
+											{countInvalid ? `(${countInvalid} Errors)` : ""}
 										</MDBBtn>
 									</div>
 								)}
