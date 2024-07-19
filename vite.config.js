@@ -4,7 +4,8 @@ import legacy from '@vitejs/plugin-legacy';
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [react(), legacy({
-    targets: ['chrome >= 49', 'defaults', 'not IE 11'],
-  }),],
+  plugins: [
+    react(),
+    legacy({ targets: ['chrome >= 49'], }),
+  ],
 })
