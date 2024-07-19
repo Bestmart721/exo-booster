@@ -21,6 +21,7 @@
     "framer-motion": "^11.2.13",
     "i18n": "^0.15.1",
     "i18next": "^23.11.5",
+    "intl-pluralrules": "^2.0.1",
     "lineicons": "^1.0.3",
     "lineicons-react": "^1.0.5",
     "mdb-react-ui-kit": "^8.0.0",
