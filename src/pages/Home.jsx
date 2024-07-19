@@ -234,7 +234,7 @@ const Home = () => {
 				console.log(error.message);
 				setSwalProps({
 					show: true,
-					title: "Purchase failed!",
+					title: t("Purchase failed!"),
 					text: error.message,
 					icon: "error",
 					customClass: {
@@ -307,6 +307,21 @@ const Home = () => {
 		return num.toLocaleString();
 	}
 
+	function formatRoundedNumber(num = 0) {
+		// return num.toLocaleString();
+		if (num >= 1e12) {
+			return (num / 1e12).toFixed(2) + "T";
+		} else if (num >= 1e9) {
+			return (num / 1e9).toFixed(2) + "B";
+		} else if (num >= 1e6) {
+			return (num / 1e6).toFixed(2) + "M";
+		} else if (num >= 1e3) {
+			return (num / 1e3).toFixed(2) + "K";
+		} else {
+			return num.toFixed(2);
+		}
+	}
+
 	return (
 		user.username && (
 			<div className="bg-primary-light flex-grow-1 d-flex flex-column">
@@ -343,13 +358,13 @@ const Home = () => {
 								<div>
 									<div className="small line-height-small">You Have Spent</div>
 									<MDBTypography tag="h5" className="mb-0 font-black">
-										{formatNumber(user.amount_spent)}{" "}
+										{formatRoundedNumber(user.amount_spent)}{" "}
 										<span className="text-transform-uppercase">
 											{user.currency}
 										</span>
 									</MDBTypography>
 									<div className="small line-height-small">
-										You have currently
+										{t("You currently have")}
 										<br />
 										<span className="font-black">
 											{formatNumber(user.balance)}{" "}
@@ -357,8 +372,6 @@ const Home = () => {
 												{user.currency}
 											</span>
 										</span>
-										<br />
-										<Link to="/payment">Deposit more here</Link>
 									</div>
 								</div>
 							</MDBCol>
@@ -499,10 +512,10 @@ const Home = () => {
 														Option: (props) => (
 															<components.Option
 																{...props}
-																className="country-option"
+																className="country-option text-secondary"
 															>
 																<div>{props.data.label}</div>
-																<div className="small line-height-small">
+																<div className="small line-height-small text-secondary">
 																	{props.data.sub_display_name[user.currency][
 																		language
 																	]

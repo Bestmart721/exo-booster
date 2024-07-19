@@ -10,13 +10,41 @@ import {
 	MDBIcon,
 	MDBBtn,
 	MDBSpinner,
+	MDBTypography,
 } from "mdb-react-ui-kit";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import { useTranslation } from "react-i18next";
 import * as Yup from "yup";
 import { fetchUserData, firebaseChangePassword } from "../firebaseAuth";
 import SweetAlert2 from "react-sweetalert2";
+import Select, { components } from "react-select";
+import axios from "axios";
+import { useLanguage } from "../layouts/LanguageContext";
+import { setUser } from "../store/authSlice";
+
+const capitalize = (str) => (str ? str[0].toUpperCase() + str.slice(1) : "");
+
+const customStyles = {
+	control: (provided, state) => ({
+		...provided,
+		borderRadius: "50px", // Full radius
+		padding: "4px 8px", // Custom padding
+		color: "#555",
+	}),
+	singleValue: (provided) => ({
+		...provided,
+	}),
+	valueContainer: (provided) => ({
+		...provided,
+		display: "flex",
+		alignItems: "center",
+	}),
+	menu: (provided) => ({
+		...provided,
+		marginTop: "2px",
+	}),
+};
 
 const Account = () => {
 	const user = useSelector((state) => state.auth.user);
@@ -24,6 +52,43 @@ const Account = () => {
 	const { t, i18n } = useTranslation();
 	const [visiblePassword, setVisiblePassword] = useState(false);
 	const [visiblePassword2, setVisiblePassword2] = useState(false);
+	const [countries, setCountries] = useState([]);
+	const [curCountry, setCurCountry] = useState("");
+	const [processing, setProcessing] = useState(false);
+	const { language } = useLanguage();
+	const dispatch = useDispatch();
+	const [countryPlaceHolder, setCountryPlaceHolder] = useState(
+		t("Loading available countries...")
+	);
+
+	const retry = () => {
+		hideErrorLocal();
+		loadSignupData();
+	};
+
+	const loadSignupData = async () => {
+		setCountryPlaceHolder(t("Loading available countries..."));
+		axios
+			.get(`https://getsupportedcountries-l2ugzeb65a-uc.a.run.app/`)
+			.then((response) => {
+				let cs = Object.keys(response.data).map((key) => response.data[key]);
+				cs = cs.map((country) => ({
+					...country,
+					value: country.name,
+					label: capitalize(country.name),
+				}));
+				setCountries(cs);
+				setCountryPlaceHolder(t("Choose your country"));
+				setCurCountry(cs.find((c) => c.name == user.country));
+			})
+			.catch((error) => {
+				setCountryPlaceHolder(t("Could not get available countries."));
+			});
+	};
+
+	useEffect(() => {
+		loadSignupData();
+	}, []);
 
 	const initialValues = {
 		country: "",
@@ -56,37 +121,108 @@ const Account = () => {
 		const { currentPassword, password } = values;
 
 		setSubmitting(true);
-		firebaseChangePassword(currentPassword, password).then(() => {
-			setSwalProps({
-				show: true,
-				title: "Success",
-				text: t("Your password has been changed successfully."),
-				icon: "success",
-				customClass: {
-					confirmButton: "btn btn-primary btn-block",
-				},
-				preConfirm: () => {
-					setSwalProps({ show: false });
-				},
+		firebaseChangePassword(currentPassword, password)
+			.then(() => {
+				setSwalProps({
+					show: true,
+					title: t("Success"),
+					text: t("Your password has been changed successfully."),
+					icon: "success",
+					customClass: {
+						confirmButton: "btn btn-primary btn-block",
+					},
+					preConfirm: () => {
+						setSwalProps({ show: false });
+					},
+				});
+				resetForm();
+			})
+			.catch((error) => {
+				console.log(error);
+				setSwalProps({
+					show: true,
+					title: t("Error"),
+					text: t(error),
+					icon: "error",
+					customClass: {
+						confirmButton: "btn btn-primary btn-block",
+					},
+					preConfirm: () => {
+						setSwalProps({ show: false });
+					},
+				});
+			})
+			.finally(() => {
+				setSubmitting(false);
 			});
-			resetForm();
-		}).catch((error) => {
-			console.log(error);
-			setSwalProps({
-				show: true,
-				title: "Error",
-				text: t(error),
-				icon: "error",
-				customClass: {
-					confirmButton: "btn btn-primary btn-block",
+	};
+
+	const selectNewCountry = (country) => {
+		setProcessing(true);
+		axios
+			.post(
+				`https://changeusercountry-l2ugzeb65a-uc.a.run.app/`,
+				{
+					userId: user.uid,
+					country: country,
 				},
-				preConfirm: () => {
-					setSwalProps({ show: false });
-				},
+				{
+					headers: {
+						Authorization: `Bearer ${user.accessToken}`,
+					},
+				}
+			)
+			.then((response) => {
+				if (response.data.error) {
+					throw response.data.error[language];
+				}
+
+				const {
+					new_country,
+					new_country_currency,
+					affiliate_balance,
+					balance,
+				} = response.data;
+				dispatch(
+					setUser({
+						...user,
+						country: new_country,
+						currency: new_country_currency,
+						affiliate_balance,
+						balance,
+					})
+				);
+
+				setSwalProps({
+					show: true,
+					title: t("Success"),
+					text: t("Your country has been changed successfully."),
+					icon: "success",
+					customClass: {
+						confirmButton: "btn btn-primary btn-block",
+					},
+					preConfirm: () => {
+						setSwalProps({ show: false });
+					},
+				});
+			})
+			.catch((error) => {
+				setSwalProps({
+					show: true,
+					title: t("Error"),
+					text: t(error),
+					icon: "error",
+					customClass: {
+						confirmButton: "btn btn-primary btn-block",
+					},
+					preConfirm: () => {
+						setSwalProps({ show: false });
+					},
+				});
+			})
+			.finally(() => {
+				setProcessing(false);
 			});
-		}).finally(() => {
-			setSubmitting(false);
-		});
 	};
 
 	const togglePasswordVisible = () => {
@@ -98,7 +234,7 @@ const Account = () => {
 
 	return (
 		<MDBContainer className="py-4">
-		<SweetAlert2 {...swalProps} />
+			<SweetAlert2 {...swalProps} />
 			<MDBCard className="mb-3">
 				<MDBCardBody>
 					<MDBCardTitle className="font-black">
@@ -106,9 +242,8 @@ const Account = () => {
 					</MDBCardTitle>
 					{/* <MDBCardSubTitle>Card subtitle</MDBCardSubTitle> */}
 					<MDBCardText>
-						<span className="font-black">
-							{t("Username")}:
-							</span> {user.displayName}
+						<span className="font-black">{t("Username")}:</span>{" "}
+						{user.displayName}
 					</MDBCardText>
 
 					<MDBCard border="2">
@@ -116,24 +251,105 @@ const Account = () => {
 							<div>
 								<span className="font-black-">
 									{t("Current Discount Applied")}:
-									</span>{" "}
-								<span className="text-primary">{user.discount ? `-${user.discount}%` : "None"}</span>
+								</span>{" "}
+								<span className="text-primary">
+									{user.discount ? `-${user.discount}%` : "None"}
+								</span>
 							</div>
 							<div>
-								<span className="font-black-">
-									{t("Discount Uses Left")}:
-									</span>{" "}
+								<span className="font-black-">{t("Discount Uses Left")}:</span>{" "}
 								<span className="text-primary">{user.discountUsesLeft}</span>
 							</div>
 						</MDBCardBody>
 					</MDBCard>
 				</MDBCardBody>
 			</MDBCard>
-			<MDBCard>
+
+			<MDBCard className="mb-3">
 				<MDBCardBody>
 					<MDBCardTitle className="font-black">
-						{t("Security")}
+						{t("Current Country")}:
 					</MDBCardTitle>
+					<div className="w-465 mx-auto">
+						<Select
+							// isSearchable={false}
+							className="input-group-lg rounded-pill shadow"
+							placeholder={t("Choose your country")}
+							name="country"
+							value={curCountry}
+							options={countries}
+							onChange={(value) => {
+								setCurCountry(value);
+								selectNewCountry(value.name);
+							}}
+							isDisabled={
+								countryPlaceHolder == t("Loading available countries...") ||
+								processing
+							}
+							styles={customStyles}
+							components={{
+								Option: (props) => (
+									<components.Option {...props} className="country-option">
+										<img
+											src={props.data.flag_img_link}
+											width={24}
+											alt="logo"
+											className="country-logo"
+										/>
+										{props.data.label}
+									</components.Option>
+								),
+								SingleValue: ({ children, ...props }) => (
+									<components.SingleValue {...props}>
+										<MDBIcon fas icon="globe" size="lg" className="me-4" />
+										<img
+											src={curCountry.flag_img_link}
+											alt="s-logo"
+											className="selected-logo"
+										/>
+										{children}
+										{processing && (
+											<MDBSpinner size="sm" className="ms-2" color="primary" />
+										)}
+									</components.SingleValue>
+								),
+								Placeholder: () => (
+									<div style={{ display: "flex", alignItems: "center" }}>
+										<MDBIcon fas icon="globe" size="lg" className="me-4" />
+										<MDBTypography
+											tag="span"
+											color={
+												countryPlaceHolder == t("Choose your country")
+													? "black"
+													: countryPlaceHolder ==
+													  t("Could not get available countries.")
+													? "danger"
+													: "secondary"
+											}
+										>
+											{countryPlaceHolder}
+											{countryPlaceHolder ==
+												t("Could not get available countries.") && (
+												<MDBIcon
+													fas
+													icon="refresh"
+													size="lg"
+													className="ms-2 cursor-pointer"
+													onClick={loadSignupData}
+												/>
+											)}
+										</MDBTypography>
+									</div>
+								),
+							}}
+						/>
+					</div>
+				</MDBCardBody>
+			</MDBCard>
+
+			<MDBCard>
+				<MDBCardBody>
+					<MDBCardTitle className="font-black">{t("Security")}</MDBCardTitle>
 
 					<Formik
 						initialValues={initialValues}
@@ -142,32 +358,32 @@ const Account = () => {
 					>
 						{({ isSubmitting, handleChange, setFieldValue }) => (
 							<Form className="w-465 mx-auto">
-							<div className="input-group input-group-lg rounded-pill shadow">
-								<span className="input-group-text rounded-start-pill bg-white">
-									<MDBIcon fas icon="lock-open" size="lg" />
-								</span>
-								<Field
-									type={visiblePassword2 ? "text" : "password"}
-									className="form-control"
-									placeholder={t("Current Password")}
-									name="currentPassword"
-								/>
-								<span className="input-group-text rounded-end-pill bg-white">
-									<MDBIcon
-										far
-										icon={visiblePassword2 ? "eye" : "eye-slash"}
-										onClick={togglePasswordVisible2}
-										size="lg"
+								<div className="input-group input-group-lg rounded-pill shadow">
+									<span className="input-group-text rounded-start-pill bg-white">
+										<MDBIcon fas icon="lock-open" size="lg" />
+									</span>
+									<Field
+										type={visiblePassword2 ? "text" : "password"}
+										className="form-control"
+										placeholder={t("Current Password")}
+										name="currentPassword"
 									/>
-								</span>
-							</div>
-							<div className="error-message-wrapper text-danger px-4">
-								<ErrorMessage
-									name="currentPassword"
-									component="small"
-									className="error-message"
-								/>
-							</div>
+									<span className="input-group-text rounded-end-pill bg-white">
+										<MDBIcon
+											far
+											icon={visiblePassword2 ? "eye" : "eye-slash"}
+											onClick={togglePasswordVisible2}
+											size="lg"
+										/>
+									</span>
+								</div>
+								<div className="error-message-wrapper text-danger px-4">
+									<ErrorMessage
+										name="currentPassword"
+										component="small"
+										className="error-message"
+									/>
+								</div>
 
 								<div className="input-group input-group-lg rounded-pill shadow">
 									<span className="input-group-text rounded-start-pill bg-white">
@@ -222,25 +438,27 @@ const Account = () => {
 										className="error-message"
 									/>
 								</div>
-								
+
 								<div className="text-end mt-2 mx-auto">
 									<MDBBtn
-										type="submit" className="w-200"
-										size="lg" block
+										type="submit"
+										className="w-200"
+										size="lg"
+										block
 										rounded
 										disabled={isSubmitting}
 									>
 										{isSubmitting ? (
-											<MDBSpinner
-												style={{ width: 22, height: 22 }}
-											>
-												<span className="visually-hidden">{t("Loading")}...</span>
+											<MDBSpinner style={{ width: 22, height: 22 }}>
+												<span className="visually-hidden">
+													{t("Loading")}...
+												</span>
 											</MDBSpinner>
 										) : (
 											t("save")
 										)}
 									</MDBBtn>
-									</div>
+								</div>
 							</Form>
 						)}
 					</Formik>

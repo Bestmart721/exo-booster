@@ -171,7 +171,6 @@ const resources = {
       "Comments": "Commentaires",
       "Price": "Prix",
       "Average completion time": "Temps moyen de réalisation",
-      "Note": "Remarque",
       "Don’t know how to use this service?": "Vous ne savez pas comment utiliser ce service?",
       "Watch this video:": "Regardez cette vidéo :",
       "Tutorial": "Tutoriel",
@@ -215,9 +214,17 @@ const resources = {
       "Affiliate balance": "Solde d'affiliation",
       "Check your internet connection and try again.": "Vérifiez votre connexion internet et réessayez.",
       "Transfer to wallet balance": "Transférer au solde du portefeuille",
-      "Loading available countries..." : "Chargement des pays disponibles...",
-      "Please enter a quantity." : "Veuillez entrer une quantité.",
-      "Please enter comments." : "Veuillez entrer des commentaires.",
+      "Loading available countries...": "Chargement des pays disponibles...",
+      "Please enter a quantity.": "Veuillez entrer une quantité.",
+      "Please enter comments.": "Veuillez entrer des commentaires.",
+      "You currently have": "Vous avez actuellement",
+      "Errors": "Erreurs",
+      "Current Country": "Pays actuel",
+      "Success": "Succès",
+      "Note": "Remarque",
+      "Purchase failed!" : "Achat échoué!",
+      "Your country has been changed successfully." : "Votre pays a été changé avec succès.",
+      "Retry" : "Réessayer",
     }
   }
 };

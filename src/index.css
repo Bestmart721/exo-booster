@@ -369,3 +369,21 @@ small,
 	border-color: #ff00f7 !important;
 	box-shadow: 0 0 0 0.2rem rgba(255, 0, 247, 0.25) !important;
 }
+
+.wrap-anywhere {
+	overflow-wrap: anywhere;
+}
+
+[aria-selected="true"] .text-secondary {
+	color: #fff !important;
+}
+.country-option {
+	border-bottom: solid 1px lightgrey;
+}
+.country-option:last-child {
+	border-bottom: 0;
+}
+
+.css-42axt2-Input2 {
+	display: none !important;
+}

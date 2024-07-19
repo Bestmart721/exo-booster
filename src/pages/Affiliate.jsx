@@ -39,11 +39,27 @@ const Affiliate = () => {
 				setData(data);
 			})
 			.catch((error) => {
-				dispatch(modalError(t("Check your internet connection and try again.")));
+				dispatch(
+					modalError(t("Check your internet connection and try again."))
+				);
 			});
 	}, [dispatch]);
 
 	const transferBalance = () => {
+		if (user.affiliate_balance < 1) {
+			setSwalProps({
+				show: true,
+				title: t("Note"),
+				text: t(
+					"Your affiliate balance is empty, invite people to the Exo Booster App and earn !"
+				),
+				icon: "info",
+				customClass: {
+					confirmButton: "btn btn-primary btn-block",
+				},
+			});
+			return;
+		}
 		setTransferring(true);
 		axios
 			.post(
@@ -61,7 +77,7 @@ const Affiliate = () => {
 				if (response.data.error) {
 					return setSwalProps({
 						show: true,
-						title: "Error",
+						title: t("Error"),
 						text: response.data.error[language],
 						icon: "error",
 						customClass: {
@@ -74,8 +90,8 @@ const Affiliate = () => {
 					title:
 						response.data.en ==
 						"Your affiliate balance is empty, invite people to the Exo Booster App and earn !"
-							? "Note"
-							: "Success",
+							? t("Note")
+							: t("Success"),
 					text: response.data[language],
 					icon:
 						response.data.en ==
@@ -89,7 +105,19 @@ const Affiliate = () => {
 						setSwalProps({ show: false });
 					},
 				});
-			}).finally(() => {
+			})
+			.catch((error) => {
+				setSwalProps({
+					show: true,
+					title: t("Error"),
+					text: t("Check your internet connection and try again."),
+					icon: "error",
+					customClass: {
+						confirmButton: "btn btn-primary btn-block",
+					},
+				});
+			})
+			.finally(() => {
 				setTransferring(false);
 			});
 	};
@@ -100,7 +128,10 @@ const Affiliate = () => {
 
 	return (
 		<MDBContainer className="p-4 pb-0" style={{ maxWidth: 720 }}>
-			<SweetAlert2 {...swalProps} />
+			<SweetAlert2
+				{...swalProps}
+				onResolve={() => setSwalProps({ show: false })}
+			/>
 			<div className="d-flex align-items-center mb-2">
 				<MDBBtn color="link" floating onClick={goBack}>
 					<MDBIcon fas icon="arrow-left" color="primary" size="2x" />
@@ -119,14 +150,18 @@ const Affiliate = () => {
 						{formatNumber(user.affiliate_balance || 0)}{" "}
 						{user.currency?.toUpperCase() || "XAF"}
 					</MDBTypography>
-					<MDBBtn outline color="white" rounded onClick={transferBalance} disabled={
-						transferring
-					}>
-						{
-							transferring ? 
-							 <MDBSpinner color="light" size="sm" />
-							: t("Transfer to wallet balance")
-						}
+					<MDBBtn
+						outline
+						color="white"
+						rounded
+						onClick={transferBalance}
+						disabled={transferring}
+					>
+						{transferring ? (
+							<MDBSpinner color="light" size="sm" />
+						) : (
+							t("Transfer to wallet balance")
+						)}
 					</MDBBtn>
 				</MDBCardBody>
 			</MDBCard>

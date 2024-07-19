@@ -145,7 +145,7 @@ export const fetchUserData = (uid) => {
 
 export const fetchReferralInfo = () => {
 	return new Promise((resolve, reject) => {
-		const docRef = doc(db, "Referral", 'en');
+		const docRef = doc(db, "Extras", 'ReferralWeb');
 		getDoc(docRef)
 			.then((doc) => {
 				if (doc.exists) {

@@ -182,6 +182,7 @@ const Orders = () => {
 							<th className="py-1 px-2">{t("Service")}</th>
 							<th className="py-1 px-2">{t("Qty")}</th>
 							<th className="py-1 px-2">{t("Status")}</th>
+							<th className="py-1 px-2"></th>
 						</tr>
 					</MDBTableHead>
 					<MDBTableBody>
@@ -195,7 +196,10 @@ const Orders = () => {
 										{order.order_index}
 									</td>
 									<td className="py-1 px-2 border-bottom-0">
-										{order.service_display_name[language]} - <span className="text-capitalize">{order.service_category}</span>
+										{order.service_display_name[language]} -{" "}
+										<span className="text-capitalize">
+											{order.service_category}
+										</span>
 									</td>
 									<td align="right" className="py-1 px-2 border-bottom-0">
 										{order.quantity}
@@ -216,10 +220,20 @@ const Orders = () => {
 											{order.statusCodeName}
 										</MDBBadge>
 									</td>
+									<td className="py-1 ps-0 pe-2 border-bottom-0">
+										{openList.includes(order.order_index) ? (
+											<MDBIcon fas icon="angle-up" />
+										) : (
+											<MDBIcon fas icon="angle-down" />
+										)}
+									</td>
 								</tr>
 								<tr>
-									<td className="py-1 " colSpan="4" align="left">
-										<MDBCollapse open={openList.includes(order.order_index)}>
+									<td className="py-1 px-3" colSpan="5" align="left">
+										<MDBCollapse
+											open={openList.includes(order.order_index)}
+											className="wrap-anywhere"
+										>
 											<div>
 												<span className="font-black">Price</span> :{" "}
 												<span className="text-transform-uppercase">
@@ -229,6 +243,10 @@ const Orders = () => {
 											<div>
 												<span className="font-black">Link</span> :{" "}
 												<span>{order.link}</span>
+											</div>
+											<div>
+												<span className="font-black">SubService</span> :{" "}
+												<span>{order.sub_service_display_name[language]}</span>
 											</div>
 											<div>
 												<span className="font-black">Start Count</span> :{" "}

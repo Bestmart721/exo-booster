@@ -15,16 +15,18 @@ import { modalError } from "../store/appSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { Input, InputGroup } from "reactstrap";
 import { t } from "i18next";
+import { useLanguage } from "../layouts/LanguageContext";
 
 const Referral = () => {
 	const dispatch = useDispatch();
 	const [data, setData] = useState({});
 	const user = useSelector((state) => state.auth.user);
+	const { language } = useLanguage();
 
 	useEffect(() => {
 		fetchReferralInfo()
 			.then((data) => {
-				setData(data);
+				setData(data[language]);
 			})
 			.catch((error) => {
 				dispatch(modalError("Check your internet connection and try again."));
@@ -86,7 +88,7 @@ const Referral = () => {
 					</MDBCardTitle>
 					{data.refSteps?.map((item, index) => (
 						<MDBTypography tag="p" className="mb-1" key={index}>
-							{index + 1}. {item}
+							<span className="font-black">{index + 1}.</span> {item}
 						</MDBTypography>
 					))}
 				</MDBCardBody>
