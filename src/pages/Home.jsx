@@ -325,7 +325,14 @@ const Home = () => {
 	return (
 		user.username && (
 			<div className="bg-primary-light flex-grow-1 d-flex flex-column">
-				<SweetAlert2 {...swalProps} />
+				<SweetAlert2
+					{...swalProps}
+					onResolve={() =>
+						setSwalProps({
+							show: false,
+						})
+					}
+				/>
 				<MDBContainer className="mt-4 d-none d-sm-block w-600">
 					<MDBCard className="bg-pink shadow rounded-pill">
 						<MDBCardBody className="row px-4">
@@ -471,6 +478,7 @@ const Home = () => {
 												</label>
 
 												<Select
+												onBlur={() => {debugger}}
 													isSearchable={false}
 													className="input-group-lg "
 													placeholder={t("Choose your country")}
