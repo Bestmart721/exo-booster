@@ -199,6 +199,13 @@ const Wallet = () => {
 							</div>
 							<div>{timestampToString(payment.date._seconds)}</div>
 						</div>
+						{
+							openList.includes(payment.id) ? (
+								<MDBIcon fas icon="angle-up" />
+							) : (
+								<MDBIcon fas icon="angle-down" />
+							)
+						}
 					</MDBBtn>
 					<MDBCollapse
 						open={openList.includes(payment.id)}

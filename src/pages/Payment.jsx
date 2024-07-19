@@ -184,7 +184,7 @@ const Payment = () => {
 				} else if (selectedProvider.return_type == "html_text") {
 					setSwalProps({
 						show: true,
-						title: t("Success"),
+						// title: t("Success"),
 						// text: response.data.data[selectedProvider.return_type],
 						html: response.data.data[selectedProvider.return_type],
 						icon: "success",
