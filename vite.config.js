@@ -6,6 +6,9 @@ import legacy from '@vitejs/plugin-legacy';
 export default defineConfig({
   plugins: [
     react(),
-    legacy({ targets: ['chrome >= 49'], }),
+    legacy({
+      targets: ['chrome >= 49', 'last 2 versions'],
+      additionalLegacyPolyfills: ['regenerator-runtime/runtime', 'intl-pluralrules'],
+    }),
   ],
 })
