@@ -374,7 +374,7 @@ small,
 	overflow-wrap: anywhere;
 }
 
-[aria-selected="true"] .text-secondary {
+.css-1foztyy-option .text-secondary {
 	color: #fff !important;
 }
 .country-option {

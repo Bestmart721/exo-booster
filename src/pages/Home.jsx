@@ -478,7 +478,6 @@ const Home = () => {
 												</label>
 
 												<Select
-												onBlur={() => {debugger}}
 													isSearchable={false}
 													className="input-group-lg "
 													placeholder={t("Choose your country")}
