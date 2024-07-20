@@ -160,7 +160,7 @@ const Wallet = () => {
 						{formatNumber(user.affiliate_balance || 0)}{" "}
 						{user.currency?.toUpperCase() || "XAF"}
 					</MDBTypography>
-					<MDBIcon fas icon="angle-right" className="ms-2" />
+					<MDBIcon fas icon="angle-right" className="ms-auto" />
 				</MDBCardBody>
 			</MDBCard>
 
@@ -201,9 +201,9 @@ const Wallet = () => {
 						</div>
 						{
 							openList.includes(payment.id) ? (
-								<MDBIcon fas icon="angle-up" />
+								<MDBIcon fas icon="angle-up" className="ms-2" />
 							) : (
-								<MDBIcon fas icon="angle-down" />
+								<MDBIcon fas icon="angle-down" className="ms-2" />
 							)
 						}
 					</MDBBtn>
