@@ -230,7 +230,7 @@ const resources = {
 };
 
 const queryParams = new URLSearchParams(window.location.search);
-const lng = (window.location.hash.substring(1) || navigator.language || navigator.userLanguage).slice(0, 2) || en;
+const lng = (window.location.hash.substring(1) || navigator.language || navigator.userLanguage).slice(0, 2) || "en";
 
 i18n
   .use(initReactI18next)

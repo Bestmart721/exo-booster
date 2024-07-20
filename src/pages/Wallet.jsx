@@ -160,7 +160,7 @@ const Wallet = () => {
 						{formatNumber(user.affiliate_balance || 0)}{" "}
 						{user.currency?.toUpperCase() || "XAF"}
 					</MDBTypography>
-					<MDBIcon fas icon="angle-right" className="ms-auto" />
+					<MDBIcon fas icon="angle-right" className="ms-2" />
 				</MDBCardBody>
 			</MDBCard>
 
