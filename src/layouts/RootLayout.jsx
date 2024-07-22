@@ -29,11 +29,10 @@ import {
 	MDBTabs,
 } from "mdb-react-ui-kit";
 import { useTranslation } from "react-i18next";
-import { onAuthStateChanged } from "firebase/auth";
+import { onAuthStateChanged, onIdTokenChanged } from "firebase/auth";
 import {
 	auth,
 	docRef,
-	fetchSupportContacts,
 	fetchTotalOrders,
 	fetchUserData,
 	firebaseSignOut,
@@ -66,9 +65,7 @@ const languages = {
 const getFlagUrl = (flagCode) => `https://flagcdn.com/${flagCode}`;
 
 export default function RootLayout() {
-
-
-	const {loading : appLoading, contactInfo} = useSelector(({app}) => app);
+	const { loading: appLoading, contactInfo } = useSelector(({ app }) => app);
 
 	const location = useLocation();
 	const navigate = useNavigate();
@@ -86,44 +83,25 @@ export default function RootLayout() {
 	const dispatch = useDispatch();
 	const { notify } = useToaster();
 
-	// useEffect(() => {
-	// 	if (JSON.parse(localStorage.getItem("user")))
-	// 		dispatch(setTmpUser(JSON.parse(localStorage.getItem("user"))));
-	// 	else dispatch(unsetUser());
-
-	// 	fetchSupportContacts()
-	// 		.then((data) => {
-	// 			setSupportContacts(data);
-	// 		})
-	// 		.catch((error) => {
-	// 			// dispatch(modalError(t(error)));
-	// 		});
-	// }, []);
-
-	
-
-
-	
 	useEffect(() => {
-		if (JSON.parse(localStorage.getItem("user")))
+		if (JSON.parse(localStorage.getItem("user"))) {
 			dispatch(setTmpUser(JSON.parse(localStorage.getItem("user"))));
-		else dispatch(unsetUser());
+		} else {
+			dispatch(unsetUser());
+		}
 
-
-		dispatch(fetchSupportContactsThunk())
-		
+		dispatch(fetchSupportContactsThunk());
 	}, [dispatch]);
 
 	useEffect(() => {
 		if (tmpUser) {
 			setLoading(true);
 			setUser(tmpUser);
-			const unsubscribe = onAuthStateChanged(auth, (user) => {
+			const unsubscribe1 = onAuthStateChanged(auth, (user) => {
 				if (user) {
 					// notify("Welcome back!");
 					fetchUserData(user.uid)
 						.then((userData) => {
-							// console.log(userData);
 							dispatch(
 								setUser({
 									...userData,
@@ -171,6 +149,25 @@ export default function RootLayout() {
 					dispatch(unsetUser());
 				}
 			});
+
+			const unsubscribe2 = onIdTokenChanged(auth, (tokenUser) => {
+				if (tokenUser) {
+					tokenUser.getIdToken().then((accessToken) => {
+						dispatch(
+							setUser({
+								...user,
+								accessToken,
+							})
+						);
+					});
+				} else {
+					dispatch(unsetUser());
+				}
+			});
+			return () => {
+				unsubscribe1();
+				unsubscribe2();
+			};
 
 			// Cleanup subscription on unmount
 			return unsubscribe;
@@ -494,10 +491,7 @@ export default function RootLayout() {
 										{t("Kindly contact us through email:")}
 									</div>
 									<div className="lead text-primary">
-										<a
-											href={contactInfo.Email[language].link}
-											target="_blank"
-										>
+										<a href={contactInfo.Email[language].link} target="_blank">
 											{contactInfo.Email[language].name}
 										</a>
 									</div>
@@ -520,11 +514,11 @@ export default function RootLayout() {
 										</a>
 									</div>
 								</>
-							) :
-							<div>
-								<MDBSpinner color="primary" />
-							</div>
-						}
+							) : (
+								<div>
+									<MDBSpinner color="primary" />
+								</div>
+							)}
 						</MDBModalBody>
 						<MDBModalFooter>
 							<MDBBtn color="primary" onClick={() => dispatch(hideSupport())}>
