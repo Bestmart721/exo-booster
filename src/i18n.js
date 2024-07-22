@@ -2,7 +2,7 @@ import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 
 const resources = {
-  en: {
+  en: { 
     translation: {
       "Username is required.": "Username is required.",
       "Your username should be a minimum of 3 characters.": "Your username should be a minimum of 3 characters.",
