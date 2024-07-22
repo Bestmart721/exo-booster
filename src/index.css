@@ -299,14 +299,14 @@ body {
 	padding: 0.7rem !important;
 	text-align: center;
 }
-.nav-link {
+/* .nav-link {
 	display: block;
 	padding: 0.5rem 1rem;
 	color: #0d6efd;
 	text-decoration: none;
 	transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
 		border-color 0.15s ease-in-out;
-}
+} */
 .nav-tabs .nav-link:hover {
 	background-color: #ffe9fe;
 	border-color: transparent;

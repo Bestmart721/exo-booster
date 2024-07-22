@@ -212,13 +212,13 @@ const Wallet = () => {
 						className="ps-4 small"
 					>
 						<div>
-							<span className="font-black">Amount</span> :{" "}
+							<span className="font-black">{t("Amount")}</span> :{" "}
 							<span className="text-transform-uppercase text-success">
 								{formatNumber(payment.amount)} {payment.currency}
 							</span>
 						</div>
 						<div>
-							<span className="font-black">Date</span> :{" "}
+							<span className="font-black">{t("Date")}</span> :{" "}
 							<span>
 								{timestampToTimeString(
 									payment.order_date?._seconds || payment.date._seconds
@@ -227,7 +227,7 @@ const Wallet = () => {
 						</div>
 						{(payment.payment_method || payment.type == "referral") && (
 							<div>
-								<span className="font-black">Payment Method</span> :{" "}
+								<span className="font-black">{t("Payment Method")}</span> :{" "}
 								<span>
 									{payment.payment_method
 										? payment.payment_method[language]
@@ -237,27 +237,27 @@ const Wallet = () => {
 						)}
 						{payment.type == "refund" && (
 							<div>
-								<span className="font-black">Refunded order</span> :<br />
+								<span className="font-black">{t("Refunded order")}</span> :<br />
 								<div className="ps-2 ">
-									<span className="font-black ">Service name</span> :{" "}
+									<span className="font-black ">{t("Service name")}</span> :{" "}
 									<span>{payment.subservice_name[language]}</span>
 								</div>
 								<div className="ps-2 ">
-									<span className="font-black">Quantity</span> :{" "}
+									<span className="font-black">{t("Quantity")}</span> :{" "}
 									<span>{payment.quantity}</span>
 								</div>
 								<div className="ps-2 ">
-									<span className="font-black">Order status</span> :{" "}
+									<span className="font-black">{t("Order status")}</span> :{" "}
 									<span>{payment.order_status[language]}</span>
 								</div>
 								<div className="ps-2 ">
-									<span className="font-black">Order date</span> :{" "}
+									<span className="font-black">{t("Order date")}</span> :{" "}
 									<span>
 										{timestampToTimeString(payment.order_date?._seconds)}
 									</span>
 								</div>
 								<div className="ps-2 ">
-									<span className="font-black">Order ID</span> :{" "}
+									<span className="font-black">{t("Order ID")}</span> :{" "}
 									<span>{payment.order_id}</span>
 								</div>
 							</div>

@@ -365,7 +365,7 @@ export default function RootLayout() {
 						<MDBDropdown>
 							<MDBDropdownToggle
 								tag="a"
-								className="language-dropdown-"
+								className="language-dropdown- nav-link"
 								role="button"
 							>
 								{/* <MDBBtn

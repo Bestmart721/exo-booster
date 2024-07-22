@@ -100,7 +100,7 @@ const Home = () => {
 		let count = 0;
 
 		if (!selected.website || !selected.service || !selected.subService) {
-			dispatch(modalError("Please select a service."));
+			dispatch(modalError(t("Please select a service.")));
 			count++;
 		}
 
@@ -212,14 +212,14 @@ const Home = () => {
 				setSwalProps({
 					show: true,
 					title: response.data.message[language],
-					text: "Purchase Successful!\nYour order has been placed successfully.",
+					text: t("Purchase Successful!\nYour order has been placed successfully."),
 					icon: "success",
 					showDenyButton: true,
 					customClass: {
 						confirmButton: "btn btn-primary btn-block",
 						denyButton: "btn btn-primary btn-block",
 					},
-					confirmButtonText: "View My Order",
+					confirmButtonText: t("View My Order"),
 					denyButtonText: "Ok",
 					preConfirm: () => {
 						navigate("/orders");
@@ -235,7 +235,7 @@ const Home = () => {
 				setSwalProps({
 					show: true,
 					title: t("Purchase failed!"),
-					text: error.message,
+					text: t(error.message),
 					icon: "error",
 					customClass: {
 						confirmButton: "btn btn-primary btn-block",
@@ -304,22 +304,10 @@ const Home = () => {
 	}
 
 	function formatNumber(num = 0) {
-		return num.toLocaleString();
-	}
-
-	function formatRoundedNumber(num = 0) {
-		// return num.toLocaleString();
-		if (num >= 1e12) {
-			return (num / 1e12).toFixed(2) + "T";
-		} else if (num >= 1e9) {
-			return (num / 1e9).toFixed(2) + "B";
-		} else if (num >= 1e6) {
-			return (num / 1e6).toFixed(2) + "M";
-		} else if (num >= 1e3) {
-			return (num / 1e3).toFixed(2) + "K";
-		} else {
-			return num.toFixed(2);
-		}
+		return num.toLocaleString(undefined, {
+			minimumFractionDigits: 0,
+			maximumFractionDigits: 2,
+		});
 	}
 
 	return (
@@ -345,12 +333,12 @@ const Home = () => {
 									className="me-3"
 								/>
 								<div>
-									<div className="small line-height-small">Total Orders</div>
+									<div className="small line-height-small">{t("Total Orders")}</div>
 									<MDBTypography tag="h5" className="mb-0 font-black">
 										{formatNumber(totalOrdersCount)}
 									</MDBTypography>
 									<div className="small line-height-small">
-										3+ years of experience providing SMM services!
+										{t("3+ years of experience providing SMM services!")}
 									</div>
 								</div>
 							</MDBCol>
@@ -363,9 +351,9 @@ const Home = () => {
 									className="me-3"
 								/>
 								<div>
-									<div className="small line-height-small">You Have Spent</div>
+									<div className="small line-height-small">{t("You Have Spent")}</div>
 									<MDBTypography tag="h5" className="mb-0 font-black">
-										{formatRoundedNumber(user.amount_spent)}{" "}
+										{formatNumber(user.amount_spent)}{" "}
 										<span className="text-transform-uppercase">
 											{user.currency}
 										</span>
@@ -786,7 +774,7 @@ const Home = () => {
 																	?.youtube_tutorial[language]
 															}
 															target="_blank"
-															className="font-black text-primary"
+															className="font-black text-primary ms-2"
 														>
 															{t("Tutorial")}
 														</a>
@@ -821,7 +809,7 @@ const Home = () => {
 											) : (
 												t("Purchase")
 											)}{" "}
-											{countInvalid ? `(${countInvalid} Errors)` : ""}
+											{countInvalid ? `(${countInvalid} ${t("Errors")})` : ""}
 										</MDBBtn>
 									</div>
 								)}

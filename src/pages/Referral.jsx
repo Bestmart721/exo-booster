@@ -26,10 +26,10 @@ const Referral = () => {
 	useEffect(() => {
 		fetchReferralInfo()
 			.then((data) => {
-				setData(data[language]);
+				setData(data);
 			})
 			.catch((error) => {
-				dispatch(modalError("Check your internet connection and try again."));
+				dispatch(modalError(t("Check your internet connection and try again.")));
 			});
 	}, [dispatch]);
 
@@ -43,7 +43,7 @@ const Referral = () => {
 					<MDBCol className="align-self-center">
 						<MDBCardBody className="pe-0">
 							<MDBTypography tag="div" className="text-white">
-								{data.bannerText}
+								{data[language]?.bannerText}
 							</MDBTypography>
 						</MDBCardBody>
 					</MDBCol>
@@ -86,7 +86,7 @@ const Referral = () => {
 					<MDBCardTitle className="font-black">
 						{t("How it works?")}
 					</MDBCardTitle>
-					{data.refSteps?.map((item, index) => (
+					{data[language]?.refSteps?.map((item, index) => (
 						<MDBTypography tag="p" className="mb-1" key={index}>
 							<span className="font-black">{index + 1}.</span> {item}
 						</MDBTypography>

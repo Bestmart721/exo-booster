@@ -206,6 +206,7 @@ const Orders = () => {
 									</td>
 									<td className="py-1 px-2 border-bottom-0">
 										<MDBBadge
+											className="text-uppercase"
 											pill
 											color={
 												order.statusCodeName === "Completed"
@@ -235,35 +236,35 @@ const Orders = () => {
 											className="wrap-anywhere"
 										>
 											<div>
-												<span className="font-black">Price</span> :{" "}
+												<span className="font-black">{t("Price")}</span> :{" "}
 												<span className="text-transform-uppercase">
 													{formatNumber(order.charge)} {order.currency}
 												</span>
 											</div>
 											<div>
-												<span className="font-black">Link</span> :{" "}
+												<span className="font-black">{t("Link")}</span> :{" "}
 												<span>{order.link}</span>
 											</div>
 											<div>
-												<span className="font-black">Category name</span> :{" "}
+												<span className="font-black">{t("Category name")}</span> :{" "}
 												<span>{order.sub_service_display_name[language]}</span>
 											</div>
 											<div>
-												<span className="font-black">Start Count</span> :{" "}
+												<span className="font-black">{t("Start Count")}</span> :{" "}
 												<span>{order.start_count}</span>
 											</div>
 											<div>
-												<span className="font-black">Remains</span> :{" "}
+												<span className="font-black">{t("Remains")}</span> :{" "}
 												<span>{order.remains}</span>
 											</div>
 											<div>
-												<span className="font-black">Date</span> :{" "}
+												<span className="font-black">{t("Date")}</span> :{" "}
 												<span>
 													{timestampToString(order.timestamp._seconds) || ""}
 												</span>
 											</div>
 											<div>
-												<span className="font-black">Completed in</span> :{" "}
+												<span className="font-black">{t("Completed in")}</span> :{" "}
 												<span>{order.completionTime}</span>
 											</div>
 										</MDBCollapse>

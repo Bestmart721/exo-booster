@@ -172,7 +172,7 @@ const Affiliate = () => {
 					<MDBCol className="align-self-center">
 						<MDBCardBody className="pe-0">
 							<MDBTypography tag="div" className="text-white">
-								{data[language].bannerText}
+								{data[language]?.bannerText}
 							</MDBTypography>
 						</MDBCardBody>
 					</MDBCol>
