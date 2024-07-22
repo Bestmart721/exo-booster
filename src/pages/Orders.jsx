@@ -245,7 +245,7 @@ const Orders = () => {
 												<span>{order.link}</span>
 											</div>
 											<div>
-												<span className="font-black">SubService</span> :{" "}
+												<span className="font-black">Category name</span> :{" "}
 												<span>{order.sub_service_display_name[language]}</span>
 											</div>
 											<div>

@@ -36,6 +36,7 @@ const Affiliate = () => {
 	useEffect(() => {
 		fetchReferralInfo()
 			.then((data) => {
+				console.log(data)
 				setData(data);
 			})
 			.catch((error) => {
@@ -171,7 +172,7 @@ const Affiliate = () => {
 					<MDBCol className="align-self-center">
 						<MDBCardBody className="pe-0">
 							<MDBTypography tag="div" className="text-white">
-								{data.bannerText}
+								{data[language].bannerText}
 							</MDBTypography>
 						</MDBCardBody>
 					</MDBCol>

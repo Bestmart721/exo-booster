@@ -78,8 +78,6 @@ const Payment = () => {
 			});
 	};
 
-	console.log(formData);
-
 	useEffect(() => {
 		if (paymentPlatformId) {
 			loadValidator();
@@ -187,7 +185,7 @@ const Payment = () => {
 						// title: t("Success"),
 						// text: response.data.data[selectedProvider.return_type],
 						html: response.data.data[selectedProvider.return_type],
-						icon: "success",
+						// icon: "success",
 						customClass: {
 							confirmButton: "btn btn-primary btn-block",
 						},
