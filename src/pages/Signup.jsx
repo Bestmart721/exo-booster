@@ -137,6 +137,9 @@ export default function Signup() {
 	};
 
 	useEffect(() => {
+		const viewport = document.getElementById("root");
+		document.body.scrollTop = 0;
+		viewport.scrollTop = 0;
 		loadSignupData();
 	}, []);
 
@@ -159,10 +162,9 @@ export default function Signup() {
 		password: Yup.string()
 			.required(t("Password cannot be empty."))
 			.min(6, t("Password must be at least 6 characters.")),
-		confirm: Yup.string().oneOf(
-			[Yup.ref("password"), null],
-			t("Passwords must match.")
-		),
+		confirm: Yup.string()
+			.required(t("Confirm your password"))
+			.oneOf([Yup.ref("password"), null], t("Passwords must match.")),
 		referralCode: Yup.string(), // Optional field, no validation required
 	});
 
@@ -285,7 +287,9 @@ export default function Signup() {
 										setFieldValue("country", value.name);
 										setFieldValue("currency", value.currency);
 									}}
-									isDisabled={countryPlaceHolder == t("Loading available countries...")}
+									isDisabled={
+										countryPlaceHolder == t("Loading available countries...")
+									}
 									styles={customStyles}
 									components={{
 										Option,

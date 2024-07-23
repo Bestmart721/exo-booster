@@ -212,7 +212,9 @@ const Home = () => {
 				setSwalProps({
 					show: true,
 					title: response.data.message[language],
-					text: t("Purchase Successful!\nYour order has been placed successfully."),
+					text: t(
+						"Purchase Successful!\nYour order has been placed successfully."
+					),
 					icon: "success",
 					showDenyButton: true,
 					customClass: {
@@ -333,7 +335,9 @@ const Home = () => {
 									className="me-3"
 								/>
 								<div>
-									<div className="small line-height-small">{t("Total Orders")}</div>
+									<div className="small line-height-small">
+										{t("Total Orders")}
+									</div>
 									<MDBTypography tag="h5" className="mb-0 font-black">
 										{formatNumber(totalOrdersCount)}
 									</MDBTypography>
@@ -351,7 +355,9 @@ const Home = () => {
 									className="me-3"
 								/>
 								<div>
-									<div className="small line-height-small">{t("You Have Spent")}</div>
+									<div className="small line-height-small">
+										{t("You Have Spent")}
+									</div>
 									<MDBTypography tag="h5" className="mb-0 font-black">
 										{formatNumber(user.amount_spent)}{" "}
 										<span className="text-transform-uppercase">
@@ -546,7 +552,7 @@ const Home = () => {
 										selected.service &&
 										selected.subService && (
 											<>
-												<MDBCol className="mb-4 position-relative" sm={12}>
+												<MDBCol className="mb-4- position-relative" sm={12}>
 													<label
 														htmlFor="link"
 														className="form-label font-black mb-0"
@@ -564,14 +570,14 @@ const Home = () => {
 														name="link"
 														onChange={handleChange}
 													/>
-													<small className="position-absolute text-danger">
+													<div className="small error-msg-wrapper text-danger">
 														{dirty && linkErrorMsg}
-													</small>
+													</div>
 												</MDBCol>
 												{data[selected.website].services[selected.service]
 													.subservices[selected.subService]?.type ==
 													"default" && (
-													<MDBCol className="mb-4 position-relative" sm={12}>
+													<MDBCol className="mb-4- position-relative" sm={12}>
 														<label
 															htmlFor="quantity"
 															className="form-label font-black mb-0"
@@ -597,7 +603,7 @@ const Home = () => {
 																].subservices[selected.subService]?.max
 															}
 														/>
-														<small className="position-absolute">
+														<div className="small error-msg-wrapper">
 															(Min:{" "}
 															{formatNumber(
 																data[selected.website].services[
@@ -612,13 +618,13 @@ const Home = () => {
 															)}
 															){" "}
 															<span className="text-danger">{qtyErrorMsg}</span>
-														</small>
+														</div>
 													</MDBCol>
 												)}
 												{data[selected.website].services[selected.service]
 													.subservices[selected.subService]?.type ==
 													"custom_comments" && (
-													<MDBCol className="mb-4 position-relative" sm={12}>
+													<MDBCol className="mb-4- position-relative" sm={12}>
 														<label
 															htmlFor="comments"
 															className="form-label font-black mb-0"
@@ -633,7 +639,7 @@ const Home = () => {
 															className="bg-white"
 															onChange={handleChange}
 														/>
-														<small className="position-absolute">
+														<div className="small error-msg-wrapper">
 															(Min:
 															{
 																data[selected.website].services[
@@ -648,15 +654,15 @@ const Home = () => {
 															}
 															){" "}
 															<span className="text-danger">{qtyErrorMsg}</span>
-														</small>
+														</div>
 													</MDBCol>
 												)}
 												<MDBCol
-													className="mb-4 position-relative"
+													className="mb-4- position-relative"
 													sm={12}
 													md={6}
 												>
-													<label
+													{/* <label
 														htmlFor="price"
 														className="form-label font-black mb-0"
 													>
@@ -691,18 +697,80 @@ const Home = () => {
 														name="price"
 														disabled
 														onChange={handleChange}
-													/>
-													<small className="position-absolute">
+													/> */}
+													<div className="mt-2">
+														<label
+															htmlFor="price"
+															className="form-label font-black mb-0"
+														>
+															{t("Price")}:
+														</label>
+														<span className="text-deleted text-danger ms-2">
+															{(
+																(((data[selected.website].services[
+																	selected.service
+																].subservices[selected.subService]?.type ==
+																	"default" &&
+																	(selected.quantity || 0)) ||
+																	(data[selected.website].services[
+																		selected.service
+																	].subservices[selected.subService]?.type ==
+																		"custom_comments" &&
+																		countLines(selected.comments)) ||
+																	0) /
+																	1000) *
+																data[selected.website].services[
+																	selected.service
+																].subservices[selected.subService]?.rate[
+																	user.currency
+																]
+															).toLocaleString() +
+																" " +
+																user.currency?.toUpperCase()}
+														</span>
+														<MDBCard
+															className="d-inline-block text-white ms-2"
+															background="success"
+														>
+															<MDBCardBody className="p-1">
+																{(
+																	(
+																		(((data[selected.website].services[
+																			selected.service
+																		].subservices[selected.subService]?.type ==
+																			"default" &&
+																			(selected.quantity || 0)) ||
+																			(data[selected.website].services[
+																				selected.service
+																			].subservices[selected.subService]
+																				?.type == "custom_comments" &&
+																				countLines(selected.comments)) ||
+																			0) /
+																			1000) *
+																		data[selected.website].services[
+																			selected.service
+																		].subservices[selected.subService]?.rate[
+																			user.currency
+																		]
+																	).toLocaleString() *
+																	((100 - user.discount) / 100)
+																).toFixed(2) +
+																	" " +
+																	user.currency?.toUpperCase()}
+															</MDBCardBody>
+														</MDBCard>
+													</div>
+													<div className="small error-msg-wrapper">
 														{
 															data[selected.website].services[selected.service]
 																.subservices[selected.subService]?.price_text[
 																user.currency
 															][language]
 														}
-													</small>
+													</div>
 												</MDBCol>
 
-												<MDBCol className="mb-4" sm={12} md={6}>
+												<MDBCol className="mb-4-" sm={12} md={6}>
 													<label
 														htmlFor="average_time"
 														className="form-label font-black mb-0"
@@ -734,7 +802,7 @@ const Home = () => {
 										selected.service &&
 										selected.subService && (
 											<>
-												<MDBCol className="mb-4" sm={12}>
+												<MDBCol className="mb-4-" sm={12}>
 													<label className="form-label font-black mb-0">
 														{t("Note")}:
 													</label>

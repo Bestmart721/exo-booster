@@ -188,6 +188,9 @@ body {
 	line-height: 20px;
 	min-height: 28px;
 }
+.error-msg-wrapper {
+	min-height: 1.4rem;
+}
 
 .country-option {
 	display: flex;
@@ -386,4 +389,8 @@ small,
 
 .css-42axt2-Input2 {
 	display: none !important;
+}
+
+.text-deleted {
+	text-decoration: line-through;
 }

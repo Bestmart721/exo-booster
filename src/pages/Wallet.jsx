@@ -278,7 +278,7 @@ const Wallet = () => {
 				) : error ? (
 					<>
 						<MDBTypography color="danger" tag="div">
-							{error}
+							{t(error)}
 						</MDBTypography>
 						<MDBBtn color="link" onClick={tryAgain}>
 							{t("Try again")}

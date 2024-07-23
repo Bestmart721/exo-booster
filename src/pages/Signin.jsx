@@ -21,6 +21,12 @@ export default function Signin() {
 		setVisiblePassword(!visiblePassword);
 	};
 
+	useEffect(() => {
+		const viewport = document.getElementById("root");
+		document.body.scrollTop = 0;
+		viewport.scrollTop = 0;
+	}, []);
+
 	const SignInSchema = Yup.object().shape({
 		username: Yup.string()
 			.matches(

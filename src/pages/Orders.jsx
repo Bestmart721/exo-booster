@@ -21,6 +21,7 @@ import { Input } from "reactstrap";
 import { useLanguage } from "../layouts/LanguageContext";
 import { or } from "firebase/firestore";
 import { t, use } from "i18next";
+import { Link } from "react-router-dom";
 // import { modalError } from "../store/appSlice";
 
 const capitalize = (str) => (str ? str[0].toUpperCase() + str.slice(1) : "");
@@ -243,10 +244,17 @@ const Orders = () => {
 											</div>
 											<div>
 												<span className="font-black">{t("Link")}</span> :{" "}
-												<span>{order.link}</span>
+												{order.link?.includes("/") ? (
+													<Link to={order.link} target="_blank">
+														{order.link}
+													</Link>
+												) : (
+													<span>{order.link}</span>
+												)}
 											</div>
 											<div>
-												<span className="font-black">{t("Category name")}</span> :{" "}
+												<span className="font-black">{t("Category name")}</span>{" "}
+												:{" "}
 												<span>{order.sub_service_display_name[language]}</span>
 											</div>
 											<div>
@@ -264,8 +272,8 @@ const Orders = () => {
 												</span>
 											</div>
 											<div>
-												<span className="font-black">{t("Completed in")}</span> :{" "}
-												<span>{order.completionTime}</span>
+												<span className="font-black">{t("Completed in")}</span>{" "}
+												: <span>{order.completionTime}</span>
 											</div>
 										</MDBCollapse>
 									</td>

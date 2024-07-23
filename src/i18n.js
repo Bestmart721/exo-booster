@@ -251,6 +251,8 @@ const resources = {
       "Order status": "Statut de la commande",
       "Order date": "Date de la commande",
       "Order ID": "ID de la commande",
+      "Network Error": "Erreur réseau",
+      "Try again": "Réessayer",
     }
   }
 };

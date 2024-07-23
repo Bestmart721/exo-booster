@@ -69,7 +69,11 @@ const Account = () => {
 	const loadSignupData = async () => {
 		setCountryPlaceHolder(t("Loading available countries..."));
 		axios
-			.get(`https://getsupportedcountries-l2ugzeb65a-uc.a.run.app/`)
+			.post(`https://getsupportedcountries-l2ugzeb65a-uc.a.run.app/`,
+				{
+					userId: user.uid,
+				}
+			)
 			.then((response) => {
 				let cs = Object.keys(response.data).map((key) => response.data[key]);
 				cs = cs.map((country) => ({
@@ -164,7 +168,7 @@ const Account = () => {
 				`https://changeusercountry-l2ugzeb65a-uc.a.run.app/`,
 				{
 					userId: user.uid,
-					country: country,
+					newCountry: country,
 				},
 				{
 					headers: {
