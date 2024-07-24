@@ -181,9 +181,9 @@ const Orders = () => {
 					<MDBTableHead className="font-black border-top">
 						<tr>
 							<th className="py-1 px-2">{t("ID")}</th>
-							<th className="py-1 px-2">{t("Service")}</th>
-							<th className="py-1 px-2">{t("Quantity")}</th>
-							<th className="py-1 px-2">{t("Status")}</th>
+							<th className="py-1 px-1">{t("Service")}</th>
+							<th className="py-1 px-2">{t("Qty")}</th>
+							<th className="py-1 px-1">{t("Status")}</th>
 							<th className="py-1 px-2"></th>
 						</tr>
 					</MDBTableHead>
@@ -197,7 +197,7 @@ const Orders = () => {
 									<td className="py-1 px-2 border-bottom-0">
 										{order.order_index}
 									</td>
-									<td className="py-1 px-2 border-bottom-0">
+									<td className="py-1 px-1 border-bottom-0">
 										{order.service_display_name[language]} -{" "}
 										<span className="text-capitalize">
 											{order.service_category}
@@ -206,9 +206,9 @@ const Orders = () => {
 									<td align="right" className="py-1 px-2 border-bottom-0">
 										{order.quantity}
 									</td>
-									<td className="py-1 px-2 border-bottom-0">
+									<td className="py-1 px-1 border-bottom-0">
 										<MDBBadge
-											className="text-uppercase"
+											className="text-uppercase-"
 											pill
 											color={
 												order.statusCodeName === "Completed"

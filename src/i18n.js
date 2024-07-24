@@ -263,11 +263,12 @@ const resources = {
       "Completed": "Achevée",
       "Processing": "Traitement",
       "Pending": "En attente",
-      "Canceled": "Annulée et remboursée",
-      "Partial": "Partiellement Remboursée",
+      "Canceled": "Annulé",
+      "Partial": "Partiel",
       "In progress": "En cours",
       "Please enter a quantity between": "Veuillez saisir une quantité entre",
       "Number of comments should be between": "Le nombre de commentaires doit être compris entre",
+      "Qty": "Qté",
     }
   }
 };
