@@ -706,7 +706,7 @@ const Home = () => {
 															{t("Price")}:
 														</label>
 														<div className="ms-auto">
-															{!user.discount && selected.quantity ? (
+															{user.discount && selected.quantity ? (
 																<span className="text-deleted text-danger ms-2">
 																	{(
 																		(((data[selected.website].services[
