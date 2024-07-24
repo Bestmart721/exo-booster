@@ -66,7 +66,7 @@ const Referral = () => {
 					</MDBTypography>
 					<InputGroup>
 						<Input
-							placeholder="Recipient's username"
+							placeholder={t("Referral code")}
 							type="text"
 							defaultValue={user.referralCode}
 							readOnly

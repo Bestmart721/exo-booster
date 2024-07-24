@@ -66,6 +66,9 @@ const Payment = () => {
 				}
 			)
 			.then((response) => {
+				if (response.data.error) {
+					throw response.data.error[language];
+				}
 				setPaymentProviders(response.data.data);
 			})
 			.catch((error) => {

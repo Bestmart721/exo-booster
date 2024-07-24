@@ -47,7 +47,7 @@ const Affiliate = () => {
 	}, [dispatch]);
 
 	const transferBalance = () => {
-		if (user.affiliate_balance < 1) {
+		if (user.affiliate_balance <= 0) {
 			setSwalProps({
 				show: true,
 				title: t("Note"),

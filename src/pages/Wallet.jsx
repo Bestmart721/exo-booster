@@ -186,7 +186,7 @@ const Wallet = () => {
 						)}
 						<div className="me-auto">
 							<div className="text-transform-capitalize font-black">
-								{payment.type}
+								{t(payment.type)}
 							</div>
 							<div>
 								{payment.order_status && payment.order_status[language]}
@@ -230,8 +230,8 @@ const Wallet = () => {
 								<span className="font-black">{t("Payment Method")}</span> :{" "}
 								<span>
 									{payment.payment_method
-										? payment.payment_method[language]
-										: "Referral"}
+										? t(payment.payment_method[language])
+										: t("Referral")}
 								</span>
 							</div>
 						)}

@@ -698,43 +698,17 @@ const Home = () => {
 														disabled
 														onChange={handleChange}
 													/> */}
-													<div className="mt-2">
+													<div className="mt-4 d-flex">
 														<label
 															htmlFor="price"
 															className="form-label font-black mb-0"
 														>
 															{t("Price")}:
 														</label>
-														<span className="text-deleted text-danger ms-2">
-															{(
-																(((data[selected.website].services[
-																	selected.service
-																].subservices[selected.subService]?.type ==
-																	"default" &&
-																	(selected.quantity || 0)) ||
-																	(data[selected.website].services[
-																		selected.service
-																	].subservices[selected.subService]?.type ==
-																		"custom_comments" &&
-																		countLines(selected.comments)) ||
-																	0) /
-																	1000) *
-																data[selected.website].services[
-																	selected.service
-																].subservices[selected.subService]?.rate[
-																	user.currency
-																]
-															).toLocaleString() +
-																" " +
-																user.currency?.toUpperCase()}
-														</span>
-														<MDBCard
-															className="d-inline-block text-white ms-2"
-															background="success"
-														>
-															<MDBCardBody className="p-1">
-																{(
-																	(
+														<div className="ms-auto">
+															{!user.discount && selected.quantity ? (
+																<span className="text-deleted text-danger ms-2">
+																	{(
 																		(((data[selected.website].services[
 																			selected.service
 																		].subservices[selected.subService]?.type ==
@@ -752,13 +726,45 @@ const Home = () => {
 																		].subservices[selected.subService]?.rate[
 																			user.currency
 																		]
-																	).toLocaleString() *
-																	((100 - user.discount) / 100)
-																).toFixed(2) +
-																	" " +
-																	user.currency?.toUpperCase()}
-															</MDBCardBody>
-														</MDBCard>
+																	).toLocaleString() +
+																		" " +
+																		user.currency?.toUpperCase()}
+																</span>
+															) : (
+																""
+															)}
+															<MDBCard
+																className="d-inline-block text-white ms-2"
+																background="success"
+															>
+																<MDBCardBody className="p-1">
+																	{(
+																		(
+																			(((data[selected.website].services[
+																				selected.service
+																			].subservices[selected.subService]
+																				?.type == "default" &&
+																				(selected.quantity || 0)) ||
+																				(data[selected.website].services[
+																					selected.service
+																				].subservices[selected.subService]
+																					?.type == "custom_comments" &&
+																					countLines(selected.comments)) ||
+																				0) /
+																				1000) *
+																			data[selected.website].services[
+																				selected.service
+																			].subservices[selected.subService]?.rate[
+																				user.currency
+																			]
+																		).toLocaleString() *
+																		((100 - (user.discount || 0)) / 100)
+																	).toFixed(2) +
+																		" " +
+																		user.currency?.toUpperCase()}
+																</MDBCardBody>
+															</MDBCard>
+														</div>
 													</div>
 													<div className="small error-msg-wrapper">
 														{

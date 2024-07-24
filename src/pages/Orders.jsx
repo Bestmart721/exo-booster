@@ -171,7 +171,7 @@ const Orders = () => {
 					>
 						{options.map((option) => (
 							<option key={option} value={option}>
-								{capitalize(option)}
+								{capitalize(t(option))}
 							</option>
 						))}
 					</Input>
@@ -181,7 +181,7 @@ const Orders = () => {
 						<tr>
 							<th className="py-1 px-2">{t("ID")}</th>
 							<th className="py-1 px-2">{t("Service")}</th>
-							<th className="py-1 px-2">{t("Qty")}</th>
+							<th className="py-1 px-2">{t("Quantity")}</th>
 							<th className="py-1 px-2">{t("Status")}</th>
 							<th className="py-1 px-2"></th>
 						</tr>
@@ -219,7 +219,7 @@ const Orders = () => {
 													: "danger"
 											}
 										>
-											{order.statusCodeName}
+											{t(order.statusCodeName)}
 										</MDBBadge>
 									</td>
 									<td className="py-1 ps-0 pe-2 border-bottom-0">

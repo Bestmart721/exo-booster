@@ -82,10 +82,7 @@ export default function Signup() {
 		confirm: "",
 		whatsapp_number: "",
 		device: { os: "web", userAgent: navigator.userAgent },
-		language:
-			(navigator.language || navigator.userLanguage).slice(0, 2) == "fr"
-				? "fr"
-				: "en",
+		language: language,
 		referralCode: "",
 	};
 
@@ -169,6 +166,7 @@ export default function Signup() {
 	});
 
 	const onSubmit = (values, { setSubmitting }) => {
+		values = { ...values, language: language };
 		setSubmitting(true);
 		axios
 			.post(`https://createuser-l2ugzeb65a-uc.a.run.app/`, values)
@@ -220,6 +218,7 @@ export default function Signup() {
 				animate={{ opacity: 1, translateY: 0 }}
 				transition={{ duration: 0.3, ease: "easeInOut" }}
 			>
+				{language}
 				<div className="position-relative">
 					<MDBTypography tag="h1" className="text-center font-black mb-4">
 						{t("Create your account")}
