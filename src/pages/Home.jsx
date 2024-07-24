@@ -151,7 +151,11 @@ const Home = () => {
 					]?.max)
 		) {
 			setQtyErrorMsg(
-				`${t("Please enter a quantity/comments between")} ${
+				`${
+					type == "default"
+						? t("Please enter a quantity between")
+						: t("Number of comments should be between")
+				} ${
 					data[selected.website].services[selected.service].subservices[
 						selected.subService
 					]?.min
@@ -212,9 +216,9 @@ const Home = () => {
 				setSwalProps({
 					show: true,
 					title: response.data.message[language],
-					text: t(
-						"Purchase Successful!\nYour order has been placed successfully."
-					),
+					text: data[selected.website].services[selected.service].subservices[
+						selected.subService
+					].purchase_success_text[language],
 					icon: "success",
 					showDenyButton: true,
 					customClass: {
@@ -767,12 +771,14 @@ const Home = () => {
 														</div>
 													</div>
 													<div className="small error-msg-wrapper">
-														{
+														{data[selected.website].services[selected.service]
+															.subservices[selected.subService]?.price_text[
+															user.currency
+														] &&
 															data[selected.website].services[selected.service]
 																.subservices[selected.subService]?.price_text[
 																user.currency
-															][language]
-														}
+															][language]}
 													</div>
 												</MDBCol>
 

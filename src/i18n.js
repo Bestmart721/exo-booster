@@ -266,6 +266,8 @@ const resources = {
       "Canceled": "Annulée et remboursée",
       "Partial": "Partiellement Remboursée",
       "In progress": "En cours",
+      "Please enter a quantity between": "Veuillez saisir une quantité entre",
+      "Number of comments should be between": "Le nombre de commentaires doit être compris entre",
     }
   }
 };

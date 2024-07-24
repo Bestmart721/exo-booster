@@ -105,13 +105,14 @@ const Orders = () => {
 
 	const changeStatus = (event) => {
 		setPage(1);
+		setOpenList([]);
 		setStatus(event.target.value);
 		setData([]);
 	};
 
 	useEffect(() => {
 		loadData();
-	}, [status, page]);
+	}, [status, page, user]);
 
 	const viewport = document.getElementById("root");
 	let mybutton;
