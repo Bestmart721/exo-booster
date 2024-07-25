@@ -133,7 +133,7 @@ const Wallet = () => {
 						<MDBTypography tag="div">{t("Available balance")}</MDBTypography>
 						<MDBTypography tag="h1" className="font-black">
 							{formatNumber(user.balance || 0)}{" "}
-							{user.currency?.toUpperCase() || "XAF"}
+							{user.currency?.toUpperCase() || ""}
 						</MDBTypography>
 						<MDBBtn outline color="white" rounded tag={Link} to="/payment">
 							{t("Add Funds")}
@@ -158,7 +158,7 @@ const Wallet = () => {
 					<MDBTypography tag="div">{t("Affiliate balance")}:</MDBTypography>
 					<MDBTypography tag="h5" className="font-black mb-0 ms-2">
 						{formatNumber(user.affiliate_balance || 0)}{" "}
-						{user.currency?.toUpperCase() || "XAF"}
+						{user.currency?.toUpperCase() || ""}
 					</MDBTypography>
 					<MDBIcon fas icon="angle-right" className="ms-auto" />
 				</MDBCardBody>

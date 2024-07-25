@@ -149,7 +149,7 @@ const Affiliate = () => {
 				<MDBCardBody className="text-white text-center py-4">
 					<MDBTypography tag="h1" className="font-black">
 						{formatNumber(user.affiliate_balance || 0)}{" "}
-						{user.currency?.toUpperCase() || "XAF"}
+						{user.currency?.toUpperCase() || ""}
 					</MDBTypography>
 					<MDBBtn
 						outline

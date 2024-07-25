@@ -69,11 +69,9 @@ const Account = () => {
 	const loadSignupData = async () => {
 		setCountryPlaceHolder(t("Loading available countries..."));
 		axios
-			.post(`https://getsupportedcountries-l2ugzeb65a-uc.a.run.app/`,
-				{
-					userId: user.uid,
-				}
-			)
+			.post(`https://getsupportedcountries-l2ugzeb65a-uc.a.run.app/`, {
+				userId: user.uid,
+			})
 			.then((response) => {
 				let cs = Object.keys(response.data).map((key) => response.data[key]);
 				cs = cs.map((country) => ({
@@ -135,9 +133,6 @@ const Account = () => {
 					customClass: {
 						confirmButton: "btn btn-primary btn-block",
 					},
-					preConfirm: () => {
-						setSwalProps({ show: false });
-					},
 				});
 				resetForm();
 			})
@@ -150,9 +145,6 @@ const Account = () => {
 					icon: "error",
 					customClass: {
 						confirmButton: "btn btn-primary btn-block",
-					},
-					preConfirm: () => {
-						setSwalProps({ show: false });
 					},
 				});
 			})
@@ -205,8 +197,9 @@ const Account = () => {
 					customClass: {
 						confirmButton: "btn btn-primary btn-block",
 					},
-					preConfirm: () => {
-						setSwalProps({ show: false });
+					onResolve: () => {
+						console.log("reloading...");
+						window.location.reload();
 					},
 				});
 			})
@@ -218,9 +211,6 @@ const Account = () => {
 					icon: "error",
 					customClass: {
 						confirmButton: "btn btn-primary btn-block",
-					},
-					preConfirm: () => {
-						setSwalProps({ show: false });
 					},
 				});
 			})
@@ -238,7 +228,14 @@ const Account = () => {
 
 	return (
 		<MDBContainer className="py-4">
-			<SweetAlert2 {...swalProps} />
+			<SweetAlert2
+				onResolve={() =>
+					setSwalProps({
+						show: false,
+					})
+				}
+				{...swalProps}
+			/>
 			<MDBCard className="mb-3">
 				<MDBCardBody>
 					<MDBCardTitle className="font-black">

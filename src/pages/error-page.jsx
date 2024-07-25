@@ -13,7 +13,7 @@ export default function ErrorPage() {
 			<h1>{t("Oops!")}</h1>
 			<p>{t("Sorry, an unexpected error has occurred.")}</p>
 			<p>
-				<i>{error.statusText || error.message}</i>
+				<i>{error.statusText}</i>
 			</p>
 			<div className="text-center">
 				<button

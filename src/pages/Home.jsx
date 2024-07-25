@@ -320,12 +320,12 @@ const Home = () => {
 		user.username && (
 			<div className="bg-primary-light flex-grow-1 d-flex flex-column">
 				<SweetAlert2
-					{...swalProps}
 					onResolve={() =>
 						setSwalProps({
 							show: false,
 						})
 					}
+					{...swalProps}
 				/>
 				<MDBContainer className="mt-4 d-none d-sm-block w-600">
 					<MDBCard className="bg-pink shadow rounded-pill">
@@ -743,25 +743,23 @@ const Home = () => {
 															>
 																<MDBCardBody className="p-1">
 																	{(
-																		(
-																			(((data[selected.website].services[
+																		(((data[selected.website].services[
+																			selected.service
+																		].subservices[selected.subService]?.type ==
+																			"default" &&
+																			(selected.quantity || 0)) ||
+																			(data[selected.website].services[
 																				selected.service
 																			].subservices[selected.subService]
-																				?.type == "default" &&
-																				(selected.quantity || 0)) ||
-																				(data[selected.website].services[
-																					selected.service
-																				].subservices[selected.subService]
-																					?.type == "custom_comments" &&
-																					countLines(selected.comments)) ||
-																				0) /
-																				1000) *
-																			data[selected.website].services[
-																				selected.service
-																			].subservices[selected.subService]?.rate[
-																				user.currency
-																			]
-																		) *
+																				?.type == "custom_comments" &&
+																				countLines(selected.comments)) ||
+																			0) /
+																			1000) *
+																		data[selected.website].services[
+																			selected.service
+																		].subservices[selected.subService]?.rate[
+																			user.currency
+																		] *
 																		((100 - (user.discount || 0)) / 100)
 																	).toLocaleString() +
 																		" " +

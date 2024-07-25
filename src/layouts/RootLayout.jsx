@@ -342,7 +342,7 @@ export default function RootLayout() {
 										<MDBIcon fas icon="plus" color="white" />
 									</MDBBtn>
 									{formatNumber(user.balance || 0)}{" "}
-									{user.currency?.toUpperCase() || "XAF"}
+									{user.currency?.toUpperCase() || ""}
 								</MDBBadge>
 							</span>
 						)}
