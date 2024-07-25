@@ -1,20 +1,13 @@
 #root {
 	display: flex;
 	flex-direction: column;
-	height: 100%;
+	height: 100vh;
 	width: 100%;
-	/* overflow: auto; */
+	overflow: auto;
 	background-color: #ffe9fe !important;
 }
-html, body {
-	height: 100%;
-	overflow: hidden;
-	-webkit-overflow-scrolling: touch;
-}
 body {
-	overflow-y: scroll;
 }
-
 #root:has(#authLayout) {
 	background-color: #ffe9fe !important;
 }
