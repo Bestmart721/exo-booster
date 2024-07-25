@@ -1,13 +1,13 @@
 #root {
 	display: flex;
 	flex-direction: column;
-	/* height: 100vh; */
+	height: 100%;
 	width: 100%;
 	/* overflow: auto; */
 	background-color: #ffe9fe !important;
 }
 html, body {
-	height: 100vh;
+	height: 100%;
 	overflow: hidden;
 	-webkit-overflow-scrolling: touch;
 }
