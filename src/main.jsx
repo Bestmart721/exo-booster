@@ -1,7 +1,7 @@
-import 'core-js/stable';
-import 'regenerator-runtime/runtime';
-import 'intl-pluralrules';
-import 'whatwg-fetch';
+import "core-js/stable";
+import "regenerator-runtime/runtime";
+import "intl-pluralrules";
+import "whatwg-fetch";
 import React from "react";
 import ReactDOM from "react-dom/client";
 // import App from './App.tsx'
@@ -83,7 +83,7 @@ const router = createBrowserRouter([
 				element: <Affiliate />,
 			},
 		],
-		// errorElement: <ErrorPage />,
+		errorElement: import.meta.env.DEV === "production" && <ErrorPage />,
 	},
 ]);
 

@@ -702,14 +702,14 @@ const Home = () => {
 														disabled
 														onChange={handleChange}
 													/> */}
-													<div className="mt-4 d-flex">
+													<div className="mt-3 d-flex">
 														<label
 															htmlFor="price"
-															className="form-label font-black mb-0"
+															className="form-label font-black mb-0 pt-1"
 														>
 															{t("Price")}:
 														</label>
-														<div className="ms-auto">
+														<div className="ms-2">
 															{user.discount && selected.quantity ? (
 																<span className="text-deleted text-danger ms-2">
 																	{(
@@ -761,9 +761,9 @@ const Home = () => {
 																			].subservices[selected.subService]?.rate[
 																				user.currency
 																			]
-																		).toLocaleString() *
+																		) *
 																		((100 - (user.discount || 0)) / 100)
-																	).toFixed(2) +
+																	).toLocaleString() +
 																		" " +
 																		user.currency?.toUpperCase()}
 																</MDBCardBody>

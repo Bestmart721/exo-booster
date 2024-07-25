@@ -5,14 +5,16 @@ import { getFirestore, collection, doc, getDoc } from "firebase/firestore";
 // TODO: Replace the following with your app's Firebase project configuration
 // See: https://firebase.google.com/docs/web/learn-more#config-object
 export const firebaseConfig = {
-	apiKey: "AIzaSyDVqxoMQw4DnkCXwtIesSQR4-qoSFVYYww",
-	authDomain: "exobooster-59de3.firebaseapp.com",
-	databaseURL: "https://exobooster-59de3-default-rtdb.asia-southeast1.firebasedatabase.app",
-	projectId: "exobooster-59de3",
-	messagingSenderId: "311433638015",
-	appId: "1:311433638015:web:93a48c36290dd2bc7b4f4a",
-	measurementId: "G-WPYN5P7DNN"
+	apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+	authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+	databaseURL: import.meta.env.VITE_FIREBASE_DATABASE_URL,
+	projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+	messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+	appId: import.meta.env.VITE_FIREBASE_APP_ID,
+	measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID,
 };
+
+console.log(firebaseConfig)
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);

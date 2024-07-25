@@ -84,6 +84,7 @@ export default function Signup() {
 		device: { os: "web", userAgent: navigator.userAgent },
 		language: language,
 		referralCode: "",
+		appVersion: "web"
 	};
 
 	const modalErrorLocal = (text) => {
@@ -218,7 +219,6 @@ export default function Signup() {
 				animate={{ opacity: 1, translateY: 0 }}
 				transition={{ duration: 0.3, ease: "easeInOut" }}
 			>
-				{language}
 				<div className="position-relative">
 					<MDBTypography tag="h1" className="text-center font-black mb-4">
 						{t("Create your account")}

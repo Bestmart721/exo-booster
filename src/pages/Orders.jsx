@@ -30,7 +30,7 @@ function formatNumber(num = 0) {
 	return num.toLocaleString();
 }
 function timestampToString(timestampInSeconds) {
-	return new Date(timestampInSeconds * 1000).toLocaleDateString();
+	return new Date(timestampInSeconds * 1000).toLocaleString();
 }
 
 const Orders = () => {
