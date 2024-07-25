@@ -8,7 +8,7 @@ export default function ErrorPage() {
 	return (
 		<div
 			id="error-page"
-			className="d-flex align-self-center flex-column justify-content-center h-100 text-center"
+			className="d-flex align-self-center flex-column justify-content-center h-100 text-center mt-5"
 		>
 			<h1>{t("Oops!")}</h1>
 			<p>{t("Sorry, an unexpected error has occurred.")}</p>

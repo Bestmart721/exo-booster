@@ -83,7 +83,7 @@ const router = createBrowserRouter([
 				element: <Affiliate />,
 			},
 		],
-		errorElement: import.meta.env.DEV === "production" && <ErrorPage />,
+		errorElement: import.meta.env.VITE_ENV === "production" && <ErrorPage />,
 	},
 ]);
 
