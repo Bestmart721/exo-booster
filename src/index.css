@@ -11,6 +11,7 @@ html, body {
 	height: 100%;
 	overflow: hidden;
 	-webkit-overflow-scrolling: touch;
+	background-color: #ffe9fe !important;
 }
 body {
 	overflow-y: scroll;
