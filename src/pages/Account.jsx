@@ -273,7 +273,7 @@ const Account = () => {
 					</MDBCardTitle>
 					<div className="w-465 mx-auto">
 						<Select
-							// isSearchable={false}
+							isSearchable={false}
 							className="input-group-lg rounded-pill shadow"
 							placeholder={t("Choose your country")}
 							name="country"

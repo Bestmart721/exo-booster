@@ -21,6 +21,7 @@ import {
 } from "../responsiveHook";
 import { useTranslation } from "react-i18next";
 import { motion, AnimatePresence } from "framer-motion";
+import { useLanguage } from "./LanguageContext";
 
 export default function AuthLayout() {
 	const navigate = useNavigate();
@@ -28,6 +29,7 @@ export default function AuthLayout() {
 	const { t, i18n } = useTranslation();
 	const isMobile = useMobileMediaQuery();
 	const isMonileOrTablet = useMobileOrTabletMediaQuery();
+	const { language, switchLanguage } = useLanguage();
 
 	return (
 		<MDBContainer id="authLayout">
@@ -46,7 +48,7 @@ export default function AuthLayout() {
 								transition={{ ease: "easeInOut", delay: 0 }}
 							>
 								<img
-									src="/Img.png"
+									src={language === "fr" ? "/Img.png" : "/Img2.png"}
 									width={isMobile ? 300 : 500}
 									alt="phone"
 									className="img-fluid img-fluid-80 mb-2"

@@ -10,7 +10,8 @@
 html, body {
 	height: 100%;
 	overflow: hidden;
-	-webkit-overflow-scrolling: touch;
+	overscroll-behavior: none;
+	-webkit-overflow-scrolling: auto;
 	background-color: #ffe9fe !important;
 }
 body {

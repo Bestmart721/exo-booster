@@ -21,7 +21,7 @@ import { useLanguage } from "../layouts/LanguageContext";
 import SweetAlert2 from "react-sweetalert2";
 
 function formatNumber(num = 0) {
-	return num.toLocaleString();
+	return num.toLocaleString("en");
 }
 
 const Affiliate = () => {

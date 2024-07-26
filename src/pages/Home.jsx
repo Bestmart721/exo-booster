@@ -310,7 +310,7 @@ const Home = () => {
 	}
 
 	function formatNumber(num = 0) {
-		return num.toLocaleString(undefined, {
+		return num.toLocaleString("en", {
 			minimumFractionDigits: 0,
 			maximumFractionDigits: 2,
 		});
@@ -330,7 +330,7 @@ const Home = () => {
 				<MDBContainer className="mt-4 d-none d-sm-block w-600">
 					<MDBCard className="bg-pink shadow rounded-pill">
 						<MDBCardBody className="row px-4">
-							<MDBCol className="border-end border-1 d-flex align-items-center px-4">
+							<MDBCol className="border-end border-1 d-flex align-items-center ps-4">
 								<MDBIcon
 									color="primary"
 									fas
@@ -350,7 +350,7 @@ const Home = () => {
 									</div>
 								</div>
 							</MDBCol>
-							<MDBCol className=" d-flex align-items-center px-4">
+							<MDBCol className=" d-flex align-items-center pe-4">
 								<MDBIcon
 									color="primary"
 									fas
@@ -730,7 +730,7 @@ const Home = () => {
 																		].subservices[selected.subService]?.rate[
 																			user.currency
 																		]
-																	).toLocaleString() +
+																	).toLocaleString("en") +
 																		" " +
 																		user.currency?.toUpperCase()}
 																</span>
@@ -761,7 +761,7 @@ const Home = () => {
 																			user.currency
 																		] *
 																		((100 - (user.discount || 0)) / 100)
-																	).toLocaleString() +
+																	).toLocaleString("en") +
 																		" " +
 																		user.currency?.toUpperCase()}
 																</MDBCardBody>

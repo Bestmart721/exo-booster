@@ -17,7 +17,7 @@ import SweetAlert2 from "react-sweetalert2";
 import { t } from "i18next";
 
 function formatNumber(num = 0) {
-	return num.toLocaleString();
+	return num.toLocaleString("en");
 }
 
 const Wallet = () => {
@@ -36,7 +36,7 @@ const Wallet = () => {
 	}
 	function timestampToTimeString(timestampInSeconds) {
 		if (!timestampInSeconds) return "";
-		return new Date(timestampInSeconds * 1000).toLocaleString();
+		return new Date(timestampInSeconds * 1000).toLocaleString("en");
 	}
 	const tryAgain = () => {
 		loadData();

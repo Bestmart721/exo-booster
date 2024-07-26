@@ -207,7 +207,9 @@ export default function RootLayout() {
 	};
 
 	function formatNumber(num = 0) {
-		return num.toLocaleString();
+		return num.toLocaleString(
+			"en"
+		)
 		// if (num >= 1e12) {
 		// 	return (num / 1e12).toFixed(2) + "T";
 		// } else if (num >= 1e9) {
@@ -386,8 +388,8 @@ export default function RootLayout() {
 									<MDBDropdownItem
 										key={code}
 										link
-										href={`#${code}`}
 										onClick={(e) => {
+											// e.preventDefault();
 											switchLanguage(code);
 											i18n.changeLanguage(code);
 										}}

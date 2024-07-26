@@ -84,7 +84,7 @@ export default function Signup() {
 		device: { os: "web", userAgent: navigator.userAgent },
 		language: language,
 		referralCode: "",
-		appVersion: "web"
+		appVersion: "web",
 	};
 
 	const modalErrorLocal = (text) => {
@@ -276,6 +276,7 @@ export default function Signup() {
 								</div>
 
 								<Select
+									isSearchable={false}
 									className="input-group-lg rounded-pill shadow"
 									placeholder={t("Choose your country")}
 									name="country"

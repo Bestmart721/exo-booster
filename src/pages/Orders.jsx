@@ -27,10 +27,10 @@ import { Link } from "react-router-dom";
 const capitalize = (str) => (str ? str[0].toUpperCase() + str.slice(1) : "");
 
 function formatNumber(num = 0) {
-	return num.toLocaleString();
+	return num.toLocaleString("en");
 }
 function timestampToString(timestampInSeconds) {
-	return new Date(timestampInSeconds * 1000).toLocaleString();
+	return new Date(timestampInSeconds * 1000).toLocaleString("en");
 }
 
 const Orders = () => {
@@ -291,7 +291,7 @@ const Orders = () => {
 					) : error ? (
 						<>
 							<MDBTypography color="danger" tag="div">
-								{error}
+								{t(error)}
 							</MDBTypography>
 							<MDBBtn color="link" onClick={tryAgain}>
 								{t("Try Again")}
