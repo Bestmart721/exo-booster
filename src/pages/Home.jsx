@@ -662,7 +662,7 @@ const Home = () => {
 													</MDBCol>
 												)}
 												<MDBCol
-													className="mb-4- position-relative"
+													className="mb-4 position-relative"
 													sm={12}
 													md={6}
 												>
@@ -780,7 +780,7 @@ const Home = () => {
 													</div>
 												</MDBCol>
 
-												<MDBCol className="mb-4-" sm={12} md={6}>
+												<MDBCol className="mb-4" sm={12} md={6}>
 													<label
 														htmlFor="average_time"
 														className="form-label font-black mb-0"
@@ -812,7 +812,7 @@ const Home = () => {
 										selected.service &&
 										selected.subService && (
 											<>
-												<MDBCol className="mb-4-" sm={12}>
+												<MDBCol className="mb-4" sm={12}>
 													<label className="form-label font-black mb-0">
 														{t("Note")}:
 													</label>
