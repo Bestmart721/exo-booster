@@ -16,7 +16,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import { useTranslation } from "react-i18next";
 import * as Yup from "yup";
-import { fetchUserData, firebaseChangePassword } from "../firebaseAuth";
+import { fetchUserData, firebaseChangePassword } from "../firebaseAPI";
 import SweetAlert2 from "react-sweetalert2";
 import Select, { components } from "react-select";
 import axios from "axios";

@@ -120,7 +120,6 @@ export const fetchSupportContacts = () => {
 				reject("Error getting document")
 			})
 			.catch((error) => {
-				console.log("Error getting document:", error);
 				reject(error)
 			});
 	})

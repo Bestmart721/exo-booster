@@ -14,7 +14,7 @@ import {
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import { fetchReferralInfo } from "../firebaseAuth";
+import { fetchReferralInfo } from "../firebaseAPI";
 import axios from "axios";
 import { modalError } from "../store/appSlice";
 import { useLanguage } from "../layouts/LanguageContext";
@@ -36,12 +36,11 @@ const Affiliate = () => {
 	useEffect(() => {
 		fetchReferralInfo()
 			.then((data) => {
-				console.log(data)
 				setData(data);
 			})
 			.catch((error) => {
 				dispatch(
-					modalError(t("Check your internet connection and try again."))
+					modalError(t("Check your internet connection and reload the page."))
 				);
 			});
 	}, [dispatch]);

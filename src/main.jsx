@@ -18,6 +18,7 @@ import MyErrorBoundary from "./layouts/MyErrorBoundary.jsx";
 import "mdb-react-ui-kit/dist/css/mdb.min.css";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import "./index.css";
+import "./axiosConfig.js";
 
 import { LanguageProvider } from "./layouts/LanguageContext.jsx";
 import { ToasterProvider } from "./layouts/ToasterContext.jsx";

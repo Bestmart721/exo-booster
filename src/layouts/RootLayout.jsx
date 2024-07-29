@@ -36,7 +36,7 @@ import {
 	fetchTotalOrders,
 	fetchUserData,
 	firebaseSignOut,
-} from "../firebaseAuth";
+} from "../firebaseAPI";
 import { useLanguage } from "./LanguageContext";
 import { useSelector, useDispatch } from "react-redux";
 import { setTmpUser, setUser, unsetUser } from "../store/authSlice";
@@ -96,10 +96,9 @@ export default function RootLayout() {
 	useEffect(() => {
 		if (tmpUser) {
 			setLoading(true);
-			setUser(tmpUser);
-			const unsubscribe1 = onAuthStateChanged(auth, (user) => {
+			// setUser(tmpUser);
+			const unsubscribe = onAuthStateChanged(auth, (user) => {
 				if (user) {
-					// notify("Welcome back!");
 					fetchUserData(user.uid)
 						.then((userData) => {
 							dispatch(
@@ -138,6 +137,9 @@ export default function RootLayout() {
 									setLoading(false);
 								});
 						})
+						.catch((error) => {
+							dispatch(modalError(t(error)));
+						})
 						.finally(() => {
 							setLoading(false);
 						});
@@ -147,10 +149,19 @@ export default function RootLayout() {
 					});
 				} else {
 					dispatch(unsetUser());
+					setLoading(false);
 				}
 			});
+			// Cleanup subscription on unmount
+			return unsubscribe;
+		} else {
+			setLoading(false);
+		}
+	}, [tmpUser]);
 
-			const unsubscribe2 = onIdTokenChanged(auth, (tokenUser) => {
+	useEffect(() => {
+		if (user?.uid) {
+			const unsubscribe1 = onIdTokenChanged(auth, (tokenUser) => {
 				if (tokenUser) {
 					tokenUser.getIdToken().then((accessToken) => {
 						dispatch(
@@ -164,20 +175,6 @@ export default function RootLayout() {
 					dispatch(unsetUser());
 				}
 			});
-			return () => {
-				unsubscribe1();
-				unsubscribe2();
-			};
-
-			// Cleanup subscription on unmount
-			return unsubscribe;
-		} else {
-			setLoading(false);
-		}
-	}, [tmpUser]);
-
-	useEffect(() => {
-		if (user?.uid) {
 			const unsubscribe2 = onSnapshot(docRef(user.uid), (doc) => {
 				const userData = doc.data();
 				dispatch(
@@ -191,7 +188,10 @@ export default function RootLayout() {
 					})
 				);
 			});
-			return unsubscribe2;
+			return () => {
+				unsubscribe1();
+				unsubscribe2();
+			};
 		}
 	}, [user?.uid]);
 
@@ -207,9 +207,7 @@ export default function RootLayout() {
 	};
 
 	function formatNumber(num = 0) {
-		return num.toLocaleString(
-			"en"
-		)
+		return num.toLocaleString("en");
 		// if (num >= 1e12) {
 		// 	return (num / 1e12).toFixed(2) + "T";
 		// } else if (num >= 1e9) {

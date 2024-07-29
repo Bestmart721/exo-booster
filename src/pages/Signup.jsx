@@ -5,7 +5,7 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { useTranslation } from "react-i18next";
 import Select, { components } from "react-select";
-import { firebaseSignIn1 } from "../firebaseAuth";
+import { firebaseSignIn1 } from "../firebaseAPI";
 import { motion, AnimatePresence } from "framer-motion";
 import {
 	MDBBtn,

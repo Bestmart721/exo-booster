@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-import { fetchSupportContacts } from '../firebaseAuth'
+import { fetchSupportContacts } from '../firebaseAPI'
 
 
 

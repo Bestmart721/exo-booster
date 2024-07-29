@@ -8,7 +8,7 @@ import {
 	MDBModalFooter,
 } from "mdb-react-ui-kit";
 import React, { createContext, useEffect, useState } from "react";
-import { fetchSupportContacts } from "../firebaseAuth";
+import { fetchSupportContacts } from "../firebaseAPI";
 import { useLanguage } from "./LanguageContext";
 
 const SupportContext = createContext();
@@ -29,7 +29,6 @@ const SupportProvider = ({ children, language }) => {
 
 	// Function to show the modal
 	const showSupportModal = () => {
-		console.log('==')
 		setShowModal(true);
 	};
 

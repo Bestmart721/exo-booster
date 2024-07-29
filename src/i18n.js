@@ -88,7 +88,7 @@ const resources = {
       "Account Details": "Account Details",
       "Whatsapp:": "Whatsapp:",
       "Firebase: Error (auth/network-request-failed).": "Check your internet connection and try again.",
-      "FirebaseError: [code=unavailable]: Failed to get document because the client is offline.": "Check your internet connection and try again.",
+      "FirebaseError: [code=unavailable]: Failed to get document because the client is offline.": "Check your internet connection and reload the page.",
       "AxiosError: Network Error": "Check your internet connection and try again.",
     }
   },
@@ -269,6 +269,7 @@ const resources = {
       "Please enter a quantity between": "Veuillez saisir une quantité entre",
       "Number of comments should be between": "Le nombre de commentaires doit être compris entre",
       "Qty": "Qté",
+      "Check your internet connection and reload the page." : "Vérifiez votre connexion internet et rechargez la page."
     }
   }
 };

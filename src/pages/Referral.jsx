@@ -10,7 +10,7 @@ import {
 	MDBTypography,
 } from "mdb-react-ui-kit";
 import React, { useEffect, useState } from "react";
-import { fetchReferralInfo } from "../firebaseAuth";
+import { fetchReferralInfo } from "../firebaseAPI";
 import { modalError } from "../store/appSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { Input, InputGroup } from "reactstrap";
@@ -29,7 +29,7 @@ const Referral = () => {
 				setData(data);
 			})
 			.catch((error) => {
-				dispatch(modalError(t("Check your internet connection and try again.")));
+				dispatch(modalError(t("Check your internet connection and reload the page.")));
 			});
 	}, [dispatch]);
 

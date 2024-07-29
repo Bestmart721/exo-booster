@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { useTranslation } from "react-i18next";
-import { firebaseSignIn2 } from "../firebaseAuth";
+import { firebaseSignIn2 } from "../firebaseAPI";
 import { MDBBtn, MDBIcon, MDBSpinner } from "mdb-react-ui-kit";
 import { motion, AnimatePresence } from "framer-motion";
 import { useDispatch } from "react-redux";
