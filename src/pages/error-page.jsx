@@ -1,7 +1,8 @@
-import { useRouteError } from "react-router-dom";
+import { useNavigate, useRouteError } from "react-router-dom";
 import { t } from "i18next";
 
 export default function ErrorPage() {
+	const navigate = useNavigate();
 	const error = useRouteError();
 	console.error(error);
 
@@ -20,7 +21,7 @@ export default function ErrorPage() {
 				{error.status == 404 ? (
 					<button
 						className="btn btn-primary"
-						onClick={() => window.history.back()}
+						onClick={() => navigate("/")}
 					>
 						{t("Go to homepage")}
 					</button>

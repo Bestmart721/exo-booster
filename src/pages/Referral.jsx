@@ -160,7 +160,7 @@ const Referral = () => {
 						</InputGroup>
 						<div className="text-center">
 							<MDBBtn color="tertiary" onClick={() => setEditMode(false)}>
-								Cancel
+								{t("Cancel")}
 							</MDBBtn>
 						</div>
 					</MDBCardBody>

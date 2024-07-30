@@ -47,6 +47,7 @@ const Orders = () => {
 	const [showSearch, setShowSearch] = useState(false);
 	const [searchItem, setSearchItem] = useState("");
 	const [searching, setSearching] = useState(false);
+	const [searched, setSearched] = useState(false);
 	// const dispatch = useDispatch();
 	const options = [
 		"All",
@@ -155,7 +156,7 @@ const Orders = () => {
 
 	const toggleSearch = () => {
 		setShowSearch(!showSearch);
-		if (showSearch) {
+		if (showSearch && searched) {
 			// setStatus("All");
 			setData([]);
 			setPage(1);
@@ -169,6 +170,7 @@ const Orders = () => {
 		setData([]);
 		setPage(1);
 		setError(null);
+		setSearched(true);
 		// setStatus("All");
 		axios
 			.post(

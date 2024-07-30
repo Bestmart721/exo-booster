@@ -276,6 +276,7 @@ const resources = {
       "Type here...": "Tapez ici...",
       "Go to homepage": "Aller à la page d'accueil",
       "Order index or link": "ID ou lien de la commande",
+      "Cancel": "Annuler",
     }
   }
 };
