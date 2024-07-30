@@ -275,7 +275,7 @@ const resources = {
       "Input your referral code here and press Save button.": "Saisissez votre code de parrainage ici et appuyez sur le bouton Enregistrer.",
       "Type here...": "Tapez ici...",
       "Go to homepage": "Aller à la page d'accueil",
-      "Order index or link": "Index ou lien de la commande",
+      "Order index or link": "ID ou lien de la commande",
     }
   }
 };

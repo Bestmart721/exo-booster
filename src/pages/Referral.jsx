@@ -19,6 +19,7 @@ import { t } from "i18next";
 import { useLanguage } from "../layouts/LanguageContext";
 import { useToaster } from "../layouts/ToasterContext";
 import axios from "axios";
+import { setUser } from "../store/authSlice";
 
 const Referral = () => {
 	const dispatch = useDispatch();
@@ -51,9 +52,11 @@ const Referral = () => {
 					throw response.data.error[language];
 				}
 				notify(response.data.data[language], "success");
+				setEditMode(false);
+				dispatch(setUser({ ...user, referralCode: newReferralCode }));
 			})
 			.catch((error) => {
-				notify(t(error.message), "error");
+				notify(t(error), "error");
 			})
 			.finally(() => {
 				setProcessing(false);
