@@ -269,11 +269,12 @@ const resources = {
       "Please enter a quantity between": "Veuillez saisir une quantité entre",
       "Number of comments should be between": "Le nombre de commentaires doit être compris entre",
       "Qty": "Qté",
-      "Check your internet connection and reload the page." : "Vérifiez votre connexion internet et rechargez la page.",
-      "Referral code copied!" : "Code de parrainage copié!",
-      "Edit Referral Code" : "Modifier le code de parrainage",
-      "Input your referral code here and press Save button." : "Saisissez votre code de parrainage ici et appuyez sur le bouton Enregistrer.",
-      "Type here..." : "Tapez ici...",
+      "Check your internet connection and reload the page.": "Vérifiez votre connexion internet et rechargez la page.",
+      "Referral code copied!": "Code de parrainage copié!",
+      "Edit Referral Code": "Modifier le code de parrainage",
+      "Input your referral code here and press Save button.": "Saisissez votre code de parrainage ici et appuyez sur le bouton Enregistrer.",
+      "Type here...": "Tapez ici...",
+      "Go to homepage": "Aller à la page d'accueil",
     }
   }
 };

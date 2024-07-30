@@ -55,7 +55,6 @@ import { useMobileOrTabletMediaQuery } from "../responsiveHook";
 import { onSnapshot } from "firebase/firestore";
 import axios from "axios";
 import { useToaster } from "./ToasterContext";
-import favcon from "../assets/images/favcon 1.png";
 
 const languages = {
 	en: { name: "English", flag: "gb.svg" },
@@ -473,7 +472,7 @@ export default function RootLayout() {
 				<MDBModalDialog centered style={{ maxWidth: 300 }}>
 					<MDBModalContent>
 						<MDBModalBody className="text-center py-5">
-							<img src={favcon} className="img-fluid mb-5" alt="logo" />
+							<img src="/favcon 1.png" className="img-fluid mb-5" alt="logo" />
 							<h3 className="mb-0">{t(modalText)}</h3>
 						</MDBModalBody>
 						<MDBModalFooter>
@@ -493,7 +492,7 @@ export default function RootLayout() {
 				<MDBModalDialog centered style={{ maxWidth: 400 }}>
 					<MDBModalContent>
 						<MDBModalBody className="text-center py-5">
-							<img src={favcon} className="img-fluid mb-5" alt="logo" />
+							<img src="/favcon 1.png" className="img-fluid mb-5" alt="logo" />
 
 							{contactInfo ? (
 								<>
