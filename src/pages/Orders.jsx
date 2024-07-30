@@ -10,6 +10,7 @@ import {
 	MDBContainer,
 	MDBFooter,
 	MDBIcon,
+	MDBSpinner,
 	MDBTable,
 	MDBTableBody,
 	MDBTableHead,
@@ -17,7 +18,7 @@ import {
 } from "mdb-react-ui-kit";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { Input } from "reactstrap";
+import { Input, InputGroup } from "reactstrap";
 import { useLanguage } from "../layouts/LanguageContext";
 import { or } from "firebase/firestore";
 import { t, use } from "i18next";
@@ -43,6 +44,9 @@ const Orders = () => {
 	const [error, setError] = useState(null);
 	const [numberOfPages, setNumberOfPages] = useState(0);
 	const [openList, setOpenList] = useState([]);
+	const [showSearch, setShowSearch] = useState(false);
+	const [searchItem, setSearchItem] = useState("");
+	const [searching, setSearching] = useState(false);
 	// const dispatch = useDispatch();
 	const options = [
 		"All",
@@ -149,6 +153,53 @@ const Orders = () => {
 		}
 	};
 
+	const toggleSearch = () => {
+		setShowSearch(!showSearch);
+		// if (showSearch) {
+		// 	// setStatus("All");
+		// 	setData([]);
+		// 	setPage(1);
+		// 	setError(null);
+		// 	loadData();
+		// }
+	};
+
+	const doSearch = () => {
+		setSearching(true);
+		setData([]);
+		setPage(1);
+		setError(null);
+		// setStatus("All");
+		axios
+			.post(
+				`https://searchuserorder-l2ugzeb65a-uc.a.run.app/`,
+				{
+					userId: user.uid,
+					currentPage: 1,
+					searchItem,
+					itemsPerPage: 30,
+				},
+				{
+					headers: {
+						Authorization: `Bearer ${user.accessToken}`,
+					},
+				}
+			)
+			.then((response) => {
+				if (response.data.error) {
+					throw new Error(response.data.error[language]);
+				}
+				setData(response.data.data);
+				setNumberOfPages(response.data.numberOfPages);
+			})
+			.catch((error) => {
+				setError(error.message);
+			})
+			.finally(() => {
+				setSearching(false);
+			});
+	};
+
 	return (
 		<MDBContainer
 			className="pt-4"
@@ -157,25 +208,65 @@ const Orders = () => {
 			}}
 		>
 			<MDBCard>
-				<MDBCardHeader className="d-flex align-items-center gap-2 px-3">
-					<MDBTypography tag="h5" className="font-black mb-0">
-						{t("Orders History")}
-					</MDBTypography>
+				<MDBCardHeader className="px-3">
+					<div className="d-flex align-items-center gap-2">
+						<MDBTypography tag="h5" className="font-black mb-0 flex-grow-1">
+							{t("Orders History")}
+						</MDBTypography>
 
-					<Input
-						id="service"
-						type="select"
-						value={status}
-						name="service"
-						className="form-control w-auto ms-auto pe-5"
-						onChange={changeStatus}
-					>
-						{options.map((option) => (
-							<option key={option} value={option}>
-								{capitalize(t(option))}
-							</option>
-						))}
-					</Input>
+						<Input
+							id="service"
+							type="select"
+							value={status}
+							name="service"
+							className="form-control w-auto ms-auto pe-5"
+							onChange={changeStatus}
+							disabled={showSearch}
+						>
+							{options.map((option) => (
+								<option key={option} value={option}>
+									{capitalize(t(option))}
+								</option>
+							))}
+						</Input>
+						<div>
+							<MDBBtn
+								floating
+								color="tertiary"
+								outline={showSearch}
+								onClick={toggleSearch}
+							>
+								<MDBIcon fas icon={showSearch ? "times" : "search"} size="xl" />
+							</MDBBtn>
+						</div>
+					</div>
+					<MDBCollapse open={showSearch}>
+						<div className="pt-2">
+							<InputGroup>
+								<Input
+									placeholder={t("Type search Item...")}
+									type="text"
+									value={searchItem}
+									onChange={(e) => setSearchItem(e.target.value)}
+									autoFocus
+								/>
+								<MDBBtn
+									color="success"
+									disabled={searchItem == "" || searching}
+									onClick={doSearch}
+								>
+									{searching ? (
+										<MDBSpinner color="white" style={{ width: 18, height: 18 }}>
+											<span className="visually-hidden">{t("Loading")}...</span>
+										</MDBSpinner>
+									) : (
+										<MDBIcon fas icon="search" size="xl" />
+									)}
+								</MDBBtn>
+							</InputGroup>
+						</div>
+					</MDBCollapse>
+					{/* <MDBIcon fas icon="search" /> */}
 				</MDBCardHeader>
 				<MDBTable align="middle" className="text-center">
 					<MDBTableHead className="font-black border-top">
@@ -232,49 +323,57 @@ const Orders = () => {
 									</td>
 								</tr>
 								<tr>
-									<td className="py-1 px-3" colSpan="5" align="left">
+									<td className="py-0 px-3" colSpan="5" align="left">
 										<MDBCollapse
 											open={openList.includes(order.order_index)}
 											className="wrap-anywhere"
 										>
-											<div>
-												<span className="font-black">{t("Price")}</span> :{" "}
-												<span className="text-transform-uppercase">
-													{formatNumber(order.charge)} {order.currency}
-												</span>
-											</div>
-											<div>
-												<span className="font-black">{t("Link")}</span> :{" "}
-												{order.link?.includes("/") ? (
-													<Link to={order.link} target="_blank">
-														{order.link}
-													</Link>
-												) : (
-													<span>{order.link}</span>
-												)}
-											</div>
-											<div>
-												<span className="font-black">{t("Category name")}</span>{" "}
-												:{" "}
-												<span>{order.sub_service_display_name[language]}</span>
-											</div>
-											<div>
-												<span className="font-black">{t("Start Count")}</span> :{" "}
-												<span>{order.start_count}</span>
-											</div>
-											<div>
-												<span className="font-black">{t("Remains")}</span> :{" "}
-												<span>{order.remains}</span>
-											</div>
-											<div>
-												<span className="font-black">{t("Date")}</span> :{" "}
-												<span>
-													{timestampToString(order.timestamp._seconds) || ""}
-												</span>
-											</div>
-											<div>
-												<span className="font-black">{t("Completed in")}</span>{" "}
-												: <span>{order.completionTime}</span>
+											<div className="py-1">
+												<div>
+													<span className="font-black">{t("Price")}</span> :{" "}
+													<span className="text-transform-uppercase">
+														{formatNumber(order.charge)} {order.currency}
+													</span>
+												</div>
+												<div>
+													<span className="font-black">{t("Link")}</span> :{" "}
+													{order.link?.includes("/") ? (
+														<Link to={order.link} target="_blank">
+															{order.link}
+														</Link>
+													) : (
+														<span>{order.link}</span>
+													)}
+												</div>
+												<div>
+													<span className="font-black">
+														{t("Category name")}
+													</span>{" "}
+													:{" "}
+													<span>
+														{order.sub_service_display_name[language]}
+													</span>
+												</div>
+												<div>
+													<span className="font-black">{t("Start Count")}</span>{" "}
+													: <span>{order.start_count}</span>
+												</div>
+												<div>
+													<span className="font-black">{t("Remains")}</span> :{" "}
+													<span>{order.remains}</span>
+												</div>
+												<div>
+													<span className="font-black">{t("Date")}</span> :{" "}
+													<span>
+														{timestampToString(order.timestamp._seconds) || ""}
+													</span>
+												</div>
+												<div>
+													<span className="font-black">
+														{t("Completed in")}
+													</span>{" "}
+													: <span>{order.completionTime}</span>
+												</div>
 											</div>
 										</MDBCollapse>
 									</td>

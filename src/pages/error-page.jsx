@@ -8,7 +8,7 @@ export default function ErrorPage() {
 	return (
 		<div
 			id="error-page"
-			className="d-flex align-self-center flex-column justify-content-center text-center mt-5- vh-100"
+			className="d-flex align-self-center flex-column justify-content-center text-center mt-5- pb-5 vh-100"
 		>
 			<img src={"/error.jpg"} alt="Error" className="img-fluid" />
 			<h1>{t("Oops!")}</h1>
