@@ -155,13 +155,13 @@ const Orders = () => {
 
 	const toggleSearch = () => {
 		setShowSearch(!showSearch);
-		// if (showSearch) {
-		// 	// setStatus("All");
-		// 	setData([]);
-		// 	setPage(1);
-		// 	setError(null);
-		// 	loadData();
-		// }
+		if (showSearch) {
+			// setStatus("All");
+			setData([]);
+			setPage(1);
+			setError(null);
+			loadData();
+		}
 	};
 
 	const doSearch = () => {
@@ -244,7 +244,7 @@ const Orders = () => {
 						<div className="pt-2">
 							<InputGroup>
 								<Input
-									placeholder={t("Type search Item...")}
+									placeholder={t("Order index or link")}
 									type="text"
 									value={searchItem}
 									onChange={(e) => setSearchItem(e.target.value)}

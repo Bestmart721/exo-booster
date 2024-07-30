@@ -53,7 +53,7 @@ const Referral = () => {
 				notify(response.data.data[language], "success");
 			})
 			.catch((error) => {
-				notify(error.message, "error");
+				notify(t(error.message), "error");
 			})
 			.finally(() => {
 				setProcessing(false);
@@ -122,7 +122,7 @@ const Referral = () => {
 						</InputGroup>
 						<div className="text-center">
 							<MDBBtn color="tertiary" onClick={() => setEditMode(true)}>
-								Edit Referral Code
+							{t("Edit Referral Code")}
 							</MDBBtn>
 						</div>
 					</MDBCardBody>
