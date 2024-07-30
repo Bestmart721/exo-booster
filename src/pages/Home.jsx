@@ -57,6 +57,8 @@ const Home = () => {
 	useEffect(() => {
 		if (Object.keys(data).length === 0) {
 			return;
+		} else if (data.error) {
+			return;
 		}
 		const website = getFirstValue(data);
 		const service = getFirstValue(website.services);
@@ -243,8 +245,17 @@ const Home = () => {
 					title: t("Purchase failed!"),
 					text: t(error.message),
 					icon: "error",
+					showDenyButton:
+						error.message == "Insufficient balance" ||
+						error.message == "Solde insuffisant",
+					confirmButtonText: t("Add Funds"),
+					denyButtonText: "Ok",
 					customClass: {
-						confirmButton: "btn btn-primary btn-block",
+						confirmButton: "btn btn-success btn-block",
+						denyButton: "btn btn-primary btn-block",
+					},
+					preConfirm: () => {
+						navigate("/wallet");
 					},
 					onResolve: () => {
 						setSwalProps({ show: false });
@@ -301,12 +312,19 @@ const Home = () => {
 	}
 
 	function getFirstValue(obj) {
-		const keys = Object.keys(obj);
-		return keys.length ? obj[keys[0]] : undefined;
+		const lowestOrderPositionKey = getFirstKey(obj);
+		return lowestOrderPositionKey ? obj[lowestOrderPositionKey] : undefined;
 	}
+
 	function getFirstKey(obj) {
 		const keys = Object.keys(obj);
-		return keys.length ? keys[0] : undefined;
+		const lowestOrderPosition = Math.min(
+			...keys.map((key) => obj[key].order_position)
+		);
+		const lowestOrderPositionKey = keys.find(
+			(key) => obj[key].order_position === lowestOrderPosition
+		);
+		return lowestOrderPositionKey;
 	}
 
 	function formatNumber(num = 0) {
@@ -389,45 +407,63 @@ const Home = () => {
 				</MDBTypography>
 
 				<MDBTabs className="mt-3 justify-content-center border-2 border-bottom border-primary ">
-					{Object.entries(data).length ? (
-						Object.entries(data).map(([website, service]) => (
-							<MDBTabsItem
-								key={website}
-								className=" media-tab align-self-center"
-							>
-								<MDBTabsLink
-									onClick={() => handleTabClick(website)}
-									active={selected.website === website}
-									className="rounded-top-4 align-content-center"
-									style={{ width: 58, height: 58 }}
+					{Object.entries(data).length == 0 ? (
+						<MDBSpinner
+							color="primary"
+							style={{ height: 32, margin: "calc(0.7em - 1px)" }}
+						/>
+					) : Object.entries(data).length == 1 && data.error ? (
+						""
+					) : (
+						Object.entries(data)
+							.sort(
+								([website1], [website2]) =>
+									data[website1].order_position - data[website2].order_position
+							)
+							.map(([website, service]) => (
+								<MDBTabsItem
+									key={website}
+									className=" media-tab align-self-center"
 								>
-									<img width={32} src={service.thumbnail_url} alt={website} />
-									{/* <MDBIcon
+									<MDBTabsLink
+										onClick={() => handleTabClick(website)}
+										active={selected.website === website}
+										className="rounded-top-4 align-content-center"
+										style={{ width: 58, height: 58 }}
+									>
+										<img width={32} src={service.thumbnail_url} alt={website} />
+										{/* <MDBIcon
 									fab
 									icon={website}
 									color="primary"
 									style={{ width: 32, fontSize: 28 }}
 								/> */}
-								</MDBTabsLink>
-							</MDBTabsItem>
-						))
-					) : (
-						<MDBSpinner
-							color="primary"
-							style={{ height: 32, margin: "calc(0.7em - 1px)" }}
-						/>
+									</MDBTabsLink>
+								</MDBTabsItem>
+							))
 					)}
 				</MDBTabs>
 				<div className="py-4 shadow bg-white">
 					<MDBContainer>
-						{Object.keys(data).length === 0 && (
+						{(Object.keys(data).length === 0 || data.error) && (
 							<div
 								className="font-black justify-content-center d-flex align-items-center"
 								style={{ height: 300 }}
 							>
-								{Object.entries(data).length
-									? t("PICK YOUR TARGET SOCIAL MEDIA")
-									: t("Loading services...")}
+								{Object.entries(data).length == 0 ? (
+									t("Loading services...")
+								) : (
+									<div className="text-center">
+										<p>{t(data.error)}</p>
+										<MDBBtn
+											onClick={() => {
+												window.location.reload();
+											}}
+										>
+											{t("Reload this page.")}
+										</MDBBtn>
+									</div>
+								)}
 							</div>
 						)}
 						<MDBRow>
@@ -451,15 +487,21 @@ const Home = () => {
 												<option value="" disabled>
 													{t("Select a service.")}
 												</option>
-												{Object.entries(data[selected.website].services).map(
-													([key, value]) => {
+												{Object.entries(data[selected.website].services)
+													.sort(
+														([key1], [key2]) =>
+															data[selected.website].services[key1]
+																.order_position -
+															data[selected.website].services[key2]
+																.order_position
+													)
+													.map(([key, value]) => {
 														return (
 															<option key={key} value={key}>
 																{value.display_name[language]}
 															</option>
 														);
-													}
-												)}
+													})}
 											</Input>
 										</MDBCol>
 									)}
@@ -485,11 +527,21 @@ const Home = () => {
 													options={Object.entries(
 														data[selected.website].services[selected.service]
 															.subservices
-													).map(([key, value]) => ({
-														value: key,
-														label: value.display_name[language],
-														...value,
-													}))}
+													)
+														.sort(
+															([key1], [key2]) =>
+																data[selected.website].services[
+																	selected.service
+																].subservices[key1].order_position -
+																data[selected.website].services[
+																	selected.service
+																].subservices[key2].order_position
+														)
+														.map(([key, value]) => ({
+															value: key,
+															label: value.display_name[language],
+															...value,
+														}))}
 													onChange={(obj) => {
 														setSelectedOption(obj);
 														setSelected({ ...selected, subService: obj.value });

@@ -7,6 +7,7 @@ import {
 	MDBCol,
 	MDBContainer,
 	MDBRow,
+	MDBSpinner,
 	MDBTypography,
 } from "mdb-react-ui-kit";
 import React, { useEffect, useState } from "react";
@@ -16,12 +17,48 @@ import { useDispatch, useSelector } from "react-redux";
 import { Input, InputGroup } from "reactstrap";
 import { t } from "i18next";
 import { useLanguage } from "../layouts/LanguageContext";
+import { useToaster } from "../layouts/ToasterContext";
+import axios from "axios";
 
 const Referral = () => {
 	const dispatch = useDispatch();
 	const [data, setData] = useState({});
 	const user = useSelector((state) => state.auth.user);
 	const { language } = useLanguage();
+	const { notify } = useToaster();
+	const [editMode, setEditMode] = useState(false);
+	const [newReferralCode, setNewReferralCode] = useState("");
+	const [processing, setProcessing] = useState(false);
+
+	const saveRefCode = () => {
+		// Save the new referral code
+		setProcessing(true);
+		axios
+			.post(
+				`https://referralcodeupdater-l2ugzeb65a-uc.a.run.app/`,
+				{
+					userId: user.uid,
+					newReferralCode,
+				},
+				{
+					headers: {
+						Authorization: `Bearer ${user.accessToken}`,
+					},
+				}
+			)
+			.then((response) => {
+				if (response.data.error) {
+					throw response.data.error[language];
+				}
+				notify(response.data.data[language], "success");
+			})
+			.catch((error) => {
+				notify(error.message, "error");
+			})
+			.finally(() => {
+				setProcessing(false);
+			});
+	};
 
 	useEffect(() => {
 		fetchReferralInfo()
@@ -29,7 +66,9 @@ const Referral = () => {
 				setData(data);
 			})
 			.catch((error) => {
-				dispatch(modalError(t("Check your internet connection and reload the page.")));
+				dispatch(
+					modalError(t("Check your internet connection and reload the page."))
+				);
 			});
 	}, [dispatch]);
 
@@ -57,29 +96,72 @@ const Referral = () => {
 				</MDBRow>
 			</MDBCard>
 			<MDBCard className="mb-3">
-				<MDBCardBody>
-					<MDBCardTitle className="font-black">
-						{t("Invite friends & family")}
-					</MDBCardTitle>
-					<MDBTypography tag="small" className="text-secondary">
-						{t("Share your referral code with friends and family")}
-					</MDBTypography>
-					<InputGroup>
-						<Input
-							placeholder={t("Referral code")}
-							type="text"
-							defaultValue={user.referralCode}
-							readOnly
-						/>
-						<MDBBtn
-							onClick={() => {
-								navigator.clipboard.writeText(user.referralCode);
-							}}
-						>
-							{t("Copy")}
-						</MDBBtn>
-					</InputGroup>
-				</MDBCardBody>
+				{!editMode ? (
+					<MDBCardBody>
+						<MDBCardTitle className="font-black">
+							{t("Invite friends & family")}
+						</MDBCardTitle>
+						<MDBTypography tag="small" className="text-secondary">
+							{t("Share your referral code with friends and family")}
+						</MDBTypography>
+						<InputGroup>
+							<Input
+								placeholder={t("Referral code")}
+								type="text"
+								value={user.referralCode}
+								readOnly
+							/>
+							<MDBBtn
+								onClick={() => {
+									navigator.clipboard.writeText(user.referralCode);
+									notify(t("Referral code copied!"), "success");
+								}}
+							>
+								{t("Copy")}
+							</MDBBtn>
+						</InputGroup>
+						<div className="text-center">
+							<MDBBtn color="tertiary" onClick={() => setEditMode(true)}>
+								Edit Referral Code
+							</MDBBtn>
+						</div>
+					</MDBCardBody>
+				) : (
+					<MDBCardBody>
+						<MDBCardTitle className="font-black">
+							{t("Edit Referral Code")}
+						</MDBCardTitle>
+						<MDBTypography tag="small" className="text-secondary">
+							{t("Input your referral code here and press Save button.")}
+						</MDBTypography>
+						<InputGroup>
+							<Input
+								placeholder={t("Type here...")}
+								type="text"
+								value={newReferralCode}
+								onChange={(e) => setNewReferralCode(e.target.value)}
+							/>
+							<MDBBtn
+								color="success"
+								disabled={newReferralCode == "" || processing}
+								onClick={saveRefCode}
+							>
+								{processing ? (
+									<MDBSpinner color="white" style={{ width: 18, height: 18 }}>
+										<span className="visually-hidden">{t("Loading")}...</span>
+									</MDBSpinner>
+								) : (
+									t("save")
+								)}
+							</MDBBtn>
+						</InputGroup>
+						<div className="text-center">
+							<MDBBtn color="tertiary" onClick={() => setEditMode(false)}>
+								Cancel
+							</MDBBtn>
+						</div>
+					</MDBCardBody>
+				)}
 			</MDBCard>
 			<MDBCard className="mb-3">
 				<MDBCardBody>

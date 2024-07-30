@@ -131,7 +131,18 @@ export default function RootLayout() {
 									dispatch(setServices(response.data.data));
 								})
 								.catch((error) => {
-									dispatch(modalError(t(error)));
+									// dispatch(
+									// 	modalError(
+									// 		t("Check your internet connection and reload the page.")
+									// 	)
+									// );
+									dispatch(
+										setServices({
+											error: t(
+												"Check your internet connection and reload the page."
+											),
+										})
+									);
 								})
 								.finally(() => {
 									setLoading(false);

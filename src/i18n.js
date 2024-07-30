@@ -111,7 +111,7 @@ const resources = {
       "Password is required.": "Le mot de passe est requis.",
       "Credentials entered are incorrect": "Les données d'identification saisies sont incorrectes.",
       "Too many attempts, try again later": "Trop de tentatives, réessayer plus tard.",
-      "cover-letter": "Rejoignez des milliers de marques et d'influenceurs qui ont augmenté leur croissance sur les médias sociaux avec Exo Booster, le service de stimulation des médias sociaux le plus fiable avec plus de 50 000 utilisateurs.",
+      "cover-letter": "Rejoignez des milliers de marques et d'influenceurs qui ont augmenté leur croissance sur les médias sociaux avec Exo Booster, le service de stimulation des médias sociaux le plus fiable avec plus de 50,000 utilisateurs.",
       "Create your account": "Créez votre compte",
       "Firebase: Error (auth/invalid-credential).": "Les données d'identification saisies sont incorrectes.",
       "Firebase: Access to this account has been temporarily disabled due to many failed login attempts. You can immediately restore it by resetting your password or you can try again later. (auth/too-many-requests).": "Trop de tentatives, réessayer plus tard.",
@@ -269,7 +269,11 @@ const resources = {
       "Please enter a quantity between": "Veuillez saisir une quantité entre",
       "Number of comments should be between": "Le nombre de commentaires doit être compris entre",
       "Qty": "Qté",
-      "Check your internet connection and reload the page." : "Vérifiez votre connexion internet et rechargez la page."
+      "Check your internet connection and reload the page." : "Vérifiez votre connexion internet et rechargez la page.",
+      "Referral code copied!" : "Code de parrainage copié!",
+      "Edit Referral Code" : "Modifier le code de parrainage",
+      "Input your referral code here and press Save button." : "Saisissez votre code de parrainage ici et appuyez sur le bouton Enregistrer.",
+      "Type here..." : "Tapez ici...",
     }
   }
 };
