@@ -19,6 +19,7 @@ import "mdb-react-ui-kit/dist/css/mdb.min.css";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import "./index.css";
 import "./axiosConfig.js";
+import { SpeedInsights } from '@vercel/speed-insights/react';
 
 import { LanguageProvider } from "./layouts/LanguageContext.jsx";
 import { ToasterProvider } from "./layouts/ToasterContext.jsx";
@@ -95,6 +96,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
 				<I18nextProvider i18n={i18n}>
 					<ToasterProvider>
 						<RouterProvider router={router} />
+						<SpeedInsights />
 					</ToasterProvider>
 				</I18nextProvider>
 			</LanguageProvider>
