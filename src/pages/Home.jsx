@@ -240,22 +240,23 @@ const Home = () => {
 			.catch((error) => {
 				// dispatch(modalError(error.message));
 				console.log(error.message);
+				const isInsufficient =
+					error.message == "Insufficient balance" ||
+					error.message == "Solde insuffisant";
 				setSwalProps({
 					show: true,
 					title: t("Purchase failed!"),
 					text: t(error.message),
 					icon: "error",
-					showDenyButton:
-						error.message == "Insufficient balance" ||
-						error.message == "Solde insuffisant",
-					confirmButtonText: t("Add Funds"),
-					denyButtonText: "Ok",
+					confirmButtonText: isInsufficient ? t("Add Funds") : "Ok",
 					customClass: {
 						confirmButton: "btn btn-success btn-block",
 						denyButton: "btn btn-primary btn-block",
 					},
 					preConfirm: () => {
-						navigate("/wallet");
+						if (isInsufficient) {
+							navigate("/wallet");
+						}
 					},
 					onResolve: () => {
 						setSwalProps({ show: false });
