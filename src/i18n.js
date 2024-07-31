@@ -228,7 +228,7 @@ const resources = {
       "You Have Spent": "Vous avez dépensé",
       "3+ years of experience providing SMM services!": "3+ années d'expérience dans la fourniture de services SMM !",
       "Please enter a link.": "Veuillez entrer un lien.",
-      "Your affiliate balance is empty, invite people to the Exo Booster App and earn !": "Votre solde d'affiliation est vide, invitez des gens à l'application Exo Booster et gagnez !",
+      "Your affiliate balance is empty, invite people to the Exo Booster App/Website and earn !": "Votre solde d'affiliation est vide, invitez des gens à l'application/site Exo Booster et gagnez !",
       "Oops!": "Oups!",
       "Sorry, an unexpected error has occurred.": "Désolé, une erreur inattendue s'est produite.",
       "Reload this page.": "Rechargez cette page.",
@@ -277,6 +277,7 @@ const resources = {
       "Go to homepage": "Aller à la page d'accueil",
       "Order index or link": "ID ou lien de la commande",
       "Cancel": "Annuler",
+      "None": "Aucun",
     }
   }
 };

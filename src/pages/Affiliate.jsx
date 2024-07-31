@@ -51,7 +51,7 @@ const Affiliate = () => {
 				show: true,
 				title: t("Note"),
 				text: t(
-					"Your affiliate balance is empty, invite people to the Exo Booster App and earn !"
+					"Your affiliate balance is empty, invite people to the Exo Booster App/Website and earn !"
 				),
 				icon: "info",
 				customClass: {
@@ -89,13 +89,13 @@ const Affiliate = () => {
 					show: true,
 					title:
 						response.data.en ==
-						"Your affiliate balance is empty, invite people to the Exo Booster App and earn !"
+						"Your affiliate balance is empty, invite people to the Exo Booster App/Website and earn !"
 							? t("Note")
 							: t("Success"),
 					text: response.data[language],
 					icon:
 						response.data.en ==
-						"Your affiliate balance is empty, invite people to the Exo Booster App and earn !"
+						"Your affiliate balance is empty, invite people to the Exo Booster App/Website and earn !"
 							? "info"
 							: "success",
 					customClass: {

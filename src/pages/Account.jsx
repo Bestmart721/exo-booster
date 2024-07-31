@@ -254,7 +254,7 @@ const Account = () => {
 									{t("Current Discount Applied")}:
 								</span>{" "}
 								<span className="text-primary">
-									{user.discount ? `-${user.discount}%` : "None"}
+									{user.discount ? `-${user.discount}%` : t("None")}
 								</span>
 							</div>
 							<div>
@@ -280,6 +280,9 @@ const Account = () => {
 							value={curCountry}
 							options={countries}
 							onChange={(value) => {
+								if (value.name == curCountry.name) {
+									return;
+								}
 								setCurCountry(value);
 								selectNewCountry(value.name);
 							}}
