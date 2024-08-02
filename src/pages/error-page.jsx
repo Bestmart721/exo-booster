@@ -12,14 +12,14 @@ export default function ErrorPage() {
 	useEffect(() => {
 		if (error) {
 			console.log(window.location.pathname)
-			console.error(error);
-			console.error(user?.uid);
+			console.log(error.stack);
+			console.log(user?.uid);
 			axios.post(
 				`https://sitebugreport-l2ugzeb65a-uc.a.run.app/`,
 				{
 					userId: user?.uid || undefined,
 					errorPagePath: window.location.pathname,
-					errorMessage: JSON.stringify(error),
+					errorMessage: error.stack,
 				}
 			).then((response) => {
 				console.log(response.data);
