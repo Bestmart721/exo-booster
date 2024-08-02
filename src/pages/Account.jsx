@@ -18,7 +18,7 @@ import { useTranslation } from "react-i18next";
 import * as Yup from "yup";
 import { fetchUserData, firebaseChangePassword } from "../firebaseAPI";
 import SweetAlert2 from "react-sweetalert2";
-// import Select, { components } from "react-select";
+import Select, { components } from "react-select";
 import axios from "axios";
 import { useLanguage } from "../layouts/LanguageContext";
 import { setUser } from "../store/authSlice";
