@@ -76,8 +76,8 @@ const Account = () => {
 				let cs = Object.keys(response.data).map((key) => response.data[key]);
 				cs = cs.map((country) => ({
 					...country,
-					value: country.name,
-					label: capitalize(country.name),
+					value: country.id,
+					label: country.display_name[language],
 				}));
 				setCountries(cs);
 				setCountryPlaceHolder(t("Choose your country"));

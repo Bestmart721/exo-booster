@@ -248,21 +248,22 @@ const Payment = () => {
 											whileHover={{ scale: 1.05 }}
 										>
 											<MDBCard
-												className="mb-4"
+												style={{ maxWidth: 200 }}
+												className="mb-4 mx-auto"
 												onClick={() => {
 													setActive("paymentInfo");
 													setPaymentPlatformId(provider.payment_platform_id);
 												}}
 											>
 												<MDBCardHeader
-													style={{ height: 120, background: "whitesmoke" }}
+													style={{ height: 100, background: "whitesmoke" }}
 													className="d-flex align-items-center p-2"
 												>
 													<MDBCardImage
 														src={provider.thumbnail_url}
 														alt={provider.display_name[language]}
 														className="img-fluid mx-auto"
-														width={200}
+														width={160}
 													/>
 												</MDBCardHeader>
 												<MDBCardFooter>
