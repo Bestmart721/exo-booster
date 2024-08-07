@@ -157,7 +157,7 @@ export default function AuthLayout() {
 						id="cloud-2"
 					/>
 				</div>
-				<MDBCard className="bg-pink shadow w-600 mx-auto rounded-pill">
+				<MDBCard className="shadow w-600 mx-auto rounded-pill">
 					<MDBCardBody className="d-flex">
 						<div className="flex-grow-1 border-end black border-1 text-center lead font-black">
 							<div>4,500,000+</div>
@@ -179,18 +179,18 @@ export default function AuthLayout() {
 					<motion.div
 						initial={{ scale: 1 }}
 						transition={{ ease: "easeInOut", duration: 0.2 }}
-						whileHover={{ scale: 1.1 }}
+						whileHover={{ scale: 1.05 }}
 					>
-						<MDBCard className="bg-pink text-center w-300 mb-4">
+						<MDBCard className="h-100 text-center w-300 mb-4">
 							<MDBCardBody>
-								<MDBIcon fas icon="thumbs-up" size="4x" className="mb-3" />
+								<MDBIcon fas icon="thumbs-up" size="4x" className="my-3" />
 								<h3 className="font-black">{t("Easy-to-use interface")}</h3>
 								<hr />
-								<p className="lead">
+								<div className="lead">
 									{t(
 										"Exo boosters interface is as easy as ABC, from account creation to making your first order"
 									)}
-								</p>
+								</div>
 							</MDBCardBody>
 						</MDBCard>
 					</motion.div>
@@ -198,18 +198,18 @@ export default function AuthLayout() {
 					<motion.div
 						initial={{ scale: 1 }}
 						transition={{ ease: "easeInOut", duration: 0.2 }}
-						whileHover={{ scale: 1.1 }}
+						whileHover={{ scale: 1.05 }}
 					>
-						<MDBCard className="bg-pink text-center w-300 mb-4">
+						<MDBCard className="h-100 text-center w-300 mb-4">
 							<MDBCardBody>
-								<MDBIcon fas icon="life-ring" size="4x" className="mb-3" />
+								<MDBIcon fas icon="life-ring" size="4x" className="my-3" />
 								<h3 className="font-black">{t("Live chat support")}</h3>
 								<hr />
-								<p className="lead">
+								<div className="lead">
 									{t(
 										"Our friendly and quick response team is available 24/7 for all your inquiries/problems"
 									)}
-								</p>
+								</div>
 							</MDBCardBody>
 						</MDBCard>
 					</motion.div>
@@ -217,18 +217,18 @@ export default function AuthLayout() {
 					<motion.div
 						initial={{ scale: 1 }}
 						transition={{ ease: "easeInOut", duration: 0.2 }}
-						whileHover={{ scale: 1.1 }}
+						whileHover={{ scale: 1.05 }}
 					>
-						<MDBCard className="bg-pink text-center w-300 mb-4">
+						<MDBCard className="h-100 text-center w-300 mb-4">
 							<MDBCardBody>
-								<MDBIcon fas icon="rocket" size="4x" className="mb-3" />
+								<MDBIcon fas icon="rocket" size="4x" className="my-3" />
 								<h3 className="font-black">{t("Super instant results")}</h3>
 								<hr />
-								<p className="lead">
+								<div className="lead">
 									{t(
 										"Fast delivery and highly reliable services, this gives you the freedom to focus on other parts of your business"
 									)}
-								</p>
+								</div>
 							</MDBCardBody>
 						</MDBCard>
 					</motion.div>

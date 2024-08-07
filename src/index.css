@@ -402,3 +402,8 @@ small,
 .text-deleted {
 	text-decoration: line-through;
 }
+
+.acc_head {
+	font-size: 2rem;
+	margin-bottom: 1rem;
+}

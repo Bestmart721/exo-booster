@@ -36,6 +36,7 @@ import Orders from "./pages/Orders.jsx";
 import Wallet from "./pages/Wallet.jsx";
 import Payment from "./pages/Payment.jsx";
 import Affiliate from "./pages/Affiliate.jsx";
+import PrivacyPolicy from "./pages/PrivacyPolicy.jsx";
 
 const router = createBrowserRouter([
 	{
@@ -84,6 +85,10 @@ const router = createBrowserRouter([
 			{
 				path: "/affiliate",
 				element: <Affiliate />,
+			},
+			{
+				path: "/privacy-policy",
+				element: <PrivacyPolicy />,
 			},
 		],
 		errorElement: import.meta.env.VITE_ENV === "production" && <ErrorPage />,

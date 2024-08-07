@@ -129,9 +129,6 @@ export default function Signup() {
 	};
 
 	useEffect(() => {
-		const viewport = document.getElementById("root");
-		document.body.scrollTop = 0;
-		viewport.scrollTop = 0;
 		loadSignupData();
 	}, []);
 

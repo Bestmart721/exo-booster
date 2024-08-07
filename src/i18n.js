@@ -279,7 +279,8 @@ const resources = {
       "Cancel": "Annuler",
       "None": "Aucun",
       "View Comments": "Voir les commentaires",
-      "Comments" : "Commentaires",
+      "Comments": "Commentaires",
+      "Privacy Policy": "Politique de confidentialité",
     }
   }
 };

@@ -81,6 +81,12 @@ export default function RootLayout() {
 	const { notify } = useToaster();
 
 	useEffect(() => {
+		const viewport = document.getElementById("root");
+		document.body.scrollTop = 0;
+		viewport.scrollTop = 0;
+	}, [location.pathname]);
+
+	useEffect(() => {
 		if (JSON.parse(localStorage.getItem("user"))) {
 			dispatch(setTmpUser(JSON.parse(localStorage.getItem("user"))));
 		} else {
@@ -241,7 +247,7 @@ export default function RootLayout() {
 					<MDBTabs>
 						<MDBListGroupItem
 							action
-							active={location === "home"}
+							active={location.pathname === "/"}
 							noBorders
 							className="px-3"
 							tag={Link}
@@ -252,7 +258,7 @@ export default function RootLayout() {
 						</MDBListGroupItem>
 						<MDBListGroupItem
 							action
-							active={location === "account"}
+							active={location.pathname === "/orders"}
 							noBorders
 							className="px-3"
 							tag={Link}
@@ -263,7 +269,7 @@ export default function RootLayout() {
 						</MDBListGroupItem>
 						<MDBListGroupItem
 							action
-							active={location === "messages"}
+							active={location.pathname === "/wallet"}
 							noBorders
 							className="px-3"
 							tag={Link}
@@ -274,7 +280,7 @@ export default function RootLayout() {
 						</MDBListGroupItem>
 						<MDBListGroupItem
 							action
-							active={location === "settings"}
+							active={location.pathname === "/referral"}
 							noBorders
 							className="px-3"
 							tag={Link}
@@ -285,7 +291,7 @@ export default function RootLayout() {
 						</MDBListGroupItem>
 						<MDBListGroupItem
 							action
-							active={location === "settings"}
+							active={location.pathname === "/account"}
 							noBorders
 							className="px-3"
 							tag={Link}
@@ -293,6 +299,17 @@ export default function RootLayout() {
 							onClick={toggleDrawerIn}
 						>
 							{t("Account")}
+						</MDBListGroupItem>
+						<MDBListGroupItem
+							action
+							active={location.pathname === "/privacy-policy"}
+							noBorders
+							className="px-3"
+							tag={Link}
+							to="/privacy-policy"
+							onClick={toggleDrawerIn}
+						>
+							{t("Privacy Policy")}
 						</MDBListGroupItem>
 					</MDBTabs>
 				</MDBListGroup>
