@@ -49,7 +49,7 @@ const customStyles = {
 
 const Option = (props) => (
 	<components.Option {...props} className="country-option">
-		{props.data.country_code == "global" ? (
+		{props.data.name == "global" ? (
 			<MDBIcon fas icon="globe" size="lg" className="country-logo px-1" />
 		) : (
 			<span
@@ -108,6 +108,10 @@ export default function Signup() {
 		axios
 			.get(`https://getsupportedcountries-l2ugzeb65a-uc.a.run.app/`)
 			.then((response) => {
+				const global = response.data.global;
+				delete response.data.global;
+				response.data.global = global;
+
 				let cs = Object.keys(response.data).map((key) => response.data[key]);
 				cs = cs.map((country) => ({
 					...country,
@@ -189,9 +193,7 @@ export default function Signup() {
 	const SingleValue = ({ children, ...props }) => (
 		<components.SingleValue {...props}>
 			<MDBIcon fas icon="globe" size="lg" className="me-4" />
-			{props.data.country_code == "global" ? (
-				<MDBIcon fas icon="globe" size="lg" className="selected-logo px-1" />
-			) : (
+			{props.data.name != "global" && (
 				<span
 					className={`selected-logo fi fi-${props.data.country_code?.toLowerCase()} fs-5`}
 				></span>

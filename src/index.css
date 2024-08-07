@@ -209,16 +209,14 @@ body {
 }
 
 .country-logo {
-	/* width: 35px;
-	height: 20px; */
 	margin-right: 8px;
 	margin-left: 52px;
+	/* vertical-align: middle; */
 }
 
 .selected-logo {
-	/* width: 35px;
-	height: 20px; */
 	margin-right: 8px;
+	/* vertical-align: middle; */
 }
 .cloud {
 	position: absolute;

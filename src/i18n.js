@@ -278,6 +278,8 @@ const resources = {
       "Order index or link": "ID ou lien de la commande",
       "Cancel": "Annuler",
       "None": "Aucun",
+      "View Comments": "Voir les commentaires",
+      "Comments" : "Commentaires",
     }
   }
 };

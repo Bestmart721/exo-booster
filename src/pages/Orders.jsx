@@ -10,6 +10,11 @@ import {
 	MDBContainer,
 	MDBFooter,
 	MDBIcon,
+	MDBModal,
+	MDBModalBody,
+	MDBModalContent,
+	MDBModalDialog,
+	MDBModalFooter,
 	MDBSpinner,
 	MDBTable,
 	MDBTableBody,
@@ -48,6 +53,8 @@ const Orders = () => {
 	const [searchItem, setSearchItem] = useState("");
 	const [searching, setSearching] = useState(false);
 	const [searched, setSearched] = useState(false);
+	const [commentModal, setCommentModal] = useState(false);
+	const [comments, setComments] = useState([]);
 	// const dispatch = useDispatch();
 	const options = [
 		"All",
@@ -200,6 +207,12 @@ const Orders = () => {
 			.finally(() => {
 				setSearching(false);
 			});
+	};
+
+	const toggleCommentModal = (comments = []) => {
+		setCommentModal(!commentModal);
+		console.log(comments);
+		setComments(comments);
 	};
 
 	return (
@@ -376,6 +389,18 @@ const Orders = () => {
 													</span>{" "}
 													: <span>{order.completionTime}</span>
 												</div>
+												{order.type == "custom_comments" && (
+													<MDBBtn
+														color="primary"
+														size="sm"
+														className="mt-1 mb-2"
+														onClick={() => {
+															toggleCommentModal(order.comments);
+														}}
+													>
+														{t("View Comments")}
+													</MDBBtn>
+												)}
 											</div>
 										</MDBCollapse>
 									</td>
@@ -425,6 +450,28 @@ const Orders = () => {
 			>
 				<MDBIcon fas icon="arrow-up" />
 			</MDBBtn>
+
+			<MDBModal
+				tabIndex="-1"
+				open={commentModal}
+				onClose={() => toggleCommentModal()}
+			>
+				<MDBModalDialog centered style={{ maxWidth: 400 }}>
+					<MDBModalContent>
+						<MDBModalBody className="py-5 px-4">
+							<h3 className="font-black">{t("Comments")}:</h3>
+							{comments.map((comment, index) => (
+								<div key={index}>{comment}</div>
+							))}
+						</MDBModalBody>
+						<MDBModalFooter>
+							<MDBBtn color="primary" onClick={() => toggleCommentModal()}>
+								{t("OK")}
+							</MDBBtn>
+						</MDBModalFooter>
+					</MDBModalContent>
+				</MDBModalDialog>
+			</MDBModal>
 		</MDBContainer>
 	);
 };
