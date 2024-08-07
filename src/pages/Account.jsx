@@ -294,23 +294,36 @@ const Account = () => {
 							components={{
 								Option: (props) => (
 									<components.Option {...props} className="country-option">
-										<img
-											src={props.data.flag_img_link}
-											width={24}
-											alt="logo"
-											className="country-logo"
-										/>
+										{props.data.country_code == "global" ? (
+											<MDBIcon
+												fas
+												icon="globe"
+												size="lg"
+												className="country-logo px-1"
+											/>
+										) : (
+											<span
+												className={`country-logo fi fi-${props.data.country_code?.toLowerCase()} fs-5`}
+											></span>
+										)}
 										{props.data.label}
 									</components.Option>
 								),
 								SingleValue: ({ children, ...props }) => (
 									<components.SingleValue {...props}>
 										<MDBIcon fas icon="globe" size="lg" className="me-4" />
-										<img
-											src={curCountry.flag_img_link}
-											alt="s-logo"
-											className="selected-logo"
-										/>
+										{props.data.country_code == "global" ? (
+											<MDBIcon
+												fas
+												icon="globe"
+												size="lg"
+												className="selected-logo px-1"
+											/>
+										) : (
+											<span
+												className={`selected-logo fi fi-${props.data.country_code?.toLowerCase()} fs-5`}
+											></span>
+										)}
 										{children}
 										{processing && (
 											<MDBSpinner size="sm" className="ms-2" color="primary" />

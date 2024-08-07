@@ -209,15 +209,15 @@ body {
 }
 
 .country-logo {
-	width: 35px;
-	height: 20px;
+	/* width: 35px;
+	height: 20px; */
 	margin-right: 8px;
 	margin-left: 52px;
 }
 
 .selected-logo {
-	width: 35px;
-	height: 20px;
+	/* width: 35px;
+	height: 20px; */
 	margin-right: 8px;
 }
 .cloud {

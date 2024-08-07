@@ -49,12 +49,13 @@ const customStyles = {
 
 const Option = (props) => (
 	<components.Option {...props} className="country-option">
-		<img
-			src={props.data.flag_img_link}
-			width={24}
-			alt="logo"
-			className="country-logo"
-		/>
+		{props.data.country_code == "global" ? (
+			<MDBIcon fas icon="globe" size="lg" className="country-logo px-1" />
+		) : (
+			<span
+				className={`country-logo fi fi-${props.data.country_code?.toLowerCase()} fs-5`}
+			></span>
+		)}
 		{props.data.label}
 	</components.Option>
 );
@@ -121,17 +122,6 @@ export default function Signup() {
 				setCountryPlaceHolder(t("Could not get available countries."));
 				setLoading(false);
 			});
-		// let response = {
-		// 	data: {
-		// 		cameroon: {
-		// 			name: "cameroon",
-		// 			currency: "xaf",
-		// 			flag_img_link:
-		// 				"https://firebasestorage.googleapis.com/v0/b/exobooster-59de3.appspot.com/o/flag_thumbnails%2FFlag-Cameroon.webp?alt=media&token=2d2a1fa2-946f-4d54-a56d-15385eb9fb8e",
-		// 			enabled: true,
-		// 		},
-		// 	},
-		// };
 	};
 
 	useEffect(() => {
@@ -199,11 +189,13 @@ export default function Signup() {
 	const SingleValue = ({ children, ...props }) => (
 		<components.SingleValue {...props}>
 			<MDBIcon fas icon="globe" size="lg" className="me-4" />
-			<img
-				src={curCountry.flag_img_link}
-				alt="s-logo"
-				className="selected-logo"
-			/>
+			{props.data.country_code == "global" ? (
+				<MDBIcon fas icon="globe" size="lg" className="selected-logo px-1" />
+			) : (
+				<span
+					className={`selected-logo fi fi-${props.data.country_code?.toLowerCase()} fs-5`}
+				></span>
+			)}
 			{children}
 		</components.SingleValue>
 	);

@@ -17,6 +17,7 @@ import { Provider } from "react-redux";
 import MyErrorBoundary from "./layouts/MyErrorBoundary.jsx";
 import "mdb-react-ui-kit/dist/css/mdb.min.css";
 import "@fortawesome/fontawesome-free/css/all.min.css";
+import "flag-icons/css/flag-icons.min.css";
 import "./index.css";
 import "./axiosConfig.js";
 import { SpeedInsights } from '@vercel/speed-insights/react';

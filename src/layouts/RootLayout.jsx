@@ -57,11 +57,9 @@ import axios from "axios";
 import { useToaster } from "./ToasterContext";
 
 const languages = {
-	en: { name: "English", flag: "gb.svg" },
-	fr: { name: "Français", flag: "fr.svg" },
+	en: { name: "English", flag: "gb" },
+	fr: { name: "Français", flag: "fr" },
 };
-
-const getFlagUrl = (flagCode) => `https://flagcdn.com/${flagCode}`;
 
 export default function RootLayout() {
 	const { loading: appLoading, contactInfo } = useSelector(({ app }) => app);
@@ -378,16 +376,6 @@ export default function RootLayout() {
 								className="language-dropdown- nav-link"
 								role="button"
 							>
-								{/* <MDBBtn
-									floating
-									color="link"
-									size={isMobileOrTablet ? "" : "lg"}
-								> */}
-								{/* <img
-										src={getFlagUrl(languages[language].flag)}
-										alt={languages[language].name}
-										width={28}
-									/> */}
 								{i18n.language.toUpperCase()}
 								{/* </MDBBtn> */}
 							</MDBDropdownToggle>
@@ -402,12 +390,7 @@ export default function RootLayout() {
 											i18n.changeLanguage(code);
 										}}
 									>
-										<img
-											src={getFlagUrl(flag)}
-											alt={name}
-											width={28}
-											className="me-4 mb-1"
-										/>
+										<span className={`me-4 fi fi-${flag} fs-6`}></span>
 										{name}
 									</MDBDropdownItem>
 								))}
