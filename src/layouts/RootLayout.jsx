@@ -243,74 +243,81 @@ export default function RootLayout() {
 				direction="left"
 				style={{ paddingTop: isMobileOrTablet ? "64px" : "83px", width: 200 }}
 			>
-				<MDBListGroup light small className="mb-4">
+				<MDBListGroup light small className="mb-2">
 					<MDBTabs>
+						<hr className="w-100 my-2" />
 						<MDBListGroupItem
 							action
 							active={location.pathname === "/"}
 							noBorders
-							className="px-3"
+							className="px-3 mx-2"
 							tag={Link}
 							to="/"
 							onClick={toggleDrawerIn}
 						>
 							{t("Home")}
 						</MDBListGroupItem>
+						<hr className="w-100 my-2" />
 						<MDBListGroupItem
 							action
 							active={location.pathname === "/orders"}
 							noBorders
-							className="px-3"
+							className="px-3 mx-2"
 							tag={Link}
 							to="/orders"
 							onClick={toggleDrawerIn}
 						>
 							{t("Orders")}
 						</MDBListGroupItem>
+						<hr className="w-100 my-2" />
 						<MDBListGroupItem
 							action
 							active={location.pathname === "/wallet"}
 							noBorders
-							className="px-3"
+							className="px-3 mx-2"
 							tag={Link}
 							to="/wallet"
 							onClick={toggleDrawerIn}
 						>
 							{t("Wallet")}
 						</MDBListGroupItem>
+						<hr className="w-100 my-2" />
 						<MDBListGroupItem
 							action
 							active={location.pathname === "/referral"}
 							noBorders
-							className="px-3"
+							className="px-3 mx-2"
 							tag={Link}
 							to="/referral"
 							onClick={toggleDrawerIn}
 						>
 							{t("Referral Program")}
 						</MDBListGroupItem>
+						<hr className="w-100 my-2" />
 						<MDBListGroupItem
 							action
 							active={location.pathname === "/account"}
 							noBorders
-							className="px-3"
+							className="px-3 mx-2"
 							tag={Link}
 							to="/account"
 							onClick={toggleDrawerIn}
 						>
 							{t("Account")}
 						</MDBListGroupItem>
+						<hr className="w-100 my-2" />
 						<MDBListGroupItem
 							action
 							active={location.pathname === "/privacy-policy"}
 							noBorders
-							className="px-3"
+							className="px-3 mx-2"
 							tag={Link}
 							to="/privacy-policy"
 							onClick={toggleDrawerIn}
 						>
 							{t("Privacy Policy")}
 						</MDBListGroupItem>
+						<hr className="w-100 my-2" />
 					</MDBTabs>
 				</MDBListGroup>
 				<MDBContainer>
