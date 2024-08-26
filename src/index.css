@@ -478,4 +478,9 @@ small,
 .swal2-popup {
 	max-height: calc(100vh - 20px);
 	overflow: auto;
+	display: flex !important;
+	flex-direction: column;
+}
+.border-pink {
+	border-bottom: solid 1px #ff00f7;
 }

@@ -189,18 +189,21 @@ const Home = () => {
 		]?.purchase_notice[language]) {
 			setSwalProps({
 				show: true,
+				heightAuto: false,
 				// title: t("Notice"),
 				html: "<img src='/favcon 1.png' style='width: 40px' class='img-fluid my-4' alt='logo' />"+ data[selected.website].services[selected.service].subservices[
 					selected.subService
 				]?.purchase_notice[language],
 				showDenyButton: true,
 				customClass: {
+					htmlContainer: "border-pink",
 					confirmButton: "btn btn-success btn-block",
 					denyButton: "btn btn-primary btn-block",
 				},
 				confirmButtonText: t("Purchase"),
 				denyButtonText: t("Cancel"),
 				onResolve: (result) => {
+					console.log('-----------')
 					setSwalProps({ show: false });
 					if (result.isConfirmed) {
 						proceedPurchase();
@@ -245,6 +248,7 @@ const Home = () => {
 				}
 				setSwalProps({
 					show: true,
+					heightAuto: false,
 					title: response.data.message[language],
 					html: `<div>${data[selected.website].services[selected.service].subservices[
 						selected.subService
@@ -276,6 +280,7 @@ const Home = () => {
 					error.message == "Solde insuffisant";
 				setSwalProps({
 					show: true,
+					heightAuto: false,
 					title: t("Purchase failed!"),
 					text: t(error.message),
 					icon: "error",
