@@ -249,7 +249,7 @@ const resources = {
       "Quantity": "Quantité",
       "Order status": "Statut de la commande",
       "Order date": "Date de la commande",
-      "Order ID": "ID de la commande",
+      "Order ID": "ID D'achat",
       "Network Error": "Problème de réseau",
       "Try again": "Réessayer",
       "Referral": "Prime de parrainage",

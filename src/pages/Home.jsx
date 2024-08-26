@@ -196,10 +196,10 @@ const Home = () => {
 				icon: "info",
 				showDenyButton: true,
 				customClass: {
-					confirmButton: "btn btn-primary btn-block",
+					confirmButton: "btn btn-success btn-block",
 					denyButton: "btn btn-primary btn-block",
 				},
-				confirmButtonText: t("Proceed"),
+				confirmButtonText: t("Purchase"),
 				denyButtonText: t("Cancel"),
 				onResolve: (result) => {
 					setSwalProps({ show: false });
@@ -252,7 +252,7 @@ const Home = () => {
 					].purchase_success_text[language]}</div>
 					<h4 class="text-center mt-3"><span class="badge rounded-pill text-dark" style="
 						background: #eee;
-					">Order ID: ${response.data.order_index}</span></h4>`,
+					">${t("Order ID")}: ${response.data.order_index}</span></h4>`,
 					icon: "success",
 					showDenyButton: true,
 					customClass: {
@@ -720,6 +720,9 @@ const Home = () => {
 															>
 																{t("Comments")}:
 															</label>
+															<div className="small">{data[selected.website].services[
+																selected.service
+															].subservices[selected.subService]?.comments_seperator_text[language]}</div>
 															<MDBTextArea
 																rows={4}
 																id="comments"
