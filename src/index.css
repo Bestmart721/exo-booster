@@ -471,3 +471,10 @@ small,
 		min-width: 0;
 	}
 }
+
+.swal2-container {
+	display: block;
+}
+.swal2-popup {
+	height: 100%;
+}

@@ -190,10 +190,9 @@ const Home = () => {
 			setSwalProps({
 				show: true,
 				// title: t("Notice"),
-				html: data[selected.website].services[selected.service].subservices[
+				html: "<img src='/favcon 1.png' style='width: 40px' class='img-fluid my-4' alt='logo' />"+ data[selected.website].services[selected.service].subservices[
 					selected.subService
 				]?.purchase_notice[language],
-				icon: "info",
 				showDenyButton: true,
 				customClass: {
 					confirmButton: "btn btn-success btn-block",
