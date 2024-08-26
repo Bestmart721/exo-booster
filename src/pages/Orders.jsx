@@ -289,20 +289,20 @@ const Orders = () => {
 				<MDBTable align="middle" className="text-center">
 					<MDBTableHead className="font-black border-top">
 						<tr>
-							<th className="py-1 px-2">{t("ID")}</th>
+							<th className="py-2 px-2">{t("ID")}</th>
 							{!isMobileOrTablet && <>
-								<th className="py-1 px-2 date-td">{t("Date")}</th>
-								<th className="py-1 px-2">{t("Link")}</th>
-								<th className="py-1 px-2">{t("Price")}</th>
-								<th className="py-1 px-2">{t("Start Count")}</th>
+								<th className="py-2 px-2 date-td">{t("Date")}</th>
+								<th className="py-2 px-2">{t("Link")}</th>
+								<th className="py-2 px-2">{t("Price")}</th>
+								<th className="py-2 px-2">{t("Start Count")}</th>
 							</>}
-							<th className="py-1 px-1">{t("Service")}</th>
-							<th className="py-1 px-2">{t("Qty")}</th>
+							<th className="py-2 px-1">{t("Service")}</th>
+							<th className="py-2 px-2">{t("Qty")}</th>
 							{!isMobileOrTablet && <>
-								<th className="py-1 px-2">{t("Remains")}</th>
+								<th className="py-2 px-2">{t("Remains")}</th>
 							</>}
-							<th className="py-1 px-1">{t("Status")}</th>
-							<th className="py-1 px-2"></th>
+							<th className="py-2 px-1">{t("Status")}</th>
+							<th className="py-2 px-2"></th>
 						</tr>
 					</MDBTableHead>
 					<MDBTableBody>
@@ -312,14 +312,14 @@ const Orders = () => {
 									onClick={() => toggleCollapse(order.order_index)}
 									className="cursor-pointer"
 								>
-									<td className="py-1 px-2 border-bottom-0">
+									<td className="py-2 px-2 border-bottom-0">
 										{order.order_index}
 									</td>
 									{!isMobileOrTablet && <>
-										<td className="py-1 px-2 border-bottom-0" style={{minWidth: 100}}>
+										<td className="py-2 px-2 border-bottom-0" style={{minWidth: 100}}>
 											{timestampToString(order.timestamp._seconds) || ""}
 										</td>
-										<td className="py-1 px-2 border-bottom-0 link-td" title={order.link}>
+										<td className="py-2 px-2 border-bottom-0 link-td" title={order.link}>
 											{order.link?.includes("/") ? (
 												<Link to={order.link} target="_blank">
 													{order.link}
@@ -328,29 +328,29 @@ const Orders = () => {
 												<span>{order.link}</span>
 											)}
 										</td>
-										<td className="py-1 px-2 border-bottom-0" style={{ minWidth: 100 }}>
+										<td className="py-2 px-2 border-bottom-0 text-transform-uppercase" style={{ minWidth: 100 }}>
 											{formatNumber(order.charge)} {order.currency}
 										</td>
-										<td className="py-1 px-2 border-bottom-0">
+										<td className="py-2 px-2 border-bottom-0">
 											{order.start_count}
 										</td>
 
 									</>}
-									<td className="py-1 px-1 border-bottom-0" style={{ maxWidth: 200 }}>
+									<td className="py-2 px-1 border-bottom-0" style={{ maxWidth: 200 }}>
 										{order.service_display_name[language]} -{" "}
 										<span className="text-capitalize">
 											{order.service_category}
 										</span>
 									</td>
-									<td align="right" className="py-1 px-2 border-bottom-0">
+									<td align="right" className="py-2 px-2 border-bottom-0">
 										{order.quantity}
 									</td>
 									{!isMobileOrTablet && <>
-										<td className="py-1 px-2 border-bottom-0">
+										<td className="py-2 px-2 border-bottom-0">
 											{order.remains}
 										</td>
 									</>}
-									<td className="py-1 px-1 border-bottom-0">
+									<td className="py-2 px-1 border-bottom-0">
 										<MDBBadge
 											className="text-uppercase-"
 											pill
@@ -367,7 +367,7 @@ const Orders = () => {
 											{t(order.statusCodeName)}
 										</MDBBadge>
 									</td>
-									<td className="py-1 ps-0 pe-2 border-bottom-0">
+									<td className="py-2 ps-0 pe-2 border-bottom-0">
 										{openList.includes(order.order_index) ? (
 											<MDBIcon fas icon="angle-up" />
 										) : (
@@ -381,7 +381,7 @@ const Orders = () => {
 											open={openList.includes(order.order_index)}
 											className="wrap-anywhere"
 										>
-											<div className="py-1">
+											<div className="py-2">
 												{isMobileOrTablet && (<>
 													<div>
 														<span className="font-black">{t("Price")}</span> :{" "}

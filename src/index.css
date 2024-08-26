@@ -451,7 +451,7 @@ small,
 	text-wrap: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
-	direction: rtl;
+	/* direction: rtl; */
 	text-align: left;
 }
 .date-td {
