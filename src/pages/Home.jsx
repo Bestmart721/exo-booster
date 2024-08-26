@@ -133,8 +133,8 @@ const Home = () => {
 			type == "default"
 				? Number(selected.quantity)
 				: type == "custom_comments"
-				? countLines(selected.comments)
-				: 0;
+					? countLines(selected.comments)
+					: 0;
 		if (type == "default" && !selected.quantity) {
 			setQtyErrorMsg(t("Please enter a quantity."));
 			count++;
@@ -148,23 +148,20 @@ const Home = () => {
 					selected.subService
 				]?.min ||
 				quantity >
-					data[selected.website].services[selected.service].subservices[
-						selected.subService
-					]?.max)
+				data[selected.website].services[selected.service].subservices[
+					selected.subService
+				]?.max)
 		) {
 			setQtyErrorMsg(
-				`${
-					type == "default"
-						? t("Please enter a quantity between")
-						: t("Number of comments should be between")
-				} ${
-					data[selected.website].services[selected.service].subservices[
-						selected.subService
-					]?.min
-				} ${t("and")} ${
-					data[selected.website].services[selected.service].subservices[
-						selected.subService
-					]?.max
+				`${type == "default"
+					? t("Please enter a quantity between")
+					: t("Number of comments should be between")
+				} ${data[selected.website].services[selected.service].subservices[
+					selected.subService
+				]?.min
+				} ${t("and")} ${data[selected.website].services[selected.service].subservices[
+					selected.subService
+				]?.max
 				}.`
 			);
 			count++;
@@ -182,10 +179,42 @@ const Home = () => {
 		}
 	}, [selected.link, selected.quantity, selected.comments, dirty]);
 
-	const purchase = () => {
+	const purchase = async () => {
 		if (!checkValidation()) {
 			return;
 		}
+
+		if (data[selected.website].services[selected.service].subservices[
+			selected.subService
+		]?.purchase_notice[language]) {
+			setSwalProps({
+				show: true,
+				// title: t("Notice"),
+				html: data[selected.website].services[selected.service].subservices[
+					selected.subService
+				]?.purchase_notice[language],
+				icon: "info",
+				showDenyButton: true,
+				customClass: {
+					confirmButton: "btn btn-primary btn-block",
+					denyButton: "btn btn-primary btn-block",
+				},
+				confirmButtonText: t("Proceed"),
+				denyButtonText: t("Cancel"),
+				onResolve: (result) => {
+					setSwalProps({ show: false });
+					if (result.isConfirmed) {
+						proceedPurchase();
+					}
+				},
+			});
+		} else {
+			proceedPurchase();
+		}
+
+	};
+
+	const proceedPurchase = () => {
 		setPurchaseLoading(true);
 		const type =
 			data[selected.website].services[selected.service].subservices[
@@ -218,9 +247,12 @@ const Home = () => {
 				setSwalProps({
 					show: true,
 					title: response.data.message[language],
-					text: data[selected.website].services[selected.service].subservices[
+					html: `<div>${data[selected.website].services[selected.service].subservices[
 						selected.subService
-					].purchase_success_text[language],
+					].purchase_success_text[language]}</div>
+					<h4 class="text-center mt-3"><span class="badge rounded-pill text-dark" style="
+						background: #eee;
+					">Order ID: ${response.data.order_index}</span></h4>`,
 					icon: "success",
 					showDenyButton: true,
 					customClass: {
@@ -557,13 +589,13 @@ const Home = () => {
 															backgroundColor: isSelected
 																? "#ff00f7"
 																: isFocused
-																? "#ffe9fe"
-																: "white",
+																	? "#ffe9fe"
+																	: "white",
 															color: isSelected
 																? "white !important"
 																: isFocused
-																? "black !important"
-																: "black !important",
+																	? "black !important"
+																	: "black !important",
 														}),
 													}}
 													components={{
@@ -634,86 +666,86 @@ const Home = () => {
 												{data[selected.website].services[selected.service]
 													.subservices[selected.subService]?.type ==
 													"default" && (
-													<MDBCol className="mb-4- position-relative" sm={12}>
-														<label
-															htmlFor="quantity"
-															className="form-label font-black mb-0"
-														>
-															{t("Quantity")}:
-														</label>{" "}
-														<Input
-															id="quantity"
-															type="number"
-															inputMode="numeric"
-															value={selected.quantity}
-															name="quantity"
-															className="bg-white"
-															onChange={handleChange}
-															min={
-																data[selected.website].services[
-																	selected.service
-																].subservices[selected.subService]?.min
-															}
-															max={
-																data[selected.website].services[
-																	selected.service
-																].subservices[selected.subService]?.max
-															}
-														/>
-														<div className="small error-msg-wrapper">
-															(Min:{" "}
-															{formatNumber(
-																data[selected.website].services[
-																	selected.service
-																].subservices[selected.subService]?.min
-															)}{" "}
-															- Max:{" "}
-															{formatNumber(
-																data[selected.website].services[
-																	selected.service
-																].subservices[selected.subService]?.max
-															)}
-															){" "}
-															<span className="text-danger">{qtyErrorMsg}</span>
-														</div>
-													</MDBCol>
-												)}
+														<MDBCol className="mb-4- position-relative" sm={12}>
+															<label
+																htmlFor="quantity"
+																className="form-label font-black mb-0"
+															>
+																{t("Quantity")}:
+															</label>{" "}
+															<Input
+																id="quantity"
+																type="number"
+																inputMode="numeric"
+																value={selected.quantity}
+																name="quantity"
+																className="bg-white"
+																onChange={handleChange}
+																min={
+																	data[selected.website].services[
+																		selected.service
+																	].subservices[selected.subService]?.min
+																}
+																max={
+																	data[selected.website].services[
+																		selected.service
+																	].subservices[selected.subService]?.max
+																}
+															/>
+															<div className="small error-msg-wrapper">
+																(Min:{" "}
+																{formatNumber(
+																	data[selected.website].services[
+																		selected.service
+																	].subservices[selected.subService]?.min
+																)}{" "}
+																- Max:{" "}
+																{formatNumber(
+																	data[selected.website].services[
+																		selected.service
+																	].subservices[selected.subService]?.max
+																)}
+																){" "}
+																<span className="text-danger">{qtyErrorMsg}</span>
+															</div>
+														</MDBCol>
+													)}
 												{data[selected.website].services[selected.service]
 													.subservices[selected.subService]?.type ==
 													"custom_comments" && (
-													<MDBCol className="mb-4- position-relative" sm={12}>
-														<label
-															htmlFor="comments"
-															className="form-label font-black mb-0"
-														>
-															{t("Comments")}:
-														</label>
-														<MDBTextArea
-															rows={4}
-															id="comments"
-															value={selected.comments}
-															name="comments"
-															className="bg-white"
-															onChange={handleChange}
-														/>
-														<div className="small error-msg-wrapper">
-															(Min:
-															{
-																data[selected.website].services[
-																	selected.service
-																].subservices[selected.subService]?.min
-															}{" "}
-															- Max:
-															{
-																data[selected.website].services[
-																	selected.service
-																].subservices[selected.subService]?.max
-															}
-															){" "}
-															<span className="text-danger">{qtyErrorMsg}</span>
-														</div>
-													</MDBCol>
-												)}
+														<MDBCol className="mb-4- position-relative" sm={12}>
+															<label
+																htmlFor="comments"
+																className="form-label font-black mb-0"
+															>
+																{t("Comments")}:
+															</label>
+															<MDBTextArea
+																rows={4}
+																id="comments"
+																value={selected.comments}
+																name="comments"
+																className="bg-white"
+																onChange={handleChange}
+															/>
+															<div className="small error-msg-wrapper">
+																(Min:
+																{
+																	data[selected.website].services[
+																		selected.service
+																	].subservices[selected.subService]?.min
+																}{" "}
+																- Max:
+																{
+																	data[selected.website].services[
+																		selected.service
+																	].subservices[selected.subService]?.max
+																}
+																){" "}
+																<span className="text-danger">{qtyErrorMsg}</span>
+															</div>
+														</MDBCol>
+													)}
 												<MDBCol
 													className="mb-4 position-relative"
 													sm={12}
@@ -781,7 +813,7 @@ const Home = () => {
 																		data[selected.website].services[
 																			selected.service
 																		].subservices[selected.subService]?.rate[
-																			user.currency
+																		user.currency
 																		]
 																	).toLocaleString("en") +
 																		" " +
@@ -811,7 +843,7 @@ const Home = () => {
 																		data[selected.website].services[
 																			selected.service
 																		].subservices[selected.subService]?.rate[
-																			user.currency
+																		user.currency
 																		] *
 																		((100 - (user.discount || 0)) / 100)
 																	).toLocaleString("en") +
@@ -828,7 +860,7 @@ const Home = () => {
 														] &&
 															data[selected.website].services[selected.service]
 																.subservices[selected.subService]?.price_text[
-																user.currency
+															user.currency
 															][language]}
 													</div>
 												</MDBCol>
@@ -846,7 +878,7 @@ const Home = () => {
 														value={
 															data[selected.website].services[selected.service]
 																.subservices[selected.subService]?.average_time[
-																language
+															language
 															]
 														}
 														name="average_time"
@@ -893,24 +925,24 @@ const Home = () => {
 													.subservices[selected.subService]?.youtube_tutorial[
 													language
 												] && (
-													<div className="text-center mb-3">
-														{t("Don’t know how to use this service?")}
-														<br />
-														{t("Watch this video:")}
-														<a
-															href={
-																data[selected.website].services[
-																	selected.service
-																].subservices[selected.subService]
-																	?.youtube_tutorial[language]
-															}
-															target="_blank"
-															className="font-black text-primary ms-2"
-														>
-															{t("Tutorial")}
-														</a>
-													</div>
-												)}
+														<div className="text-center mb-3">
+															{t("Don’t know how to use this service?")}
+															<br />
+															{t("Watch this video:")}
+															<a
+																href={
+																	data[selected.website].services[
+																		selected.service
+																	].subservices[selected.subService]
+																		?.youtube_tutorial[language]
+																}
+																target="_blank"
+																className="font-black text-primary ms-2"
+															>
+																{t("Tutorial")}
+															</a>
+														</div>
+													)}
 											</>
 										)}
 								</MDBRow>

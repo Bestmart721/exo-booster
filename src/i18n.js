@@ -281,6 +281,7 @@ const resources = {
       "View Comments": "Voir les commentaires",
       "Comments": "Commentaires",
       "Privacy Policy": "Politique de confidentialité",
+      "Notice": "Avis",
     }
   }
 };
