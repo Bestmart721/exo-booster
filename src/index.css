@@ -454,6 +454,7 @@ small,
 	/* direction: rtl; */
 	text-align: left;
 }
+
 .date-td {
 	min-width: 180px;
 }
@@ -463,18 +464,18 @@ small,
 		max-width: 300px;
 	}
 }
+
 @media (max-width: 1199px) {
 	.link-td {
 		max-width: 250px;
 	}
+
 	.date-td {
 		min-width: 0;
 	}
 }
 
-.swal2-container {
-	display: block;
-}
 .swal2-popup {
-	height: 100%;
+	max-height: calc(100vh - 20px);
+	overflow: auto;
 }
