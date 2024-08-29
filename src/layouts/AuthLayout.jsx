@@ -160,7 +160,7 @@ export default function AuthLayout() {
 				<MDBCard className="shadow w-600 mx-auto rounded-pill">
 					<MDBCardBody className="d-flex">
 						<div className="flex-grow-1 border-end black border-1 text-center lead font-black">
-							<div>4,500,000+</div>
+							<div>12,000,000+</div>
 							<div>{t("Orders")}</div>
 						</div>
 						<div className="flex-grow-1 text-center lead font-black">

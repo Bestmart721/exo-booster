@@ -135,7 +135,7 @@ const resources = {
       "Select a country": "Sélectionnez votre pays",
       "Password": "Mot de passe",
       "Confirm your password": "Confirmez votre mot de passe",
-      "Referral code (Optional)": "Code de parrainage (facultatif)",
+      "Referral code (Optional)": "Code de parrainage (Optionnel)",
       "CREATE": "CRÉER",
       "Already have an account?": "Vous avez déjà un compte?",
       "LOGIN": "CONNEXION",
