@@ -484,3 +484,8 @@ small,
 .border-pink {
 	border-bottom: solid 1px #ff00f7;
 }
+
+.payment-provider-thumbnail {
+	max-height: 100%;
+	max-width: 100%;
+}

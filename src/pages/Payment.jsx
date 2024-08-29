@@ -262,8 +262,7 @@ const Payment = () => {
 													<MDBCardImage
 														src={provider.thumbnail_url}
 														alt={provider.display_name[language]}
-														className="img-fluid mx-auto"
-														width={160}
+														className="img-fluid mx-auto payment-provider-thumbnail"
 													/>
 												</MDBCardHeader>
 												<MDBCardFooter>
