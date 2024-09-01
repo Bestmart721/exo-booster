@@ -41,8 +41,8 @@ axios.interceptors.response.use(
         console.log("Error reported to the server.");
       });
 
-      // Example: Refresh page or refresh token
-      window.location.reload();
+      // Example: Redirect to Login page
+      window.location.href = '/login';
     }
     return Promise.reject(error);
   }
