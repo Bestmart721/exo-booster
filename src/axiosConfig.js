@@ -19,7 +19,7 @@ axios.interceptors.request.use(
 axios.interceptors.response.use(
   function (response) {
     // Do something with response data
-    console.log('Response:', response);
+    // console.log('Response:', response);
     return response;
   },
   function (error) {
