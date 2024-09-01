@@ -339,6 +339,10 @@ const Home = () => {
 				};
 				clearDirty();
 				break;
+			case "link":
+				overwrite = {
+					link: e.target.value.trim(),
+				};
 		}
 		setSelected({ ...selected, [e.target.name]: e.target.value, ...overwrite });
 	};

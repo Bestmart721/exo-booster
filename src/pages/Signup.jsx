@@ -234,7 +234,7 @@ export default function Signup() {
 										onChange={(event) => {
 											setFieldValue(
 												event.target.name,
-												event.target.value.replace(/ /g, "")
+												event.target.value.replace(/ /g, "").trim()
 											);
 										}}
 									/>
@@ -256,6 +256,12 @@ export default function Signup() {
 										className="form-control rounded-end-pill"
 										placeholder={t("Whatsapp number")}
 										name="whatsapp_number"
+										onChange={(event) => {
+											setFieldValue(
+												event.target.name,
+												event.target.value.replace(/ /g, "").trim()
+											);
+										}}
 									/>
 								</div>
 								<div className="error-message-wrapper text-danger px-4">
@@ -386,6 +392,12 @@ export default function Signup() {
 										className="form-control rounded-end-pill"
 										placeholder={t("Referral code (Optional)")}
 										name="referralCode"
+										onChange={(event) => {
+											setFieldValue(
+												event.target.name,
+												event.target.value.replace(/ /g, "").trim()
+											);
+										}}
 									/>
 								</div>
 								<div className="error-message-wrapper text-danger px-4">

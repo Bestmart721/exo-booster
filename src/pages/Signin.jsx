@@ -104,7 +104,7 @@ export default function Signin() {
 									onChange={(event) => {
 										setFieldValue(
 											event.target.name,
-											event.target.value.replace(/ /g, "")
+											event.target.value.replace(/ /g, "").trim()
 										);
 									}}
 								/>
