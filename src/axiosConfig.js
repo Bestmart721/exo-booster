@@ -27,7 +27,21 @@ axios.interceptors.response.use(
     if (error.response && error.response.status === 401) {
       // Handle 401 error here
       console.log('Unauthorized access - 401');
-      // Example: Redirect to login page or refresh token
+
+      // post error to the server
+      axios.post(
+        `https://sitebugreport-l2ugzeb65a-uc.a.run.app/`,
+        {
+          userId: undefined,
+          errorPagePath: window.location.pathname,
+          errorMessage: 'Unauthorized access - 401',
+        }
+      ).then((response) => {
+        console.log(response.data);
+        console.log("Error reported to the server.");
+      });
+
+      // Example: Refresh page or refresh token
       window.location.reload();
     }
     return Promise.reject(error);
@@ -35,3 +49,17 @@ axios.interceptors.response.use(
 );
 
 export default axios;
+
+
+
+// axios.post(
+//   `https://sitebugreport-l2ugzeb65a-uc.a.run.app/`,
+//   {
+//     userId: user?.uid || undefined,
+//     errorPagePath: window.location.pathname,
+//     errorMessage: error.stack,
+//   }
+// ).then((response) => {
+//   console.log(response.data);
+//   console.log("Error reported to the server.");
+// });
