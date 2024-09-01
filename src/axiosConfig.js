@@ -28,7 +28,7 @@ axios.interceptors.response.use(
       // Handle 401 error here
       console.log('Unauthorized access - 401');
       // Example: Redirect to login page or refresh token
-      window.location.href = '/login';
+      window.location.reload();
     }
     return Promise.reject(error);
   }
