@@ -48,7 +48,7 @@ const SupportProvider = ({ children, language }) => {
 							<img src="/favcon 1.png" className="img-fluid mb-5" alt="logo" />
 
 							{supportContacts.Email && (
-								<>
+								<div>
 									<h3 className="font-black">{t("Have a problem?")}</h3>
 									<div className="lead">
 										{t("Kindly contact us through email:")}
@@ -79,7 +79,7 @@ const SupportProvider = ({ children, language }) => {
 											{supportContacts.Telegram[language]?.name}
 										</a>
 									</div>
-								</>
+								</div>
 							)}
 						</MDBModalBody>
 						<MDBModalFooter>

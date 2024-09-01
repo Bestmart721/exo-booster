@@ -191,7 +191,7 @@ const Home = () => {
 				show: true,
 				heightAuto: false,
 				// title: t("Notice"),
-				html: "<img src='/favcon 1.png' style='width: 40px' class='img-fluid my-4' alt='logo' />"+ data[selected.website].services[selected.service].subservices[
+				html: "<img src='/favcon 1.png' style='width: 40px' class='img-fluid my-4' alt='logo' />" + data[selected.website].services[selected.service].subservices[
 					selected.subService
 				]?.purchase_notice[language],
 				showDenyButton: true,
@@ -644,7 +644,7 @@ const Home = () => {
 										selected.website &&
 										selected.service &&
 										selected.subService && (
-											<>
+											<div>
 												<MDBCol className="mb-4- position-relative" sm={12}>
 													<label
 														htmlFor="link"
@@ -893,7 +893,7 @@ const Home = () => {
 														onChange={handleChange}
 													/>
 												</MDBCol>
-											</>
+											</div>
 										)}
 								</MDBRow>
 							</MDBCol>
@@ -903,7 +903,7 @@ const Home = () => {
 										selected.website &&
 										selected.service &&
 										selected.subService && (
-											<>
+											<div>
 												<MDBCol className="mb-4" sm={12}>
 													<label className="form-label font-black mb-0">
 														{t("Note")}:
@@ -950,7 +950,7 @@ const Home = () => {
 															</a>
 														</div>
 													)}
-											</>
+											</div>
 										)}
 								</MDBRow>
 							</MDBCol>

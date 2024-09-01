@@ -286,12 +286,12 @@ const Payment = () => {
 
 					<MDBTypography tag="p" className="text-center text-danger">
 						{providerListError && !loading ? (
-							<>
+							<div>
 								{providerListError}{" "}
 								<MDBTypography tag={Link} onClick={loadProviders}>
 									{t("Retry")}
 								</MDBTypography>
-							</>
+							</div>
 						) : (
 							!loading &&
 							paymentProviders.length == 0 &&
@@ -318,7 +318,7 @@ const Payment = () => {
 					</MDBTypography>
 
 					{selectedProvider?.payment_provider_id ? (
-						<>
+						<div>
 							<label>{t("Payment Method")}:</label>
 							<MDBCard className="mb-4">
 								<MDBRow>
@@ -413,7 +413,7 @@ const Payment = () => {
 									)}
 								</MDBBtn>
 							</div>
-						</>
+						</div>
 					) : providerValidatorError ? (
 						<MDBTypography tag="p" className="text-center text-danger">
 							{providerValidatorError}{" "}

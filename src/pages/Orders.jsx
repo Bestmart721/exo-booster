@@ -290,17 +290,17 @@ const Orders = () => {
 					<MDBTableHead className="font-black border-top">
 						<tr>
 							<th className="py-2 px-2">{t("ID")}</th>
-							{!isMobileOrTablet && <>
+							{!isMobileOrTablet && <div>
 								<th className="py-2 px-2 date-td">{t("Date")}</th>
 								<th className="py-2 px-2">{t("Link")}</th>
 								<th className="py-2 px-2">{t("Price")}</th>
 								<th className="py-2 px-2">{t("Start Count")}</th>
-							</>}
+							</div>}
 							<th className="py-2 px-1">{t("Service")}</th>
 							<th className="py-2 px-2">{t("Qty")}</th>
-							{!isMobileOrTablet && <>
+							{!isMobileOrTablet && <div>
 								<th className="py-2 px-2">{t("Remains")}</th>
-							</>}
+							</div>}
 							<th className="py-2 px-1">{t("Status")}</th>
 							<th className="py-2 px-2"></th>
 						</tr>
@@ -315,8 +315,8 @@ const Orders = () => {
 									<td className="py-2 px-2 border-bottom-0">
 										{order.order_index}
 									</td>
-									{!isMobileOrTablet && <>
-										<td className="py-2 px-2 border-bottom-0" style={{minWidth: 100}}>
+									{!isMobileOrTablet && <div>
+										<td className="py-2 px-2 border-bottom-0" style={{ minWidth: 100 }}>
 											{timestampToString(order.timestamp._seconds) || ""}
 										</td>
 										<td className="py-2 px-2 border-bottom-0 link-td" title={order.link}>
@@ -335,7 +335,7 @@ const Orders = () => {
 											{order.start_count}
 										</td>
 
-									</>}
+									</div>}
 									<td className="py-2 px-1 border-bottom-0" style={{ maxWidth: 200 }}>
 										{order.service_display_name[language]} -{" "}
 										<span className="text-capitalize">
@@ -345,11 +345,11 @@ const Orders = () => {
 									<td align="right" className="py-2 px-2 border-bottom-0">
 										{order.quantity}
 									</td>
-									{!isMobileOrTablet && <>
+									{!isMobileOrTablet && <div>
 										<td className="py-2 px-2 border-bottom-0">
 											{order.remains}
 										</td>
-									</>}
+									</div>}
 									<td className="py-2 px-1 border-bottom-0">
 										<MDBBadge
 											className="text-uppercase-"
@@ -382,7 +382,7 @@ const Orders = () => {
 											className="wrap-anywhere"
 										>
 											<div className="py-2">
-												{isMobileOrTablet && (<>
+												{isMobileOrTablet && (<div>
 													<div>
 														<span className="font-black">{t("Price")}</span> :{" "}
 														<span className="text-transform-uppercase">
@@ -399,7 +399,7 @@ const Orders = () => {
 															<span>{order.link}</span>
 														)}
 													</div>
-												</>)}
+												</div>)}
 												<div>
 													<span className="font-black">
 														{t("Category name")}
@@ -409,7 +409,7 @@ const Orders = () => {
 														{order.sub_service_display_name[language]}
 													</span>
 												</div>
-												{isMobileOrTablet && (<>
+												{isMobileOrTablet && (<div>
 													<div>
 														<span className="font-black">{t("Start Count")}</span>{" "}
 														: <span>{order.start_count}</span>
@@ -424,7 +424,7 @@ const Orders = () => {
 															{timestampToString(order.timestamp._seconds) || ""}
 														</span>
 													</div>
-												</>)}
+												</div>)}
 												<div>
 													<span className="font-black">
 														{t("Completed in")}
@@ -457,14 +457,14 @@ const Orders = () => {
 							{t("Loading")}...
 						</MDBBtn>
 					) : error ? (
-						<>
+						<div>
 							<MDBTypography color="danger" tag="div">
 								{t(error)}
 							</MDBTypography>
 							<MDBBtn color="link" onClick={tryAgain}>
 								{t("Try Again")}
 							</MDBBtn>
-						</>
+						</div>
 					) : numberOfPages > page ? (
 						<MDBBtn color="link" onClick={loadMore}>
 							{t("Load More")}

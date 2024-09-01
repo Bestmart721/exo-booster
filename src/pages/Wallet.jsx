@@ -276,14 +276,14 @@ const Wallet = () => {
 						{t("Loading")}...
 					</MDBBtn>
 				) : error ? (
-					<>
+					<div>
 						<MDBTypography color="danger" tag="div">
 							{t(error)}
 						</MDBTypography>
 						<MDBBtn color="link" onClick={tryAgain}>
 							{t("Try again")}
 						</MDBBtn>
-					</>
+					</div>
 				) : numberOfPages > page ? (
 					<MDBBtn color="link" onClick={loadMore}>
 						{t("Load More")}

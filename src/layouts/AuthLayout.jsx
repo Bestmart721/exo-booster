@@ -34,7 +34,7 @@ export default function AuthLayout() {
 	return (
 		<MDBContainer id="authLayout">
 			{location.pathname === "/auth" ? (
-				<>
+				<div>
 					<MDBRow className="mt-4 mt-lg-5 pt-0 pt-md-5">
 						<MDBCol
 							md="12"
@@ -68,17 +68,17 @@ export default function AuthLayout() {
 									} font-black text-center text-lg-start`}
 								>
 									{i18n.language.slice(0, 2) == "fr" ? (
-										<>
+										<div>
 											<span className="text-primary">BOOSTEZ</span>{" "}
 											<small>VOS</small>
 											<br /> <span>MÉDIAS SOCIAUX</span>
-										</>
+										</div>
 									) : (
-										<>
+										<div>
 											<span className="text-primary">BOOST</span>{" "}
 											<small>YOUR</small>
 											<br /> <span>SOCIAL MEDIA</span>
-										</>
+										</div>
 									)}
 								</MDBTypography>
 							</motion.div>
@@ -129,7 +129,7 @@ export default function AuthLayout() {
 							</MDBBtn>
 						</div>
 					</motion.div>
-				</>
+				</div>
 			) : (
 				<div className="auth-main mt-80 mb-200 position-relative pt-80">
 					<img

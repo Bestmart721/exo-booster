@@ -96,16 +96,18 @@ const router = createBrowserRouter([
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-	<MyErrorBoundary>
-		<Provider store={store}>
-			<LanguageProvider>
-				<I18nextProvider i18n={i18n}>
-					<ToasterProvider>
-						<RouterProvider router={router} />
-						<SpeedInsights />
-					</ToasterProvider>
-				</I18nextProvider>
-			</LanguageProvider>
-		</Provider>
-	</MyErrorBoundary>
+	<div>
+		<MyErrorBoundary>
+			<Provider store={store}>
+				<LanguageProvider>
+					<I18nextProvider i18n={i18n}>
+						<ToasterProvider>
+							<RouterProvider router={router} />
+							<SpeedInsights />
+						</ToasterProvider>
+					</I18nextProvider>
+				</LanguageProvider>
+			</Provider>
+		</MyErrorBoundary>
+	</div>
 );

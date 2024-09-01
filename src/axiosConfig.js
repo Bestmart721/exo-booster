@@ -19,16 +19,16 @@ axios.interceptors.request.use(
 axios.interceptors.response.use(
   function (response) {
     // Do something with response data
-    // console.log('Response:', response);
+    console.log('Response:', response);
     return response;
   },
   function (error) {
     // If the response has an error status
     if (error.response && error.response.status === 401) {
       // Handle 401 error here
-      // console.log('Unauthorized access - 401');
+      console.log('Unauthorized access - 401');
       // Example: Redirect to login page or refresh token
-      // window.location.href = '/login';
+      window.location.href = '/login';
     }
     return Promise.reject(error);
   }
