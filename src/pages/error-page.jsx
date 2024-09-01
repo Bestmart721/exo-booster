@@ -27,13 +27,15 @@ export default function ErrorPage() {
 			});
 		}
 	}, [error, user]);
-	
+
 	return (
 		<div
 			id="error-page"
 			className="d-flex align-self-center flex-column justify-content-center text-center mt-5- pb-5 vh-100"
 		>
-			<img src={"/error.jpg"} alt="Error" className="img-fluid" />
+			<div>
+				<img src={"/error.jpg"} alt="Error" className="img-fluid" style={{ maxWidth: 508 }} />
+			</div>
 			<h1>{t("Oops!")}</h1>
 			<p>{t("Sorry, an unexpected error has occurred.")}</p>
 			<p>

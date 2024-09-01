@@ -42,7 +42,7 @@ axios.interceptors.response.use(
       });
 
       // Example: Redirect to Login page
-      window.location.href = '/login';
+      window.location.href = '/auth/signin';
     }
     return Promise.reject(error);
   }

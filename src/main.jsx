@@ -91,7 +91,7 @@ const router = createBrowserRouter([
 				element: <PrivacyPolicy />,
 			},
 		],
-		errorElement: import.meta.env.VITE_ENV === "production" && <ErrorPage />,
+		errorElement: import.meta.env.VITE_ENV !== "production" && <ErrorPage />,
 	},
 ]);
 
