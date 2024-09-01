@@ -10,7 +10,7 @@ function PrivacyPolicy() {
 			<MDBCard>
 				<MDBCardBody className="p-lg-5">
 					{language === "fr" ? (
-						<div>
+						<>
 							<div>
 								<div className="acc_head">
 									<b>Général</b>
@@ -155,9 +155,9 @@ function PrivacyPolicy() {
 									</p>
 								</div>
 							</div>
-						</div>
+						</>
 					) : (
-						<div>
+						<>
 							<div>
 								<div className="acc_head">
 									<b>General</b>
@@ -289,7 +289,7 @@ function PrivacyPolicy() {
 									</p>
 								</div>
 							</div>
-						</div>
+						</>
 					)}
 				</MDBCardBody>
 			</MDBCard>

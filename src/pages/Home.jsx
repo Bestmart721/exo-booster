@@ -644,7 +644,7 @@ const Home = () => {
 										selected.website &&
 										selected.service &&
 										selected.subService && (
-											<div>
+											<>
 												<MDBCol className="mb-4- position-relative" sm={12}>
 													<label
 														htmlFor="link"
@@ -893,7 +893,7 @@ const Home = () => {
 														onChange={handleChange}
 													/>
 												</MDBCol>
-											</div>
+											</>
 										)}
 								</MDBRow>
 							</MDBCol>
@@ -903,7 +903,7 @@ const Home = () => {
 										selected.website &&
 										selected.service &&
 										selected.subService && (
-											<div>
+											<>
 												<MDBCol className="mb-4" sm={12}>
 													<label className="form-label font-black mb-0">
 														{t("Note")}:
@@ -950,7 +950,7 @@ const Home = () => {
 															</a>
 														</div>
 													)}
-											</div>
+											</>
 										)}
 								</MDBRow>
 							</MDBCol>

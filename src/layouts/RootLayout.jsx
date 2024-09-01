@@ -434,7 +434,7 @@ export default function RootLayout() {
 					</MDBSpinner>
 				</div>
 			)}
-			<div>
+			<>
 				{!loading &&
 					(user && location.pathname.includes("/auth") ? (
 						<Navigate to={"/"} />
@@ -443,7 +443,7 @@ export default function RootLayout() {
 					) : (
 						<Outlet />
 					))}
-			</div>
+			</>
 			<div className="flex-grow-1 align-content-center pt-4 pb-5">
 				<div className="gap-3 d-block d-sm-flex align-items-center justify-content-center text-center">
 					<div>{t("Have an issue/question?")}</div>
@@ -502,7 +502,7 @@ export default function RootLayout() {
 							<img src="/favcon 1.png" className="img-fluid mb-5" alt="logo" />
 
 							{contactInfo ? (
-								<div>
+								<>
 									<h3 className="font-black">{t("Have a problem?")}</h3>
 									<div className="lead">
 										{t("Kindly contact us through email:")}
@@ -530,7 +530,7 @@ export default function RootLayout() {
 											{contactInfo.Telegram[language].name}
 										</a>
 									</div>
-								</div>
+								</>
 							) : (
 								<div>
 									<MDBSpinner color="primary" />
