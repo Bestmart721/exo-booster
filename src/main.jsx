@@ -96,7 +96,7 @@ const router = createBrowserRouter([
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-	<div>
+	<div className="notranslate">
 		<MyErrorBoundary>
 			<Provider store={store}>
 				<LanguageProvider>

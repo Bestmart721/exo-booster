@@ -231,7 +231,7 @@ const Wallet = () => {
 								<span>
 									{payment.payment_method
 										? t(payment.payment_method[language])
-										: t("Referral")}
+										: <span>{t("Referral")}</span>}
 								</span>
 							</div>
 						)}
