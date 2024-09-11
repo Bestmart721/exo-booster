@@ -155,7 +155,7 @@ export default function Signin() {
 											<span className="visually-hidden">Loading...</span>
 										</MDBSpinner>
 									) : (
-										t("LOGIN")
+										<span>t("LOGIN")</span>
 									)}
 								</MDBBtn>
 							</div>

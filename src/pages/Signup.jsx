@@ -300,22 +300,22 @@ export default function Signup() {
 														countryPlaceHolder == t("Choose your country")
 															? "black"
 															: countryPlaceHolder ==
-															  t("Could not get available countries.")
-															? "danger"
-															: "secondary"
+																t("Could not get available countries.")
+																? "danger"
+																: "secondary"
 													}
 												>
 													{countryPlaceHolder}
 													{countryPlaceHolder ==
 														t("Could not get available countries.") && (
-														<MDBIcon
-															fas
-															icon="refresh"
-															size="lg"
-															className="ms-2 cursor-pointer"
-															onClick={loadSignupData}
-														/>
-													)}
+															<MDBIcon
+																fas
+																icon="refresh"
+																size="lg"
+																className="ms-2 cursor-pointer"
+																onClick={loadSignupData}
+															/>
+														)}
 												</MDBTypography>
 											</div>
 										),
@@ -421,7 +421,7 @@ export default function Signup() {
 												<span className="visually-hidden">Loading...</span>
 											</MDBSpinner>
 										) : (
-											t("CREATE")
+											<span>{t("CREATE")}</span>
 										)}
 									</MDBBtn>
 								</div>
