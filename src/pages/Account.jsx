@@ -469,7 +469,7 @@ const Account = () => {
 												</span>
 											</MDBSpinner>
 										) : (
-											t("save")
+											<span>{t("save")}</span>
 										)}
 									</MDBBtn>
 								</div>

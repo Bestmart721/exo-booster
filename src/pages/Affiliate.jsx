@@ -160,7 +160,7 @@ const Affiliate = () => {
 						{transferring ? (
 							<MDBSpinner color="light" size="sm" />
 						) : (
-							t("Transfer to wallet balance")
+							<span>{t("Transfer to wallet balance")}</span>
 						)}
 					</MDBBtn>
 				</MDBCardBody>

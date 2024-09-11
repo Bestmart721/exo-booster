@@ -154,7 +154,7 @@ const Referral = () => {
 										<span className="visually-hidden">{t("Loading")}...</span>
 									</MDBSpinner>
 								) : (
-									t("save")
+									<span>{t("save")}</span>
 								)}
 							</MDBBtn>
 						</InputGroup>

@@ -470,9 +470,9 @@ const Orders = () => {
 							{t("Load More")}
 						</MDBBtn>
 					) : data.length > 0 ? (
-						t("No more data to load.")
+						<span>{t("No more data to load.")}</span>
 					) : (
-						t("No data to load.")
+						<span>{t("No data to load.")}</span>
 					)}
 				</MDBFooter>
 			</MDBCard>

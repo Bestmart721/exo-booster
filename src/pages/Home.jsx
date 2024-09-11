@@ -492,7 +492,7 @@ const Home = () => {
 								style={{ height: 300 }}
 							>
 								{Object.entries(data).length == 0 ? (
-									t("Loading services...")
+									<span>{t("Loading services...")}</span>
 								) : (
 									<div className="text-center">
 										<p>{t(data.error)}</p>

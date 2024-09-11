@@ -289,9 +289,9 @@ const Wallet = () => {
 						{t("Load More")}
 					</MDBBtn>
 				) : payments.length > 0 ? (
-					t("No more data to load.")
+					<span>{t("No more data to load.")}</span>
 				) : (
-					t("No data to load.")
+					<span>{t("No data to load.")}</span>
 				)}
 			</div>
 

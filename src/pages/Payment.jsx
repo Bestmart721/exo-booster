@@ -295,7 +295,7 @@ const Payment = () => {
 						) : (
 							!loading &&
 							paymentProviders.length == 0 &&
-							t("No payment methods available")
+							<span>{t("No payment methods available")}</span>
 						)}
 					</MDBTypography>
 				</MDBTabsPane>
@@ -401,7 +401,7 @@ const Payment = () => {
 											color="light"
 										/>
 									) : (
-										t("Pay")
+										<span>{t("Pay")}</span>
 										//  +
 										// " " +
 										// (dirty ?
