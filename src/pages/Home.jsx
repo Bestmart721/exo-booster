@@ -981,7 +981,7 @@ const Home = () => {
 													</span>
 												</MDBSpinner>
 											) : (
-												t("Purchase")
+												<span>{t("Purchase")}</span>
 											)}{" "}
 											{countInvalid ? `(${countInvalid} ${t("Errors")})` : ""}
 										</MDBBtn>
