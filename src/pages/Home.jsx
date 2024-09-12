@@ -81,6 +81,7 @@ const Home = () => {
 
 	useEffect(() => {
 		if (linkErrorMsg && dirty && linkInput.current) {
+			console.log("focus1");
 			linkInput.current.focus();
 			return
 		}
@@ -88,12 +89,14 @@ const Home = () => {
 			if (data[selected.website].services[selected.service].subservices[
 				selected.subService
 			]?.type === "default") {
+				console.log("focus2");
 				qtyInput.current.focus();
 				return
 			}
 			if (data[selected.website].services[selected.service].subservices[
 				selected.subService
 			]?.type === "custom_comments") {
+				console.log("focus3");
 				commentInput.current.focus();
 				return
 			}
@@ -204,7 +207,6 @@ const Home = () => {
 	}, [selected.link, selected.quantity, selected.comments, dirty]);
 
 	const purchase = async () => {
-		linkInput.current.focus();
 		if (!checkValidation()) {
 			return;
 		}
