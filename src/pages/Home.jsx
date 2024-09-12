@@ -85,6 +85,9 @@ const Home = () => {
 			linkInput.current.focus();
 			return
 		}
+	}, [linkErrorMsg, dirty]);
+
+	useEffect(() => {
 		if (qtyErrorMsg && dirty && qtyInput.current) {
 			if (data[selected.website].services[selected.service].subservices[
 				selected.subService
@@ -101,7 +104,7 @@ const Home = () => {
 				return
 			}
 		}
-	}, [linkErrorMsg, qtyErrorMsg, dirty]);
+	}, [qtyErrorMsg, dirty]);
 
 	const handleTabClick = (value) => {
 		setSelected({

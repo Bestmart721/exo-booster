@@ -177,7 +177,8 @@ export default function RootLayout() {
 										}
 									).then((response) => {
 										const markedNotifications = JSON.parse(localStorage.getItem("markedNotifications") || "[]")
-										setNotifications(response.data.notifications.filter(notification => !markedNotifications.includes(notification.notificationData.id)));
+										setNotifications(response.data.notifications);
+										// setNotifications(response.data.notifications.filter(notification => !markedNotifications.includes(notification.notificationData.id)));
 										// if (response.data.notifications.length > 0) {
 										// 	notify(response.data.notifications[0].notificationData[`htmlBody${capitalize(language)}`], "success");
 										// }
