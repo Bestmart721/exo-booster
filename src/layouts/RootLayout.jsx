@@ -93,14 +93,34 @@ export default function RootLayout() {
 	}, [location.pathname]);
 
 	useEffect(() => {
-		if (JSON.parse(localStorage.getItem("user"))) {
-			dispatch(setTmpUser(JSON.parse(localStorage.getItem("user"))));
+		const user = auth.currentUser;
+		if (user) {
+			user.getIdToken().then((accessToken) => {
+				dispatch(
+					setTmpUser({
+						accessToken,
+						uid: user.uid,
+					})
+				);
+				setLoading(false);
+			}).catch((error) => {
+				dispatch(
+					modalError(
+						t("Check your internet connection and reload the page.")
+					)
+				);
+			});
 		} else {
 			dispatch(unsetUser());
 		}
+		// if (JSON.parse(localStorage.getItem("user"))) {
+		// 	dispatch(setTmpUser(JSON.parse(localStorage.getItem("user"))));
+		// } else {
+		// 	dispatch(unsetUser());
+		// }
 
 		dispatch(fetchSupportContactsThunk());
-	}, [dispatch]);
+	}, [auth.currentUser]);
 
 	useEffect(() => {
 		if (notifications.length > 0) {
@@ -176,7 +196,7 @@ export default function RootLayout() {
 											},
 										}
 									).then((response) => {
-										const markedNotifications = JSON.parse(localStorage.getItem("markedNotifications") || "[]")
+										// const markedNotifications = JSON.parse(localStorage.getItem("markedNotifications") || "[]")
 										setNotifications(response.data.notifications);
 										// setNotifications(response.data.notifications.filter(notification => !markedNotifications.includes(notification.notificationData.id)));
 										// if (response.data.notifications.length > 0) {
@@ -221,8 +241,6 @@ export default function RootLayout() {
 			});
 			// Cleanup subscription on unmount
 			return unsubscribe;
-		} else {
-			setLoading(false);
 		}
 	}, [tmpUser]);
 
@@ -265,9 +283,9 @@ export default function RootLayout() {
 	const handleNotificationModalClose = () => {
 		setNotifications(notifications.slice(1));
 		setNotificationModal(false);
-		const notificationId = currentNotification.notificationData.id;
-		const markedNotifications = JSON.parse(localStorage.getItem("markedNotifications") || "[]")
-		localStorage.setItem("markedNotifications", JSON.stringify([...markedNotifications, notificationId]));
+		// const notificationId = currentNotification.notificationData.id;
+		// const markedNotifications = JSON.parse(localStorage.getItem("markedNotifications") || "[]")
+		// localStorage.setItem("markedNotifications", JSON.stringify([...markedNotifications, notificationId]));
 	};
 
 	const signOut = () => {
