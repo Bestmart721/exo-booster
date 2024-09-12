@@ -27,6 +27,7 @@ import {
 	MDBNavbarBrand,
 	MDBSpinner,
 	MDBTabs,
+	MDBTypography,
 } from "mdb-react-ui-kit";
 import { useTranslation } from "react-i18next";
 import { onAuthStateChanged, onIdTokenChanged } from "firebase/auth";
@@ -61,6 +62,8 @@ const languages = {
 	fr: { name: "Français", flag: "fr" },
 };
 
+const capitalize = (str) => str.charAt(0).toUpperCase() + str.slice(1);
+
 export default function RootLayout() {
 	const { loading: appLoading, contactInfo } = useSelector(({ app }) => app);
 
@@ -79,6 +82,9 @@ export default function RootLayout() {
 	const tmpUser = useSelector((state) => state.auth.tmpUser);
 	const dispatch = useDispatch();
 	const { notify } = useToaster();
+	const [notifications, setNotifications] = useState([]);
+	const [notificationModal, setNotificationModal] = useState(false);
+	const [currentNotification, setCurrentNotification] = useState({});
 
 	useEffect(() => {
 		const viewport = document.getElementById("root");
@@ -95,6 +101,13 @@ export default function RootLayout() {
 
 		dispatch(fetchSupportContactsThunk());
 	}, [dispatch]);
+
+	useEffect(() => {
+		if (notifications.length > 0) {
+			setCurrentNotification(notifications[0]);
+			setNotificationModal(true);
+		}
+	}, [notifications]);
 
 	useEffect(() => {
 		if (tmpUser) {
@@ -132,6 +145,45 @@ export default function RootLayout() {
 								)
 								.then((response) => {
 									dispatch(setServices(response.data.data));
+									axios.post(`https://uploadusernotificationtoken-l2ugzeb65a-uc.a.run.app/`,
+										{
+											userId: user.uid,
+											userOs: {
+												os: "web",
+												userAgent: navigator.userAgent
+											}
+										},
+										{
+											headers: {
+												Authorization: `Bearer ${user.accessToken}`,
+											},
+										})
+										.then((response) => {
+											console.log(response.data);
+										})
+										.catch((error) => {
+											console.log(error);
+										})
+
+									axios.post(`https://getusernotifications-l2ugzeb65a-uc.a.run.app/`,
+										{
+											userId: user.uid,
+											appVersion: "web"
+										},
+										{
+											headers: {
+												Authorization: `Bearer ${user.accessToken}`,
+											},
+										}
+									).then((response) => {
+										const markedNotifications = JSON.parse(localStorage.getItem("markedNotifications") || "[]")
+										setNotifications(response.data.notifications.filter(notification => !markedNotifications.includes(notification.notificationData.id)));
+										// if (response.data.notifications.length > 0) {
+										// 	notify(response.data.notifications[0].notificationData[`htmlBody${capitalize(language)}`], "success");
+										// }
+									}).catch((error) => {
+										console.log(error);
+									})
 								})
 								.catch((error) => {
 									// dispatch(
@@ -208,6 +260,14 @@ export default function RootLayout() {
 			};
 		}
 	}, [user?.uid]);
+
+	const handleNotificationModalClose = () => {
+		setNotifications(notifications.slice(1));
+		setNotificationModal(false);
+		const notificationId = currentNotification.notificationData.id;
+		const markedNotifications = JSON.parse(localStorage.getItem("markedNotifications") || "[]")
+		localStorage.setItem("markedNotifications", JSON.stringify([...markedNotifications, notificationId]));
+	};
 
 	const signOut = () => {
 		firebaseSignOut().then(() => {
@@ -361,7 +421,7 @@ export default function RootLayout() {
 						{user && (
 							<span
 								className="cursor-pointer"
-								// onClick={() => dispatch(toggleDrawer())}
+							// onClick={() => dispatch(toggleDrawer())}
 							>
 								<MDBBadge pill light color="secondary" tag={Link} to="/payment">
 									<MDBBtn
@@ -545,6 +605,28 @@ export default function RootLayout() {
 					</MDBModalContent>
 				</MDBModalDialog>
 			</MDBModal>
+
+			{currentNotification?.notificationData && <MDBModal tabIndex="-1" open={notificationModal} onClose={handleNotificationModalClose}>
+				<MDBModalDialog centered>
+					<MDBModalContent>
+						<MDBModalBody className="text-center py-5">
+							<img src="/favcon 1.png" className="img-fluid mb-5" alt="logo" />
+							<div dangerouslySetInnerHTML={{
+								__html: currentNotification?.notificationData[`htmlBody${capitalize(language)}`]
+							}} />
+						</MDBModalBody>
+						<MDBModalFooter>
+							{notifications.length > 1 &&
+								<MDBTypography className="me-auto">
+									{`${t("You have")} ${notifications.length - 1} ${t("more notification(s)")}`}
+								</MDBTypography>}
+							<MDBBtn color="primary" onClick={handleNotificationModalClose}>
+								{t("OK")}
+							</MDBBtn>
+						</MDBModalFooter>
+					</MDBModalContent>
+				</MDBModalDialog>
+			</MDBModal>}
 		</div>
 	);
 }

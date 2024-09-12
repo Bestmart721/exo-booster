@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import "react-modern-drawer/dist/index.css";
@@ -53,6 +53,9 @@ const Home = () => {
 		time: "",
 		note: "",
 	});
+	const linkInput = useRef(null);
+	const qtyInput = useRef(null);
+	const commentInput = useRef(null);
 
 	useEffect(() => {
 		if (Object.keys(data).length === 0) {
@@ -75,6 +78,27 @@ const Home = () => {
 			value: subService.subservice_id,
 		});
 	}, [data]);
+
+	useEffect(() => {
+		if (linkErrorMsg && dirty && linkInput.current) {
+			linkInput.current.focus();
+			return
+		}
+		if (qtyErrorMsg && dirty && qtyInput.current) {
+			if (data[selected.website].services[selected.service].subservices[
+				selected.subService
+			]?.type === "default") {
+				qtyInput.current.focus();
+				return
+			}
+			if (data[selected.website].services[selected.service].subservices[
+				selected.subService
+			]?.type === "custom_comments") {
+				commentInput.current.focus();
+				return
+			}
+		}
+	}, [linkErrorMsg, qtyErrorMsg, dirty]);
 
 	const handleTabClick = (value) => {
 		setSelected({
@@ -180,6 +204,7 @@ const Home = () => {
 	}, [selected.link, selected.quantity, selected.comments, dirty]);
 
 	const purchase = async () => {
+		linkInput.current.focus();
 		if (!checkValidation()) {
 			return;
 		}
@@ -203,7 +228,6 @@ const Home = () => {
 				confirmButtonText: t("Purchase"),
 				denyButtonText: t("Cancel"),
 				onResolve: (result) => {
-					console.log('-----------')
 					setSwalProps({ show: false });
 					if (result.isConfirmed) {
 						proceedPurchase();
@@ -274,7 +298,6 @@ const Home = () => {
 			})
 			.catch((error) => {
 				// dispatch(modalError(error.message));
-				console.log(error.message);
 				const isInsufficient =
 					error.message == "Insufficient balance" ||
 					error.message == "Solde insuffisant";
@@ -666,6 +689,7 @@ const Home = () => {
 														value={selected.link}
 														name="link"
 														onChange={handleChange}
+														innerRef={linkInput}
 													/>
 													<div className="small error-msg-wrapper text-danger">
 														{dirty && linkErrorMsg}
@@ -699,6 +723,7 @@ const Home = () => {
 																		selected.service
 																	].subservices[selected.subService]?.max
 																}
+																innerRef={qtyInput}
 															/>
 															<div className="small error-msg-wrapper">
 																(Min:{" "}
@@ -738,6 +763,7 @@ const Home = () => {
 																name="comments"
 																className="bg-white"
 																onChange={handleChange}
+																inputRef={commentInput}
 															/>
 															<div className="small error-msg-wrapper">
 																(Min:

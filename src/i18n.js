@@ -282,6 +282,9 @@ const resources = {
       "Comments": "Commentaires",
       "Privacy Policy": "Politique de confidentialité",
       "Notice": "Avis",
+      "You have more notifications": "Vous avez plus de notifications",
+      "You have": "Vous avez",
+      "more notification(s)": "notification(s) supplémentaires",
     }
   }
 };

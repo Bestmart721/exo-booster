@@ -214,7 +214,6 @@ const Orders = () => {
 
 	const toggleCommentModal = (comments = []) => {
 		setCommentModal(!commentModal);
-		console.log(comments);
 		setComments(comments);
 	};
 
@@ -321,8 +320,10 @@ const Orders = () => {
 										</td>
 										<td className="py-2 px-2 border-bottom-0 link-td" title={order.link}>
 											{order.link?.includes("/") ? (
-												<Link to={order.link} target="_blank">
-													{order.link}
+												<Link to={
+													order.link.includes("http") ? order.link : `https://${order.link}`
+												} target="_blank">
+													{order.link.includes("http") ? order.link : `https://${order.link}`}
 												</Link>
 											) : (
 												<span>{order.link}</span>
