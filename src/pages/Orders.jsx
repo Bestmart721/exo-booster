@@ -315,7 +315,7 @@ const Orders = () => {
 										{order.order_index}
 									</td>
 									{!isMobileOrTablet && <>
-										<td className="py-2 px-2 border-bottom-0" style={{minWidth: 100}}>
+										<td className="py-2 px-2 border-bottom-0" style={{ minWidth: 100 }}>
 											{timestampToString(order.timestamp._seconds) || ""}
 										</td>
 										<td className="py-2 px-2 border-bottom-0 link-td" title={order.link}>
@@ -393,8 +393,10 @@ const Orders = () => {
 													<div>
 														<span className="font-black">{t("Link")}</span> :{" "}
 														{order.link?.includes("/") ? (
-															<Link to={order.link} target="_blank">
-																{order.link}
+															<Link to={
+																order.link.includes("http") ? order.link : `https://${order.link}`
+															} target="_blank">
+																{order.link.includes("http") ? order.link : `https://${order.link}`}
 															</Link>
 														) : (
 															<span>{order.link}</span>

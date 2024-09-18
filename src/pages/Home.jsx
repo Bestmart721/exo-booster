@@ -139,7 +139,7 @@ const Home = () => {
 		const validity_regex = new RegExp(
 			data[selected.website]?.services[selected.service]?.subservices[
 				selected.subService
-			]?.validity_regex
+			]?.validity_regex, 'i'
 		);
 		if (!selected.link) {
 			setLinkErrorMsg(t("Please enter a link."));
