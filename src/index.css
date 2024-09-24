@@ -493,3 +493,7 @@ small,
 .notranslate {
     translate: no;
 }
+
+.btn-confirm-create {
+	width: 150px;
+}

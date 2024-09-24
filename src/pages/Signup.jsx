@@ -23,6 +23,7 @@ import { setTmpUser } from "../store/authSlice";
 import { modalError } from "../store/appSlice";
 import { useLanguage } from "../layouts/LanguageContext";
 import { count } from "firebase/firestore";
+import SweetAlert2 from "react-sweetalert2";
 
 const capitalize = (str) => (str ? str[0].toUpperCase() + str.slice(1) : "");
 
@@ -74,6 +75,7 @@ export default function Signup() {
 	const [countryPlaceHolder, setCountryPlaceHolder] = useState(
 		t("Loading available countries...")
 	);
+	const [swalProps, setSwalProps] = useState({});
 
 	const initialValues = {
 		country: "",
@@ -159,32 +161,61 @@ export default function Signup() {
 
 	const onSubmit = (values, { setSubmitting }) => {
 		values = { ...values, language: language };
-		setSubmitting(true);
-		axios
-			.post(`https://createuser-l2ugzeb65a-uc.a.run.app/`, values)
-			.then((response) => {
-				if (response.data.error) {
-					dispatch(modalError(t(response.data.error[language])));
-					return;
-				}
 
+
+		setSwalProps({
+			show: true,
+			width: "400px",
+			title: t("Make sure not to forget your details !"),
+			html: `<label class="text-start d-block">${t('Username')}:</label>
+			<input type="text" class="form-control" value="${values.username}" readonly>
+			<label class="text-start d-block mt-3">${t('Password')}:</label>
+			<input type="text" class="form-control" value="${values.password}" readonly>
+			<p class="text-danger mt-3">${t('You risk loosing complete access to your Exo account if you forget your username or password!')}</p>`,
+			icon: "warning",
+			customClass: {
+				confirmButton: "btn btn-primary btn-lg btn-confirm-create",
+				denyButton: "btn btn-warning btn-lg",
+			},
+			allowOutsideClick: false,
+			showDenyButton: true,
+			denyButtonText: t("Modify"),
+			preConfirm: () => {
+				setSwalProps({ showLoading: true });
 				setSubmitting(true);
-				firebaseSignIn1(response.data.data.auth_token)
-					.then((user) => {
-						const { accessToken, displayName, email, uid } = user;
-						dispatch(setTmpUser({ accessToken, displayName, email, uid }));
-						// navigate("/");
+				axios
+					.post(`https://createuser-l2ugzeb65a-uc.a.run.app/`, values)
+					.then((response) => {
+						if (response.data.error) {
+							dispatch(modalError(t(response.data.error[language])));
+							return;
+						}
+
+						setSubmitting(true);
+						firebaseSignIn1(response.data.data.auth_token)
+							.then((user) => {
+								const { accessToken, displayName, email, uid } = user;
+								dispatch(setTmpUser({ accessToken, displayName, email, uid }));
+								// navigate("/");
+							})
+							.finally(() => {
+								setSubmitting(false);
+							});
+					})
+					.catch((error) => {
+						dispatch(modalError(t(error)));
 					})
 					.finally(() => {
 						setSubmitting(false);
 					});
-			})
-			.catch((error) => {
-				dispatch(modalError(t(error)));
-			})
-			.finally(() => {
+			},
+			preDeny: () => {
 				setSubmitting(false);
-			});
+			},
+			didClose: () => {
+				setSwalProps({ show: false });
+			}
+		});
 	};
 
 	const SingleValue = ({ children, ...props }) => (
@@ -205,6 +236,9 @@ export default function Signup() {
 
 	return (
 		<>
+			<SweetAlert2
+				{...swalProps}
+			/>
 			<motion.div
 				initial={{ opacity: 0, translateY: -100 }}
 				animate={{ opacity: 1, translateY: 0 }}

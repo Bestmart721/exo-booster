@@ -16,10 +16,6 @@ import { useLanguage } from "../layouts/LanguageContext";
 import SweetAlert2 from "react-sweetalert2";
 import { t } from "i18next";
 
-function formatNumber(num = 0) {
-	return num.toLocaleString("en");
-}
-
 const Wallet = () => {
 	const user = useSelector((state) => state.auth.user);
 	const [payments, setPayments] = useState([]);
@@ -29,6 +25,10 @@ const Wallet = () => {
 	const [page, setPage] = useState(0);
 	const [numberOfPages, setNumberOfPages] = useState(0);
 	const [openList, setOpenList] = useState([]);
+
+	function formatNumber(num = 0) {
+		return num.toLocaleString(language);
+	}
 
 	function timestampToString(timestampInSeconds) {
 		if (!timestampInSeconds) return "";

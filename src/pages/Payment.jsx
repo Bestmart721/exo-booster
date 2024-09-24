@@ -240,8 +240,8 @@ const Payment = () => {
 						<MDBRow>
 							{paymentProviders
 								.sort((a, b) => a.order_index - b.order_index)
-								.map((provider) => (
-									<MDBCol md="4" key={provider.order_index}>
+								.map((provider, index) => (
+									<MDBCol md="4" key={index}>
 										<motion.div
 											initial={{ scale: 1 }}
 											transition={{ ease: "easeInOut", duration: 0.2 }}
@@ -413,6 +413,10 @@ const Payment = () => {
 									)}
 								</MDBBtn>
 							</div>
+							{paymentProviders.find(provider => provider.payment_platform_id == paymentPlatformId).html_notice[language] &&
+								<MDBCard className="mt-3">
+									<MDBCardBody dangerouslySetInnerHTML={{ __html: paymentProviders.find(provider => provider.payment_platform_id == paymentPlatformId).html_notice[language] }} />
+								</MDBCard>}
 						</>
 					) : providerValidatorError ? (
 						<MDBTypography tag="p" className="text-center text-danger">

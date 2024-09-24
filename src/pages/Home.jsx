@@ -397,7 +397,7 @@ const Home = () => {
 	}
 
 	function formatNumber(num = 0) {
-		return num.toLocaleString("en", {
+		return num.toLocaleString(language, {
 			minimumFractionDigits: 0,
 			maximumFractionDigits: 2,
 		});

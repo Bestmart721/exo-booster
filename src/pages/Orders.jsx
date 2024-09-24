@@ -33,13 +33,6 @@ import { useMobileOrTabletMediaQuery } from "../responsiveHook";
 
 const capitalize = (str) => (str ? str[0].toUpperCase() + str.slice(1) : "");
 
-function formatNumber(num = 0) {
-	return num.toLocaleString("en");
-}
-function timestampToString(timestampInSeconds) {
-	return new Date(timestampInSeconds * 1000).toLocaleString("en");
-}
-
 const Orders = () => {
 	const [status, setStatus] = useState("All");
 	const user = useSelector((state) => state.auth.user);
@@ -57,6 +50,13 @@ const Orders = () => {
 	const [commentModal, setCommentModal] = useState(false);
 	const [comments, setComments] = useState([]);
 	const isMobileOrTablet = useMobileOrTabletMediaQuery();
+
+	function formatNumber(num = 0) {
+		return num.toLocaleString(language);
+	}
+	function timestampToString(timestampInSeconds) {
+		return new Date(timestampInSeconds * 1000).toLocaleString(language);
+	}
 
 	// const dispatch = useDispatch();
 	const options = [

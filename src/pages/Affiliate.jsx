@@ -20,10 +20,6 @@ import { modalError } from "../store/appSlice";
 import { useLanguage } from "../layouts/LanguageContext";
 import SweetAlert2 from "react-sweetalert2";
 
-function formatNumber(num = 0) {
-	return num.toLocaleString("en");
-}
-
 const Affiliate = () => {
 	const navigate = useNavigate();
 	const [data, setData] = useState({});
@@ -32,6 +28,10 @@ const Affiliate = () => {
 	const { language } = useLanguage();
 	const [swalProps, setSwalProps] = useState({});
 	const [transferring, setTransferring] = useState(false);
+
+	function formatNumber(num = 0) {
+		return num.toLocaleString(language)
+	}
 
 	useEffect(() => {
 		fetchReferralInfo()
@@ -89,13 +89,13 @@ const Affiliate = () => {
 					show: true,
 					title:
 						response.data.en ==
-						"Your affiliate balance is empty, invite people to the Exo Booster App/Website and earn !"
+							"Your affiliate balance is empty, invite people to the Exo Booster App/Website and earn !"
 							? t("Note")
 							: t("Success"),
 					text: response.data[language],
 					icon:
 						response.data.en ==
-						"Your affiliate balance is empty, invite people to the Exo Booster App/Website and earn !"
+							"Your affiliate balance is empty, invite people to the Exo Booster App/Website and earn !"
 							? "info"
 							: "success",
 					customClass: {

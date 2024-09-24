@@ -285,6 +285,9 @@ const resources = {
       "You have more notifications": "Vous avez plus de notifications",
       "You have": "Vous avez",
       "more notification(s)": "notification(s) supplémentaires",
+      "Make sure not to forget your details !" : "Assurez-vous de ne pas oublier vos détails !",
+      'You risk loosing complete access to your Exo account if you forget your username or password!' : 'Vous risquez de perdre l\'accès complet à votre compte Exo si vous oubliez votre nom d\'utilisateur ou votre mot de passe !',
+      "Modify": "Modifier",
     }
   }
 };

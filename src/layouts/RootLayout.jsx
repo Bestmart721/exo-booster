@@ -113,11 +113,6 @@ export default function RootLayout() {
 		} else {
 			dispatch(unsetUser());
 		}
-		// if (JSON.parse(localStorage.getItem("user"))) {
-		// 	dispatch(setTmpUser(JSON.parse(localStorage.getItem("user"))));
-		// } else {
-		// 	dispatch(unsetUser());
-		// }
 
 		dispatch(fetchSupportContactsThunk());
 	}, [auth.currentUser]);
@@ -179,10 +174,10 @@ export default function RootLayout() {
 											},
 										})
 										.then((response) => {
-											console.log(response.data);
+											// console.log(response.data);
 										})
 										.catch((error) => {
-											console.log(error);
+											console.error(error);
 										})
 
 									axios.post(`https://getusernotifications-l2ugzeb65a-uc.a.run.app/`,
@@ -222,6 +217,7 @@ export default function RootLayout() {
 								})
 								.finally(() => {
 									setLoading(false);
+									console.log("services fetched");
 								});
 						})
 						.catch((error) => {
@@ -229,6 +225,7 @@ export default function RootLayout() {
 						})
 						.finally(() => {
 							setLoading(false);
+							console.log("user data fetched");
 						});
 
 					fetchTotalOrders().then((data) => {
@@ -237,12 +234,55 @@ export default function RootLayout() {
 				} else {
 					dispatch(unsetUser());
 					setLoading(false);
+					console.log("no user");
 				}
 			});
 			// Cleanup subscription on unmount
 			return unsubscribe;
+		} else {
+			// setLoading(false);
 		}
 	}, [tmpUser]);
+
+	useEffect(() => {
+		const openIndexedDB = () => {
+			const request = indexedDB.open("firebaseLocalStorageDb", 1);
+
+			request.onsuccess = (event) => {
+				const db = event.target.result;
+				const transaction = db.transaction(["firebaseLocalStorage"], "readonly");
+				const store = transaction.objectStore("firebaseLocalStorage");
+				let keyRequest = store.getAllKeys(); // Get all keys from the store
+				let keyPrefix = 'firebase:authUser'
+
+				keyRequest.onsuccess = function (event) {
+					let allKeys = keyRequest.result;
+
+					// Check if any key starts with "firebase:authUser"
+					let authUserKey = allKeys.find(key => key.startsWith(keyPrefix));
+
+					if (authUserKey) {
+						// console.log('Key found:', authUserKey);
+					} else {
+						console.error('No keys found starting with "firebase:authUser"');
+						setLoading(false);
+					}
+				};
+
+				keyRequest.onerror = function (event) {
+					console.error('Error retrieving keys: ' + event.target.errorCode);
+					setLoading(false);
+				};
+			};
+
+			request.onerror = (event) => {
+				console.error("IndexedDB error: ", event.target.error);
+				setLoading(false);
+			};
+		};
+
+		openIndexedDB();
+	}, []);
 
 	useEffect(() => {
 		if (user?.uid) {
@@ -300,7 +340,7 @@ export default function RootLayout() {
 	};
 
 	function formatNumber(num = 0) {
-		return num.toLocaleString("en");
+		return num.toLocaleString(language);
 		// if (num >= 1e12) {
 		// 	return (num / 1e12).toFixed(2) + "T";
 		// } else if (num >= 1e9) {
