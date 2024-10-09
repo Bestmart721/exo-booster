@@ -29,7 +29,6 @@ import { or } from "firebase/firestore";
 import { t, use } from "i18next";
 import { Link } from "react-router-dom";
 import { useMobileOrTabletMediaQuery } from "../responsiveHook";
-// import { modalError } from "../store/appSlice";
 
 const capitalize = (str) => (str ? str[0].toUpperCase() + str.slice(1) : "");
 
