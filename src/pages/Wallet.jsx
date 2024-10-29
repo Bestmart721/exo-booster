@@ -36,7 +36,7 @@ const Wallet = () => {
 	}
 	function timestampToTimeString(timestampInSeconds) {
 		if (!timestampInSeconds) return "";
-		return new Date(timestampInSeconds * 1000).toLocaleString("en");
+		return new Date(timestampInSeconds * 1000).toLocaleString(language);
 	}
 	const tryAgain = () => {
 		loadData();

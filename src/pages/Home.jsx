@@ -857,7 +857,7 @@ const Home = () => {
 																		].subservices[selected.subService]?.rate[
 																		user.currency
 																		]
-																	).toLocaleString("en") +
+																	).toLocaleString(language) +
 																		" " +
 																		user.currency?.toUpperCase()}
 																</span>
@@ -888,7 +888,7 @@ const Home = () => {
 																		user.currency
 																		] *
 																		((100 - (user.discount || 0)) / 100)
-																	).toLocaleString("en") +
+																	).toLocaleString(language) +
 																		" " +
 																		user.currency?.toUpperCase()}
 																</MDBCardBody>

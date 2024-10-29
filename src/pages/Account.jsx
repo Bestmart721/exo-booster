@@ -76,7 +76,7 @@ const Account = () => {
 				const global = response.data.global;
 				delete response.data.global;
 				response.data.global = global;
-				
+
 				let cs = Object.keys(response.data).map((key) => response.data[key]);
 				cs = cs.map((country) => ({
 					...country,
@@ -336,22 +336,22 @@ const Account = () => {
 												countryPlaceHolder == t("Choose your country")
 													? "black"
 													: countryPlaceHolder ==
-													  t("Could not get available countries.")
-													? "danger"
-													: "secondary"
+														t("Could not get available countries.")
+														? "danger"
+														: "secondary"
 											}
 										>
 											{countryPlaceHolder}
 											{countryPlaceHolder ==
 												t("Could not get available countries.") && (
-												<MDBIcon
-													fas
-													icon="refresh"
-													size="lg"
-													className="ms-2 cursor-pointer"
-													onClick={loadSignupData}
-												/>
-											)}
+													<MDBIcon
+														fas
+														icon="refresh"
+														size="lg"
+														className="ms-2 cursor-pointer"
+														onClick={loadSignupData}
+													/>
+												)}
 										</MDBTypography>
 									</div>
 								),
